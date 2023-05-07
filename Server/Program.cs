@@ -1,3 +1,8 @@
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using Server.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Server
 {
     public class Program
@@ -7,10 +12,13 @@ namespace Server
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
             builder.Services.AddControllers();
+            builder.Services.AddSingleton<Frivillig>();
 
-            builder.Services.AddCors(options => // policy der slår CORS fra, så der er adgang fra alle sources
+          
+            builder.Services.AddCors(options => // policy der slï¿½r CORS fra, sï¿½ der er adgang fra alle sources
             {
                 options.AddPolicy("policy",
                                 policy =>
@@ -28,7 +36,7 @@ namespace Server
 
             app.UseHttpsRedirection();
 
-            app.UseCors("policy"); // Anvender ovenstående policy
+            app.UseCors("policy"); // Anvender ovenstï¿½ende policy
 
             app.UseAuthorization();
 
