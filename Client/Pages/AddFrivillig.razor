@@ -1,5 +1,7 @@
 ﻿@page "/addFrivillig"
 @using Client.Services;
+@using Shared;
+@inject HttpClient Http;
 
 <PageTitle>Add Bike</PageTitle>
 
@@ -9,30 +11,31 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="col-md-12 mb-3">
-        <label for="Brand">Brand</label>
-        <InputText id="Brand" @bind-Value="bike.Brand" class="form-control" />
+        <label for="Navn">Navn</label>
+        <InputText id="Navn" @bind-Value="frivillig.Navn" class="form-control" />
     </div>
     <div class="col-md-12 mb-3">
-        <label for="Model">Model</label>
-        <InputText id="Model" @bind-Value="bike.Model" class="form-control" />
+        <label for="Email">Email</label>
+        <InputText id="Email" @bind-Value="frivillig.Email" class="form-control" />
     </div>
     <div class="col-md-6 mb-3">
-        <label for="Price">Price</label>
-        <InputNumber id="Price" @bind-Value="bike.Price" class="form-control" />
+        <label for="Fødselsdagsdato">Fødselsdagsdato</label>
+        <InputDate id="Dato" @bind-Value="frivillig.Fødselsdagsdato" class="form-control" />
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="Price">Adresse</label>
+        <InputText id="Price" @bind-Value="frivillig.Adresse" class="form-control" />
     </div>
     <div class="col-md-12 mb-3">
-        <label for="Img">Img Url</label>
-        <InputText id="Img" @bind-Value="bike.ImageUrl" class="form-control" />
+        <label for="Img">Telefonnummer</label>
+        <InputNumber id="Img" @bind-Value="frivillig.Telefonnummer" class="form-control" />
     </div>
 
-    <div class="col-12 mb-3">
-        <button type="submit" class="btn btn-primary">Add</button>
-    </div>
 </EditForm>
 
 
 @code {
-    Frivillig frivillig = new();
+    private Frivillig frivillig = new Frivillig();
 
     private EditContext aEditContext;
 

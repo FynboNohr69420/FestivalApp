@@ -18,11 +18,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Repositories\" />
-    <None Remove="Data\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
-    <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj" />
