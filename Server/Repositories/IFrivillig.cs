@@ -1,5 +1,5 @@
 ﻿using System;
-using Server.Data;
+using Common.Model;
 namespace Server.Repositories
 {
 	public interface IFrivillig

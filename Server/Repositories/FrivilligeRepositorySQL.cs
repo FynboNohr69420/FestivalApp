@@ -1,5 +1,5 @@
 ﻿using System;
-using Server.Data;
+using Common.Model;
 using Dapper;
 using Npgsql;
 using Microsoft.Data.SqlClient;
@@ -8,7 +8,7 @@ namespace Server.Repositories
 {
     public class FrivilligeRepositorySQL : IFrivillig
     {
-        private const string connectionString = "UserID=postgres;Password=2202;Host=localhost;Port=5432;Database=Blazor";
+        private const string connectionString = "UserID=eehvkyxg;Password=DpGHcrCDBfK_RrcdKdwSNiUR3t_PWx-1;Host=balarama.db.elephantsql.com;Port=5432;Database=eehvkyxg";
 
         public FrivilligeRepositorySQL()
         {
@@ -22,7 +22,7 @@ namespace Server.Repositories
                 connection.Open();
 
                 var command = connection.CreateCommand();
-                command.CommandText = @"SELECT * FROM Frivillige";
+                command.CommandText = @"SELECT * FROM Vagt";
 
 
                 using (var reader = command.ExecuteReader())
