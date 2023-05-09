@@ -23,6 +23,6 @@
     <Folder Include="Repositories\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\Shared\Common.csproj" />
   </ItemGroup>
 </Project>

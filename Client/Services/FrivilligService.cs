@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http.Json;
 using Client.Pages;
-using Client.Services;
+using Common.Model;
 using static System.Net.WebRequestMethods;
 
 namespace Client.Services

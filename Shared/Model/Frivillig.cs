@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Server.Data
+namespace Common.Model
 {
-	public class Frivillig
-	{
+    public class Frivillig
+    {
 
         [Key]
         public int Id { get; set; } = 0;
