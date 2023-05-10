@@ -14,7 +14,7 @@
         <InputText id="Navn" @bind-Value="bruger.Fornavn" class="form-control" />
     </div>
     <div class="col-md-12 mb-3">
-        <label for="Navn">Navn</label>
+        <label for="Navn">Efternavn</label>
         <InputText id="Navn" @bind-Value="bruger.Efternavn" class="form-control" />
     </div>
     <div class="col-md-12 mb-3">
@@ -34,12 +34,18 @@
         <InputDate id="Fødselsdag" @bind-Value="bruger.Fødselsdag" class="form-control" />
     </div>
     <div class="col-md-6 mb-3">
-        <label for="Price">Adresse</label>
-        <InputText id="Price" @bind-Value="bruger.Password" class="form-control" />
+        <label for="Password">Password</label>
+        <InputText id="Password" @bind-Value="bruger.Password" class="form-control" />
     </div>
-    <div class="col-md-12 mb-3">
-        <label for="Img">Telefonnummer</label>
-        <InputCheckbox id="Img" @bind-Value="bruger.IsKoordinator" class="form-control" />
+    <div class="col-md-1 mb-3">
+        <label for="IsKoordinator">Koordinator</label>
+        <InputSelect id="IsKoordinator" @bind-Value="bruger.IsKoordinator" class="form-control">
+            <option value="true">Ja</option>
+            <option value="false">Nej</option>
+        </InputSelect>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 
 </EditForm>
@@ -47,7 +53,23 @@
 
 @code {
 
+    private Bruger bruger = new Bruger();
+
+    private EditContext aEditContext;
+
     [Inject]
     private IBrugerService mService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        aEditContext = new EditContext(bruger);
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        await mService.Add(bruger);
+
+        bruger = new();
+    }
 
 }

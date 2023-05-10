@@ -1,6 +1,6 @@
+using Common.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Server.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Server
@@ -15,7 +15,7 @@ namespace Server
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             builder.Services.AddControllers();
-            builder.Services.AddSingleton<Frivillig>();
+            builder.Services.AddSingleton<Bruger>();
 
           
             builder.Services.AddCors(options => // policy der sl�r CORS fra, s� der er adgang fra alle sources
