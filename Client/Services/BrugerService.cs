@@ -6,25 +6,25 @@ using static System.Net.WebRequestMethods;
 
 namespace Client.Services
 {
-    public class FrivilligService : IFrivilligService
+    public class BrugerService : IBrugerService
     {
         HttpClient http;
-        public FrivilligService(HttpClient http)
+        public BrugerService(HttpClient http)
         {
             this.http = http;
         }
 
-        public async Task<IEnumerable<Frivillig>> getAll()
+        public async Task<IEnumerable<Bruger>> getAll()
         {
-            var frivillige = await http.GetFromJsonAsync<Frivillig[]>("api/frivillig");
+            var bruger = await http.GetFromJsonAsync<Bruger[]>("api/bruger");
 
-            return frivillige;
+            return bruger;
 
         }
 
-        public async Task AddFrivillig(Frivillig frivillig)
+        public async Task Add(Bruger bruger)
         {
-            await http.PostAsJsonAsync<Frivillig>("api/frivillig", frivillig);
+            await http.PostAsJsonAsync<Bruger>("api/bruger", bruger);
         }
 
     }
