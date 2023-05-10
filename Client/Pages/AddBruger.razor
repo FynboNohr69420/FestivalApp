@@ -63,6 +63,7 @@
     protected override void OnInitialized()
     {
         aEditContext = new EditContext(bruger);
+        bruger.Fødselsdag = DateTime.Now;
     }
 
     public async Task HandleValidSubmit()
