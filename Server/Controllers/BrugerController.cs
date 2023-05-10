@@ -20,23 +20,17 @@ namespace Server.Controllers
             // Der er ingen shelters i listen, så den er tom
         };
 
-        // En reference til databasen gennem vores repository interface
         private IBruger myRepo;
 
-        // Konstruktør for controlleren, der tager imod en IBooking instans
         public BrugerController(IBruger myRepo)
         {
-            // Gemmer referencen til databasen i dette objekt
             this.myRepo = myRepo;
         }
 
-        // En metode, der håndterer HTTP GET requests til /api/Booking
         [HttpGet]
         public IEnumerable<Bruger> getBruger()
         {
-            // Skriver en besked til konsollen
             Console.WriteLine("get ");
-            // Returnerer alle bookings i databasen gennem vores repository
             return myRepo.getBruger();
         }
 

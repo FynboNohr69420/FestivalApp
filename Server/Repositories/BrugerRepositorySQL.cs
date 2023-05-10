@@ -3,12 +3,14 @@ using Common.Model;
 using Dapper;
 using Npgsql;
 using Microsoft.Data.SqlClient;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Server.Repositories
 {
     public class BrugerRepositorySQL : IBruger
     {
         private const string connectionString = "UserID=eehvkyxg;Password=DpGHcrCDBfK_RrcdKdwSNiUR3t_PWx-1;Host=balarama.db.elephantsql.com;Port=5432;Database=eehvkyxg";
+
 
         public BrugerRepositorySQL()
         {
@@ -17,12 +19,12 @@ namespace Server.Repositories
         public Bruger[] getAll()
         {
             var result = new List<Bruger>();
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
 
                 var command = connection.CreateCommand();
-                command.CommandText = @"SELECT * FROM Bruger";
+                command.CommandText = "SELECT * FROM \"Bruger\"";
 
 
                 using (var reader = command.ExecuteReader())
@@ -41,8 +43,18 @@ namespace Server.Repositories
                         var Password = reader.GetString(7);
                         var Iskoordinator = reader.GetBoolean(8);
 
-                        Bruger b = new Bruger { Id = Id, Fornavn = Fornavn, Efternavn = Efternavn, Telefonnummer = Telefonnummer,
-                            Adresse = Adresse, Email = Email, Fødselsdag = Fødselsdag, Password = Password, IsKoordinator = Iskoordinator};
+                        Bruger b = new Bruger
+                        {
+                            Id = Id,
+                            Fornavn = Fornavn,
+                            Efternavn = Efternavn,
+                            Telefonnummer = Telefonnummer,
+                            Adresse = Adresse,
+                            Email = Email,
+                            Fødselsdag = Fødselsdag,
+                            Password = Password,
+                            IsKoordinator = Iskoordinator
+                        };
                         result.Add(b);
                     }
                 }
@@ -52,7 +64,7 @@ namespace Server.Repositories
 
         public void Add(Bruger bruger)
         {
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
                 var command = connection.CreateCommand();
@@ -76,7 +88,7 @@ namespace Server.Repositories
         {
             int id = 0;
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
                 var command = connection.CreateCommand();
@@ -100,10 +112,12 @@ namespace Server.Repositories
             throw new NotImplementedException();
         }
 
+
         public void Delete(string id)
         {
             throw new NotImplementedException();
         }
     }
+
 
 }
