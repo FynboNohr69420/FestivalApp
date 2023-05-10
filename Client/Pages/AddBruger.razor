@@ -1,59 +1,53 @@
-﻿@page "/addFrivillig"
+﻿@page "/addbruger"
 @using Client.Services;
 @using Common.Model;
 
 @inject HttpClient Http;
 
-<PageTitle>Add Bike</PageTitle>
-
-<h3>Add Bike</h3>
+<PageTitle>Registrering</PageTitle>
 
 <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="col-md-12 mb-3">
         <label for="Navn">Navn</label>
-        <InputText id="Navn" @bind-Value="frivillig.Navn" class="form-control" />
+        <InputText id="Navn" @bind-Value="bruger.Fornavn" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Navn">Navn</label>
+        <InputText id="Navn" @bind-Value="bruger.Efternavn" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Telefonnummer">Telefonnummer</label>
+        <InputNumber id="Telefonnummer" @bind-Value="bruger.Telefonnummer" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Adresse">Adresse</label>
+        <InputText id="Adresse" @bind-Value="bruger.Adresse" class="form-control" />
     </div>
     <div class="col-md-12 mb-3">
         <label for="Email">Email</label>
-        <InputText id="Email" @bind-Value="frivillig.Email" class="form-control" />
+        <InputText id="Email" @bind-Value="bruger.Email" class="form-control" />
     </div>
     <div class="col-md-6 mb-3">
-        <label for="Fødselsdagsdato">Fødselsdagsdato</label>
-        <InputDate id="Dato" @bind-Value="frivillig.Fødselsdagsdato" class="form-control" />
+        <label for="Fødselsdag">Fødselsdag</label>
+        <InputDate id="Fødselsdag" @bind-Value="bruger.Fødselsdag" class="form-control" />
     </div>
     <div class="col-md-6 mb-3">
         <label for="Price">Adresse</label>
-        <InputText id="Price" @bind-Value="frivillig.Adresse" class="form-control" />
+        <InputText id="Price" @bind-Value="bruger.Password" class="form-control" />
     </div>
     <div class="col-md-12 mb-3">
         <label for="Img">Telefonnummer</label>
-        <InputNumber id="Img" @bind-Value="frivillig.Telefonnummer" class="form-control" />
+        <InputCheckbox id="Img" @bind-Value="bruger.IsKoordinator" class="form-control" />
     </div>
 
 </EditForm>
 
 
 @code {
-    private Frivillig frivillig = new Frivillig();
-
-    private EditContext aEditContext;
 
     [Inject]
-    private IFrivilligService mService { get; set; }
-
-    protected override void OnInitialized()
-    {
-        aEditContext = new EditContext(frivillig);
-    }
-
-    public async Task HandleValidSubmit()
-    {
-        await mService.AddFrivillig(frivillig);
-
-        frivillig = new(); // clear fields in form
-
-    }
+    private IBrugerService mService { get; set; }
 
 }

@@ -3,22 +3,22 @@ using Common.Model;
 
 namespace Server.Repositories
 {
-	public class FrivilligeRepositoryInMemory : IFrivillig
+	public class BrugerRepositoryInMemory : BrugerRepositorySQL
 	{
-        private static List<Frivillig> mFrivillig = Frivillig.ToList();
+        private static List<Bruger> mBruger = Bruger.ToList();
 
-        public FrivilligeRepositoryInMemory()
+        public BrugerRepositoryInMemory()
         {
         }
 
-        public void Add(Frivillig frivillig)
+        public void Add(Bruger bruger)
         {
-            mFrivillig.Add(frivillig);
+            mBruger.Add(bruger);
         }
 
-        public Frivillig[] getAll()
+        public Bruger[] getAll()
         {
-            return mFrivillig.ToArray();
+            return mBruger.ToArray();
         }
     }
 }

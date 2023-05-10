@@ -95,6 +95,15 @@ namespace Server.Repositories
             return id;
         }
 
+        public IEnumerable<Bruger> getBruger()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

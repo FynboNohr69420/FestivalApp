@@ -1,13 +1,14 @@
 ﻿using System;
 using Common.Model;
+using Client;
 
 namespace Client.Services
 {
-	public interface IFrivilligService
+	public interface IBrugerService
 	{
-		Task<IEnumerable<Frivillig>> getAll();
+		Task<IEnumerable<Bruger>> getAll();
 
-		Task AddFrivillig(Frivillig frivillig);
+		Task Add(Bruger bruger);
 	}
 }
 
