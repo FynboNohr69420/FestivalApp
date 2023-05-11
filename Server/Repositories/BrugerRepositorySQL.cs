@@ -24,7 +24,7 @@ namespace Server.Repositories
                 connection.Open();
 
                 var command = connection.CreateCommand();
-                command.CommandText = @"SELECT * FROM public.Bruger";
+                command.CommandText = "SELECT * FROM \"Bruger\"";
 
 
                 using (var reader = command.ExecuteReader())
