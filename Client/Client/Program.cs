@@ -2,6 +2,7 @@ using Client;
 using Client.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Swashbuckle;
 
 namespace Client
 {
@@ -19,6 +20,8 @@ namespace Client
             {
                 Client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
             });
+
+            
 
             await builder.Build().RunAsync();
         }

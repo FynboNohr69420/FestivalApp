@@ -76,7 +76,7 @@ namespace Server.Repositories
                 command.Parameters.AddWithValue("@Email", bruger.Email);
                 command.Parameters.AddWithValue("@Fødselsdag", bruger.Fødselsdag);
                 command.Parameters.AddWithValue("@Password", bruger.Password);
-                command.Parameters.AddWithValue("@IsKoordinator", bruger.IsKoordinator);
+                command.Parameters.AddWithValue("IsKoordinator", bruger.IsKoordinator);
                 command.ExecuteNonQuery();
             }
         }
