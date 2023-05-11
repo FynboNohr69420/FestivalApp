@@ -8,6 +8,9 @@ namespace Client.Services
 {
     public class BrugerService : IBrugerService
     {
+
+        private Bruger[]? brugerlist = new Bruger[0];
+
         HttpClient http;
         public BrugerService(HttpClient http)
         {
@@ -24,8 +27,10 @@ namespace Client.Services
 
         public async Task Add(Bruger bruger)
         {
-            await http.PostAsJsonAsync<Bruger>("api/bruger", bruger);
-        }
+            await http.PostAsJsonAsync<Bruger>("api/bruger", bruger); // Sender en POST request med booking som JSON payload til API'en
+            Console.WriteLine("klient: add " + bruger.Fornavn + bruger.Efternavn); // Udskriver informationer om den nye booking i konsollen//
+            bruger = new();
 
+        }
     }
 }

@@ -1,4 +1,6 @@
+using System.Net.NetworkInformation;
 using Common.Model;
+using Dapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +47,8 @@ namespace Server
             app.MapControllers();
 
             app.Run();
+
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
     }
 }

@@ -32,20 +32,17 @@ namespace Server.Repositories
 
                     while (reader.Read())
                     {
-                        var Id = reader.GetInt32(0);
-                        Console.WriteLine("Id=" + Id);
-                        var Fornavn = reader.GetString(1);
-                        var Efternavn = reader.GetString(2);
-                        var Telefonnummer = reader.GetInt32(3);
-                        var Adresse = reader.GetString(4);
-                        var Email = reader.GetString(5);
-                        var Fødselsdag = reader.GetDateTime(6);
-                        var Password = reader.GetString(7);
-                        var Iskoordinator = reader.GetBoolean(8);
+                        var Fornavn = reader.GetString(0);
+                        var Efternavn = reader.GetString(1);
+                        var Telefonnummer = reader.GetInt32(2);
+                        var Adresse = reader.GetString(3);
+                        var Email = reader.GetString(4);
+                        var Fødselsdag = reader.GetDateTime(5);
+                        var Password = reader.GetString(6);
+                        var Iskoordinator = reader.GetBoolean(7);
 
                         Bruger b = new Bruger
                         {
-                            Id = Id,
                             Fornavn = Fornavn,
                             Efternavn = Efternavn,
                             Telefonnummer = Telefonnummer,
@@ -69,9 +66,7 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = @"INSERT INTO public.Bruger (Id, Fornavn, Efternavn, Telefonnummer, Adresse, Email, Fødselsdag, Password, IsKoordinator)
-                                                    VALUES ($Id ,$Fornavn, $Efternavn, $Telefonnummer, $Adresse, $Email, $Fødselsdag, $Password, $IsKoordinator)";
-                command.Parameters.AddWithValue("$Id", GetNextId() + 1);
+                command.CommandText = "INSERT INTO \"Bruger\" (\"Fornavn\", \"Efternavn\", \"Telefonnummer\", \"Adresse\", \"Email\", \"Fødselsdag\", \"Password\", \"IsKoordinator\") VALUES (@Fornavn, @Efternavn, @Telefonnummer, @Adresse, @Email, @Fødselsdag, @Password, @IsKoordinator)";
                 command.Parameters.AddWithValue("$Fornavn", bruger.Fornavn);
                 command.Parameters.AddWithValue("$Efternavn", bruger.Efternavn);
                 command.Parameters.AddWithValue("$Telefonnummer", bruger.Telefonnummer);
@@ -84,28 +79,28 @@ namespace Server.Repositories
             }
         }
 
-        public int GetNextId()
-        {
-            int id = 0;
+        //public int GetNextId()
+        //{
+        //    int id = 0;
 
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                var command = connection.CreateCommand();
-                command.CommandText = @"SELECT MAX(Id) FROM public.Bruger";
+        //    using (var connection = new NpgsqlConnection(connectionString))
+        //    {
+        //        connection.Open();
+        //        var command = connection.CreateCommand();
+        //        command.CommandText = @"SELECT MAX(Id) FROM public.Bruger";
 
-                using (var reader = command.ExecuteReader())
-                {
-                    {
-                        while (reader.Read())
-                        {
-                            id = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0;
-                        }
-                    }
-                }
-            }
-            return id;
-        }
+        //        using (var reader = command.ExecuteReader())
+        //        {
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    id = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return id;
+        //}
 
         public void DeleteBruger(int id)
         {
