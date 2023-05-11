@@ -39,7 +39,7 @@ namespace Server.Controllers
         public void Add(Bruger bruger)
         {
             // Skriver en besked til konsollen med bookingens ID
-            Console.WriteLine("post " + bruger.Id);
+            Console.WriteLine("post " + bruger.ID);
             // Tilføjer bookingen til databasen gennem vores repository
             myRepo.Add(bruger);
         }

@@ -44,7 +44,7 @@ namespace Server.Repositories
 
                         Bruger b = new Bruger
                         {
-                            Id = Id,
+                            ID = Id,
                             Fornavn = Fornavn,
                             Efternavn = Efternavn,
                             Telefonnummer = Telefonnummer,
@@ -68,15 +68,15 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "INSERT INTO \"public.Bruger\" (\"Fornavn\", \"Efternavn\", \"Telefonnummer\", \"Adresse\", \"Email\", \"Fødselsdag\", \"Password\", \"IsKoordinator\") VALUES (@Fornavn, @Efternavn, @Telefonnummer, @Adresse, @Email, @Fødselsdag, @Password, @IsKoordinator)";
-                command.Parameters.AddWithValue("$Fornavn", bruger.Fornavn);
-                command.Parameters.AddWithValue("$Efternavn", bruger.Efternavn);
-                command.Parameters.AddWithValue("$Telefonnummer", bruger.Telefonnummer);
-                command.Parameters.AddWithValue("$Adresse", bruger.Adresse);
-                command.Parameters.AddWithValue("$Email", bruger.Email);
-                command.Parameters.AddWithValue("$Fødselsdag", bruger.Fødselsdag);
-                command.Parameters.AddWithValue("$Password", bruger.Password);
-                command.Parameters.AddWithValue("$IsKoordinator", bruger.IsKoordinator);
+                command.CommandText = "INSERT INTO \"public.Bruger\" (\"Fornavn\", \"Efternavn\", \"Telefonnummer\", \"Adresse\", \"Email\", \"Fødselsdag\", \"Password\", \"IsKoordinator\") VALUES (\'@Fornavn\', \'@Efternavn\', @Telefonnummer, \'@Adresse\', \'@Email\', \'@Fødselsdag\', \'@Password\', @IsKoordinator)";
+                command.Parameters.AddWithValue("@Fornavn", bruger.Fornavn);
+                command.Parameters.AddWithValue("@Efternavn", bruger.Efternavn);
+                command.Parameters.AddWithValue("@Telefonnummer", bruger.Telefonnummer);
+                command.Parameters.AddWithValue("@Adresse", bruger.Adresse);
+                command.Parameters.AddWithValue("@Email", bruger.Email);
+                command.Parameters.AddWithValue("@Fødselsdag", bruger.Fødselsdag);
+                command.Parameters.AddWithValue("@Password", bruger.Password);
+                command.Parameters.AddWithValue("@IsKoordinator", bruger.IsKoordinator);
                 command.ExecuteNonQuery();
             }
         }
@@ -111,8 +111,8 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "DELETE FROM public.Bruger WHERE Id = @Id";
-                command.Parameters.AddWithValue("$id", Id);
+                command.CommandText = "DELETE FROM \"Bruger\" WHERE \"ID\" = @ID";
+                command.Parameters.AddWithValue("@ID", Id); ;
                 command.ExecuteNonQuery();
             }
         }

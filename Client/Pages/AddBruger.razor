@@ -31,7 +31,7 @@
     </div>
     <div class="col-md-6 mb-3">
         <label for="Fødselsdag">Fødselsdag</label>
-        <InputDate id="Fødselsdag" @bind-Value="bruger.Fødselsdag" class="form-control" />
+        <InputDate id="Fødselsdag" @bind-Value="bruger.Fødselsdag" @bind-Value:format="yyyy/mm/dd" class="form-control" />
     </div>
     <div class="col-md-6 mb-3">
         <label for="Password">Password</label>
