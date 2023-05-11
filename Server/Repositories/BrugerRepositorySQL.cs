@@ -32,8 +32,6 @@ namespace Server.Repositories
 
                     while (reader.Read())
                     {
-                        var Id = reader.GetInt32(0);
-                        Console.WriteLine("Id=" + Id);
                         var Fornavn = reader.GetString(1);
                         var Efternavn = reader.GetString(2);
                         var Telefonnummer = reader.GetInt32(3);
@@ -45,7 +43,6 @@ namespace Server.Repositories
 
                         Bruger b = new Bruger
                         {
-                            Id = Id,
                             Fornavn = Fornavn,
                             Efternavn = Efternavn,
                             Telefonnummer = Telefonnummer,
@@ -69,9 +66,8 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = @"INSERT INTO public.Bruger (Id, Fornavn, Efternavn, Telefonnummer, Adresse, Email, Fødselsdag, Password, IsKoordinator)
-                                                    VALUES ($Id ,$Fornavn, $Efternavn, $Telefonnummer, $Adresse, $Email, $Fødselsdag, $Password, $IsKoordinator)";
-                command.Parameters.AddWithValue("$Id", GetNextId() + 1);
+                command.CommandText = "INSERT INTO \"Bruger\" (\"Fornavn\", \"Efternavn\", \"Telefonnummer\", \"Adresse\", \"Email\", \"Fødselsdag\", \"Password\", \"IsKoordinator\") VALUES (\'$Fornavn\', \'$Efternavn\', \'$Telefonnummer\', \'$Adresse\', \'$Email\', \'$Fødselsdag\', \'$Password\', \'$IsKoordinator\')";
+
                 command.Parameters.AddWithValue("$Fornavn", bruger.Fornavn);
                 command.Parameters.AddWithValue("$Efternavn", bruger.Efternavn);
                 command.Parameters.AddWithValue("$Telefonnummer", bruger.Telefonnummer);
