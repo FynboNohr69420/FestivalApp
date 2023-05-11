@@ -32,16 +32,7 @@ namespace Server.Repositories
 
                     while (reader.Read())
                     {
-<<<<<<< HEAD
-                        var Fornavn = reader.GetString(0);
-                        var Efternavn = reader.GetString(1);
-                        var Telefonnummer = reader.GetInt32(2);
-                        var Adresse = reader.GetString(3);
-                        var Email = reader.GetString(4);
-                        var Fødselsdag = reader.GetDateTime(5);
-                        var Password = reader.GetString(6);
-                        var Iskoordinator = reader.GetBoolean(7);
-=======
+                        var Id = reader.GetInt32(0);
                         var Fornavn = reader.GetString(1);
                         var Efternavn = reader.GetString(2);
                         var Telefonnummer = reader.GetInt32(3);
@@ -50,10 +41,10 @@ namespace Server.Repositories
                         var Fødselsdag = reader.GetDateTime(6);
                         var Password = reader.GetString(7);
                         var Iskoordinator = reader.GetBoolean(8);
->>>>>>> b6120c26c3a07468b2674f55717c141a3dda8cfb
 
                         Bruger b = new Bruger
                         {
+                            Id = Id,
                             Fornavn = Fornavn,
                             Efternavn = Efternavn,
                             Telefonnummer = Telefonnummer,
