@@ -58,12 +58,6 @@
 
     private EditContext aEditContext;
 
-    [Parameter]
-    public DateTime Value { get; set; } = DateTime.Now;
-
-    [Parameter]
-    public string Format { get; set; } = "yyyy-MM-dd";
-
     [Inject]
     private IBrugerService mService { get; set; }
 
@@ -80,7 +74,7 @@
 
     public async Task Add()
     {
-        await Http.PostAsJsonAsync<Bruger>("api/brugere", bruger); // Sender en POST request med booking som JSON payload til API'en
+        await mService.Add(bruger);
         Console.WriteLine("klient: add " + bruger.Fornavn); // Udskriver informationer om den nye booking i konsollen
         bruger = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
     }

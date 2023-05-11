@@ -68,7 +68,7 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "INSERT INTO \"public.Bruger\" (\"Fornavn\", \"Efternavn\", \"Telefonnummer\", \"Adresse\", \"Email\", \"Fødselsdag\", \"Password\", \"IsKoordinator\") VALUES (\'@Fornavn\', \'@Efternavn\', @Telefonnummer, \'@Adresse\', \'@Email\', \'@Fødselsdag\', \'@Password\', @IsKoordinator)";
+                command.CommandText = "INSERT INTO \"Bruger\" (\"Fornavn\", \"Efternavn\", \"Telefonnummer\", \"Adresse\", \"Email\", \"Fødselsdag\", \"Password\", \"IsKoordinator\") VALUES (\'@Fornavn\', \'@Efternavn\', @Telefonnummer, \'@Adresse\', \'@Email\', \'@Fødselsdag\', \'@Password\', @IsKoordinator)";
                 command.Parameters.AddWithValue("@Fornavn", bruger.Fornavn);
                 command.Parameters.AddWithValue("@Efternavn", bruger.Efternavn);
                 command.Parameters.AddWithValue("@Telefonnummer", bruger.Telefonnummer);

@@ -36,6 +36,7 @@ namespace Server.Controllers
 
         // En metode, der håndterer HTTP POST requests til /api/Booking
         [HttpPost]
+        [Route("add")]
         public void Add(Bruger bruger)
         {
             // Skriver en besked til konsollen med bookingens ID
