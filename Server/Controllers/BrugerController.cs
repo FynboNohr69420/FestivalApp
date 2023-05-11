@@ -11,7 +11,7 @@ namespace Server.Controllers
     // Angiver at klassen er en API-controller
     [ApiController]
     // Angiver baseruten for controllerens handlinger
-    [Route("api/Bruger")]
+    [Route("api/bike")]
     public class BrugerController : ControllerBase
     {
         // En tom liste til senere brug
@@ -31,7 +31,7 @@ namespace Server.Controllers
         public IEnumerable<Bruger> getBruger()
         {
             Console.WriteLine("get ");
-            return myRepo.getBruger();
+            return myRepo.getAll();
         }
 
         // En metode, der håndterer HTTP POST requests til /api/Booking
@@ -47,12 +47,12 @@ namespace Server.Controllers
         // En metode, der håndterer HTTP DELETE requests til /api/Booking/{Id}
         [HttpDelete]
         [Route("{Id}")]
-        public void Delete(string Id)
+        public void DeleteBruger(int Id)
         {
             // Skriver en besked til konsollen om at bookingen er blevet slettet
             Console.WriteLine("Deleted");
             // Sletter bookingen fra databasen gennem vores repository
-            myRepo.Delete(Id);
+            myRepo.DeleteBruger(Id);
         }
 
 

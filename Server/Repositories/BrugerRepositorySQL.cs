@@ -24,7 +24,7 @@ namespace Server.Repositories
                 connection.Open();
 
                 var command = connection.CreateCommand();
-                command.CommandText = "SELECT * FROM \"Bruger\"";
+                command.CommandText = @"SELECT * FROM public.Bruger";
 
 
                 using (var reader = command.ExecuteReader())
@@ -69,7 +69,7 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = @"INSERT INTO Bruger (Id, Fornavn, Efternavn, Telefonnummer, Adresse, Email, Fødselsdag, Password, IsKoordinator)
+                command.CommandText = @"INSERT INTO public.Bruger (Id, Fornavn, Efternavn, Telefonnummer, Adresse, Email, Fødselsdag, Password, IsKoordinator)
                                                     VALUES ($Id ,$Fornavn, $Efternavn, $Telefonnummer, $Adresse, $Email, $Fødselsdag, $Password, $IsKoordinator)";
                 command.Parameters.AddWithValue("$Id", GetNextId() + 1);
                 command.Parameters.AddWithValue("$Fornavn", bruger.Fornavn);
@@ -92,7 +92,7 @@ namespace Server.Repositories
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-                command.CommandText = @"SELECT MAX(Id) FROM Bruger";
+                command.CommandText = @"SELECT MAX(Id) FROM public.Bruger";
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -107,17 +107,32 @@ namespace Server.Repositories
             return id;
         }
 
-        public IEnumerable<Bruger> getBruger()
+        public void DeleteBruger(int id)
         {
-            throw new NotImplementedException();
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+
+                command.CommandText = @"DELETE FROM public.Bruger WHERE Id = $id";
+                command.Parameters.AddWithValue("$id", id);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateBruger(Bruger bruger)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+
+            
+            }
         }
 
 
-        public void Delete(string id)
-        {
-            throw new NotImplementedException();
-        }
+
     }
-
-
+    
 }

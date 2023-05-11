@@ -2,12 +2,12 @@
 using Common.Model;
 namespace Server.Repositories
 {
-	public interface IBruger
-	{
+    public interface IBruger
+    {
         Bruger[] getAll();
         void Add(Bruger bruger);
-        IEnumerable<Bruger> getBruger();
-        void Delete(string id);
+        void DeleteBruger(int Id);
+        void UpdateBruger(Bruger bruger);
     }
 }
 

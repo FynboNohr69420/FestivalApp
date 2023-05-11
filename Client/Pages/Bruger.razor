@@ -1,0 +1,45 @@
+﻿@page "/brugerlist"
+@using Common.Model
+@using Client.Services
+
+<PageTitle>Bruger</PageTitle>
+
+<h1>Bruger</h1>
+
+@if (bruger == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <table class="table">
+
+        <tbody>
+            @foreach (var bruger in bruger)
+            {
+                <tr class="brugerRow">
+                    <td>
+                        <h2>@bruger.Fornavn - @bruger.Efternavn</h2><br />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+@code {
+
+    private Bruger[]? bruger;
+
+    [Inject]
+    private IBrugerService mService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        bruger = (await mService.getAll()).ToArray();
+    }
+
+}
+

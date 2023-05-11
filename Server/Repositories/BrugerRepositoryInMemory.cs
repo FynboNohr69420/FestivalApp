@@ -7,6 +7,8 @@ namespace Server.Repositories
 	{
         private static List<Bruger> mBruger = Bruger.ToList();
 
+
+
         public BrugerRepositoryInMemory()
         {
         }

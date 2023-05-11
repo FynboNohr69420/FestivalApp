@@ -16,7 +16,7 @@ namespace Client.Services
 
         public async Task<IEnumerable<Bruger>> getAll()
         {
-            var bruger = await http.GetFromJsonAsync<Bruger[]>("api/Bruger");
+            var bruger = await http.GetFromJsonAsync<Bruger[]>("api/bruger");
 
             return bruger;
 
@@ -24,7 +24,7 @@ namespace Client.Services
 
         public async Task Add(Bruger bruger)
         {
-            await http.PostAsJsonAsync<Bruger>("api/Bruger", bruger);
+            await http.PostAsJsonAsync<Bruger>("api/bruger", bruger);
         }
 
     }
