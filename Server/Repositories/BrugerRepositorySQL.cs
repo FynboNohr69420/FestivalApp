@@ -32,6 +32,7 @@ namespace Server.Repositories
 
                     while (reader.Read())
                     {
+<<<<<<< HEAD
                         var Fornavn = reader.GetString(0);
                         var Efternavn = reader.GetString(1);
                         var Telefonnummer = reader.GetInt32(2);
@@ -40,6 +41,16 @@ namespace Server.Repositories
                         var Fødselsdag = reader.GetDateTime(5);
                         var Password = reader.GetString(6);
                         var Iskoordinator = reader.GetBoolean(7);
+=======
+                        var Fornavn = reader.GetString(1);
+                        var Efternavn = reader.GetString(2);
+                        var Telefonnummer = reader.GetInt32(3);
+                        var Adresse = reader.GetString(4);
+                        var Email = reader.GetString(5);
+                        var Fødselsdag = reader.GetDateTime(6);
+                        var Password = reader.GetString(7);
+                        var Iskoordinator = reader.GetBoolean(8);
+>>>>>>> b6120c26c3a07468b2674f55717c141a3dda8cfb
 
                         Bruger b = new Bruger
                         {
@@ -66,7 +77,12 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
+<<<<<<< HEAD
                 command.CommandText = "INSERT INTO \"Bruger\" (\"Fornavn\", \"Efternavn\", \"Telefonnummer\", \"Adresse\", \"Email\", \"Fødselsdag\", \"Password\", \"IsKoordinator\") VALUES (@Fornavn, @Efternavn, @Telefonnummer, @Adresse, @Email, @Fødselsdag, @Password, @IsKoordinator)";
+=======
+                command.CommandText = "INSERT INTO \"Bruger\" (\"Fornavn\", \"Efternavn\", \"Telefonnummer\", \"Adresse\", \"Email\", \"Fødselsdag\", \"Password\", \"IsKoordinator\") VALUES (\'$Fornavn\', \'$Efternavn\', \'$Telefonnummer\', \'$Adresse\', \'$Email\', \'$Fødselsdag\', \'$Password\', \'$IsKoordinator\')";
+
+>>>>>>> b6120c26c3a07468b2674f55717c141a3dda8cfb
                 command.Parameters.AddWithValue("$Fornavn", bruger.Fornavn);
                 command.Parameters.AddWithValue("$Efternavn", bruger.Efternavn);
                 command.Parameters.AddWithValue("$Telefonnummer", bruger.Telefonnummer);
