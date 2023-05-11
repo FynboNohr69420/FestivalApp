@@ -104,15 +104,15 @@ namespace Server.Repositories
         //    return id;
         //}
 
-        public void DeleteBruger(int id)
+        public void DeleteBruger(int Id)
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = @"DELETE FROM public.Bruger WHERE Id = $id";
-                command.Parameters.AddWithValue("$id", id);
+                command.CommandText = "DELETE FROM public.Bruger WHERE Id = @Id";
+                command.Parameters.AddWithValue("$id", Id);
                 command.ExecuteNonQuery();
             }
         }
