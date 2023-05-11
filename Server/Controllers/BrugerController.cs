@@ -11,7 +11,7 @@ namespace Server.Controllers
     // Angiver at klassen er en API-controller
     [ApiController]
     // Angiver baseruten for controllerens handlinger
-    [Route("api/bruger")]
+    [Route("api/brugere")]
     public class BrugerController : ControllerBase
     {
         // En tom liste til senere brug
