@@ -14,11 +14,6 @@ namespace Server.Controllers
     [Route("api/brugere")]
     public class BrugerController : ControllerBase
     {
-        // En tom liste til senere brug
-        private static List<Bruger> mBruger = new List<Bruger>()
-        {
-            // Der er ingen shelters i listen, så den er tom
-        };
 
         private IBruger myRepo;
 

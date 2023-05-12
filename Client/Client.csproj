@@ -34,9 +34,6 @@
     <None Remove="Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Shared\Common.csproj" />
   </ItemGroup>
 </Project>

@@ -20,9 +20,6 @@
     <None Remove="Repositories\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Shared\Common.csproj" />
   </ItemGroup>
 </Project>
