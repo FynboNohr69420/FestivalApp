@@ -53,11 +53,18 @@
     protected override void OnInitialized()
     {
         aEditContext = new EditContext(vagt);
+        vagt.Start = DateTime.Now;
+        vagt.Slut = DateTime.Now;
+
+
     }
 
     public async Task HandleValidSubmit()
     {
         await Add();
+        vagt.Start = DateTime.Now;
+        vagt.Slut = DateTime.Now;
+
     }
 
     public async Task Add()

@@ -1,7 +1,6 @@
 ﻿@page "/addbruger"
 @using Client.Services;
 @using Common.Model;
-
 @inject HttpClient Http;
 
 <PageTitle>Registrering</PageTitle>
@@ -70,6 +69,8 @@
     public async Task HandleValidSubmit()
     {
         await Add();
+        bruger.Fødselsdag = DateTime.Now;
+
     }
 
     public async Task Add()

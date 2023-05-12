@@ -10,8 +10,8 @@ using Common.Model;
 
 namespace Server.Controllers
 {
-    [Route("api/vagter")]
     [ApiController]
+    [Route("api/vagter")]
     public class VagterController : ControllerBase
     {
         private IVagt myRepo;
