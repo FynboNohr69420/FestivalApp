@@ -70,6 +70,7 @@
     public async Task HandleValidSubmit()
     {
         await Add();
+        bruger.Fødselsdag = DateTime.Now;
     }
 
     public async Task Add()
@@ -77,6 +78,8 @@
         await mService.Add(bruger);
         Console.WriteLine("klient: add " + bruger.Fornavn); // Udskriver informationer om den nye booking i konsollen
         bruger = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
+
+        
     }
 
 
