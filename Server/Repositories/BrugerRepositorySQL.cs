@@ -38,9 +38,9 @@ namespace Server.Repositories
                         var Telefonnummer = reader.GetInt32(3);
                         var Adresse = reader.GetString(4);
                         var Email = reader.GetString(5);
-                        var Fødselsdag = reader.GetDateTime(6);
-                        var Password = reader.GetString(7);
-                        var Iskoordinator = reader.GetBoolean(8);
+                        var Password = reader.GetString(6);
+                        var Iskoordinator = reader.GetBoolean(7);
+                        var Fødselsdag = DateTime.Parse(reader.GetString(8).Replace(".", "/").Remove(10, 9)); // Fjerner tidspunkt og erstatter . med / så strengen kan konverteres til en dato
 
                         Bruger b = new Bruger
                         {
