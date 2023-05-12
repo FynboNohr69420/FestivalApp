@@ -19,17 +19,17 @@ namespace Client.Services
 
         public async Task<IEnumerable<Vagt>> getAll()
         {
-            var bruger = await http.GetFromJsonAsync<Bruger[]>("api/brugere");
+            var vagt = await http.GetFromJsonAsync<Vagt[]>("api/vagter");
 
-            return bruger;
+            return vagt;
 
         }
 
         public async Task Add(Vagt vagt)
         {
-            await http.PostAsJsonAsync<Bruger>("https://localhost:7004/api/vagter", bruger); // Sender en POST request med booking som JSON payload til API'en
+            await http.PostAsJsonAsync<Vagt>("https://localhost:7004/api/vagter", vagt); // Sender en POST request med booking som JSON payload til API'en
             Console.WriteLine("klient: add " + vagt.ID + vagt.Navn); // Udskriver informationer om den nye booking i konsollen//
-            bruger = new();
+            vagt = new();
 
         }
     }

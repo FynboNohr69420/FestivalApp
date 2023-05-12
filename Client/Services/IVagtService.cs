@@ -1,4 +1,6 @@
 ﻿using Common.Model;
+using Client;
+using System;
 
 namespace Client.Services
 {

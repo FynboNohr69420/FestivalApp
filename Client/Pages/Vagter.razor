@@ -11,38 +11,27 @@
     <ValidationSummary />
     <div class="col-md-12 mb-3">
         <label for="Navn">Navn</label>
-        <InputText id="Navn" @bind-Value="bruger.Fornavn" class="form-control" />
+        <InputText id="Navn" @bind-Value="vagt.Navn" class="form-control" />
     </div>
     <div class="col-md-12 mb-3">
-        <label for="Navn">Efternavn</label>
-        <InputText id="Navn" @bind-Value="bruger.Efternavn" class="form-control" />
+        <label for="Telefonnummer">Start dato</label>
+        <InputDate id="StartDato" @bind-Value="vagt.Start" class="form-control" />
     </div>
     <div class="col-md-12 mb-3">
-        <label for="Telefonnummer">Telefonnummer</label>
-        <InputNumber id="Telefonnummer" @bind-Value="bruger.Telefonnummer" class="form-control" />
+        <label for="Adresse">Slut dato</label>
+        <InputDate id="SlutDato" @bind-Value="vagt.Slut" class="form-control" />
     </div>
     <div class="col-md-12 mb-3">
-        <label for="Adresse">Adresse</label>
-        <InputText id="Adresse" @bind-Value="bruger.Adresse" class="form-control" />
-    </div>
-    <div class="col-md-12 mb-3">
-        <label for="Email">Email</label>
-        <InputText id="Email" @bind-Value="bruger.Email" class="form-control" />
+        <label for="Email">Kategori</label>
+        <InputText id="Kategori" @bind-Value="vagt.Kategori" class="form-control" />
     </div>
     <div class="col-md-6 mb-3">
-        <label for="Fødselsdag">Fødselsdag</label>
-        <InputDate id="Fødselsdag" @bind-Value="bruger.Fødselsdag" class="form-control" />
+        <label for="Fødselsdag">Antal pladser</label>
+        <InputNumber id="Antal" @bind-Value="vagt.Antal" class="form-control" />
     </div>
     <div class="col-md-6 mb-3">
-        <label for="Password">Password</label>
-        <InputText id="Password" @bind-Value="bruger.Password" class="form-control" />
-    </div>
-    <div class="col-md-1 mb-3">
-        <label for="IsKoordinator">Koordinator</label>
-        <InputSelect id="IsKoordinator" @bind-Value="bruger.IsKoordinator" class="form-control">
-            <option value="true">true</option>
-            <option value="false">false</option>
-        </InputSelect>
+        <label for="Password">Beskrivelse</label>
+        <InputText id="Beskrivelse" @bind-Value="vagt.Beskrivelse" class="form-control" />
     </div>
     <div>
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -53,18 +42,17 @@
 
 @code {
 
-    private Vagt vagt = new Bruger();
-    private Bruger[]? brugerlist = new Bruger[0];
+    private Vagt vagt = new Vagt();
+    private Vagt[]? vagtlist = new Vagt[0];
 
     private EditContext aEditContext;
 
     [Inject]
-    private IBrugerService mService { get; set; }
+    private IVagtService mService { get; set; }
 
     protected override void OnInitialized()
     {
-        aEditContext = new EditContext(bruger);
-        bruger.Fødselsdag = DateTime.Now;
+        aEditContext = new EditContext(vagt);
     }
 
     public async Task HandleValidSubmit()
@@ -74,9 +62,9 @@
 
     public async Task Add()
     {
-        await mService.Add(bruger);
-        Console.WriteLine("klient: add " + bruger.Fornavn); // Udskriver informationer om den nye booking i konsollen
-        bruger = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
+        await mService.Add(vagt);
+        Console.WriteLine("klient: add " + vagt.Navn); // Udskriver informationer om den nye booking i konsollen
+        vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
     }
 
 
