@@ -1,12 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Common.Model
 {
-    internal class Vagt
+    public class Vagt
     {
+
+        [Key]
+        public int ID { get; set; } = 0;
+        public string Navn { get; set; } = " ";
+        public string Kategori { get; set; } = " ";
+        public int Point { get; set; } = 0; 
+        public string Start { get; set; } = " ";
+        public string Slut { get; set; } = " ";
+        public int Antal { get; set; } = 1;
+        public string Beskrivelse { get; set; } = " ";
+        
+
+        public static List<Vagt> ToList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

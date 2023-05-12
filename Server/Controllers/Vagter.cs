@@ -1,18 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Server.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/vagter")]
     [ApiController]
     public class Vagter : ControllerBase
     {
+        private IVagt myRepo;
+
+        public Vagter(IVagt myRepo)
+        {
+            this.myRepo = myRepo;
+        }
         // GET: api/<Vagter>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Vagter> Get()
         {
-            return new string[] { "value1", "value2" };
+            Console.WriteLine("get ");
+            return myRepo.getAll();
         }
 
         // GET api/<Vagter>/5
