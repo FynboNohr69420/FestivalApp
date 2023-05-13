@@ -1,6 +1,21 @@
 ﻿@page "/redigerbruger"
 @using Common.Model;
 @using Client.Services;
+@inject NavigationManager NavigationManager
+@inject HttpClient http;
+
+
+
+<div>
+    <p><strong>Fornavn:</strong> @bruger.Fornavn</p>
+    <p><strong>Efternavn:</strong> @bruger.Efternavn</p>
+    <p><strong>Telefonnummer:</strong> @bruger.Telefonnummer</p>
+    <p><strong>Addresse:</strong> @bruger.Adresse</p>
+    <p><strong>Email:</strong> @bruger.Email</p>
+    <p><strong>Fødselsdagsdato:</strong> @bruger.Fødselsdag</p>
+    <p><strong>Password:</strong> @bruger.Password</p>
+    <p><strong>Koordinator:</strong> @bruger.IsKoordinator</p>
+</div>
 
 <EditForm Model="@aEditContext" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
@@ -80,6 +95,8 @@
     private Bruger bruger = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
 
+    private string? UrlId; // Deklarerer en variabel til at holde på ID'en fra URL'en
+
     private EditContext aEditContext;
 
     [Inject]
@@ -87,9 +104,17 @@
 
     protected override void OnInitialized()
     {
+        GetUrlID(); // Kalder GetUrlID metoden for at få ID'en fra URL'en
         aEditContext = new EditContext(bruger);
         bruger.Fødselsdag = DateTime.Now;
+        GetUrlID();
 
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        GetUrlID();
+        bruger = await http.GetFromJsonAsync<Bruger>($"api/Brugere/GetBruger/" + UrlId);
     }
 
     public async Task HandleValidSubmit()
@@ -98,5 +123,11 @@
         bruger.Fødselsdag = DateTime.Now;
     }
 
+    public void GetUrlID()
+    {
+        var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
+        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
+        UrlId = queryParameters.Get("ID"); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
+    }
 }
 
