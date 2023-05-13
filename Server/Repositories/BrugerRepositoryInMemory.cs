@@ -5,7 +5,7 @@ namespace Server.Repositories
 {
 	public class BrugerRepositoryInMemory : BrugerRepositorySQL
 	{
-        private static List<Bruger> mBruger = Bruger.ToList();
+        private static List<Bruger> mBruger = new List<Bruger>();
 
 
 

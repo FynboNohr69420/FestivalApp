@@ -9,7 +9,7 @@ namespace Client.Services
     public class BrugerService : IBrugerService
     {
 
-        private Bruger[]? brugerlist = new Bruger[0];
+        private Bruger? bruger = new Bruger();
 
         HttpClient http;
         public BrugerService(HttpClient http)
@@ -30,6 +30,14 @@ namespace Client.Services
             await http.PostAsJsonAsync<Bruger>("https://localhost:7004/api/brugere", bruger); // Sender en POST request med booking som JSON payload til API'en
             Console.WriteLine("klient: add " + bruger.Fornavn + bruger.Efternavn); // Udskriver informationer om den nye booking i konsollen//
             bruger = new();
+
+        }
+
+        public async Task<Bruger> getSpecific(string email)
+        {
+            var result = await http.GetFromJsonAsync<Bruger>("https://localhost:7004/api/brugere/" + email);
+
+            return result;
 
         }
     }

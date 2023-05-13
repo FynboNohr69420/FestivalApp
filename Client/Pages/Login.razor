@@ -1,28 +1,95 @@
 ﻿@page "/login"
+@using Client.Services;
+@using Common.Model;
+@inject NavigationManager NavigationManager
 
+@inject HttpClient Http;
 
-<form action="brugerlist" method="get">
+<PageTitle>Registrering</PageTitle>
 
-    <div class="container">
-        <label for="uname"><b>Brugernavn</b></label>
-        <input type="text" placeholder="Enter Username" name="uname" required>
-
-        <label for="psw"><b>Adgangskode</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
-
-        <button type="submit">Login</button>
-        <label>
-            <input type="checkbox" checked="checked" name="remember"> Husk mig
-        </label>
+<EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="col-md-12 mb-3">
+        <label for="Email">Email</label>
+        <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control"  />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Password">Password</label>
+        <InputText id="Password" @bind-Value="brugerForm.Password" class="form-control"  />
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 
-    <div class="container" style="background-color:#f1f1f1">
-        <button onclick="location.href = 'https://localhost:7262/addbruger';" id="myButton" class="regibtn">Registrere</button>
-        <span class="psw">Glemt <a href="">password?</a></span>
-    </div>
-</form>
+</EditForm>
+<p style="display: @showerror; color: red">Hov, der er sket en fejl. Har du skrevet din email og password rigtigt?</p>
 
 
 @code {
+    public string showerror = "none";
+    private Bruger bruger = new Bruger();
+    private Bruger brugerForm = new Bruger();
+    private Bruger[]? brugerlist = new Bruger[0];
 
+    private EditContext aEditContext;
+
+    [Inject]
+    private IBrugerService mService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        aEditContext = new EditContext(bruger);
+        bruger.Fødselsdag = DateTime.Now;
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        if(brugerForm.Email == " ")
+        {
+            showerror = "inline";
+        }
+        else
+        {
+            var email = brugerForm.Email;
+            bruger = await getSpecific(email);
+
+            Console.WriteLine(bruger.Efternavn);
+
+            login();
+        }
+    }
+
+    public async Task<Bruger> getSpecific(string email)
+    {
+
+        var bruger = await mService.getSpecific(email);
+
+        return bruger;
+
+    }
+
+    public void login()
+    {
+        if(bruger.Efternavn == null || bruger.Email == null || bruger.Password == null)
+        {
+            showerror = "inline";
+    }
+        else
+        {
+        if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == true)
+            {
+                NavigationManager.NavigateTo("addbruger"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
+            }
+        else if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == false)
+            {
+                NavigationManager.NavigateTo("brugerlist"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
+            }
+            else
+            {
+                showerror = "inline";
+            }
+        }
+        
+    }
 }

@@ -9,6 +9,7 @@ namespace Client.Services
 		Task<IEnumerable<Bruger>> getAll();
 
 		Task Add(Bruger bruger);
+		Task<Bruger> getSpecific(string email);
 	}
 }
 

@@ -33,6 +33,12 @@ namespace Server.Controllers
             Console.WriteLine("get ");
             return myRepo.getAll();
         }
+        [HttpGet]
+        [Route("{email}")]
+        public Bruger getSpecific(string email)
+        {
+            return myRepo.getSpecific(email);
+        }
 
         // En metode, der håndterer HTTP POST requests til /api/Booking
         [HttpPost]

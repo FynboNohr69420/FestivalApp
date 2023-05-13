@@ -17,11 +17,6 @@ namespace Common.Model
         public DateTime Fødselsdag { get; set; }
         public string Password { get; set; } = " ";
         public bool IsKoordinator { get; set; }
-
-        public static List<Bruger> ToList()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 
