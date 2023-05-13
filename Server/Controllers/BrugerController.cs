@@ -50,13 +50,13 @@ namespace Server.Controllers
             myRepo.DeleteBruger(Id);
         }
 
-        [HttpGet] // Angiver, at denne metode skal køre, når en HTTP GET-anmodning modtages.
-        [Route("GetBruger/{brugerID}")] // Angiver, at denne metode skal matche en rute med en enkelt parametre "shelterId"
-        public Bruger GetBruger(int brugerID) // Henter et enkelt Shelter-objekt fra vores repository baseret på den angivne shelterId.
-        {
-            Console.WriteLine("Bruger found OK");
-            return myRepo.GetBruger(brugerID);
-        }
+        //[HttpGet] // Angiver, at denne metode skal køre, når en HTTP GET-anmodning modtages.
+        //[Route("GetBruger/{brugerID}")] // Angiver, at denne metode skal matche en rute med en enkelt parametre "shelterId"
+        //public Bruger GetBruger(int brugerID) // Henter et enkelt Shelter-objekt fra vores repository baseret på den angivne shelterId.
+        //{
+        //    Console.WriteLine("Bruger found OK");
+        //    return myRepo.GetBruger(brugerID);
+        //}
 
         //[HttpPut]
         //public async Task<ActionResult<Bruger>> UpdateBruger(Bruger bruger)
