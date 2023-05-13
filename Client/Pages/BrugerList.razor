@@ -19,7 +19,6 @@
                     <th>Addresse</th>
                     <th>Email</th>
                     <th>Fødselsdagsdato</th>
-                    <th>Password</th>
                     <th>Er koordinator: </th>
                 </tr>
             </thead>
@@ -33,11 +32,10 @@
                         <td>@bruger.Adresse</td>
                         <td>@bruger.Email</td>
                         <td>@bruger.Fødselsdag</td>
-                        <td>@bruger.Password</td>
                         <td>@bruger.IsKoordinator</td>
                         <td>
-@*                            <button class="btn btn-danger" @onclick="() => DeleteBooking(booking.Id)">Slet</button>
-*@                        </td>
+                        <button class="Submit">Rediger</button> @*dummy*@
+                        </td>
                     </tr>
                 }
             </tbody>
