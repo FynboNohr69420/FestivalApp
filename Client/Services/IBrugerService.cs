@@ -8,7 +8,13 @@ namespace Client.Services
 	{
 		public Task<IEnumerable<Bruger>> getAll();
 
+        Task<Bruger> GetBruger(int id);
+
         Task Add(Bruger bruger);
-	}
+
+        public Task<Bruger> UpdateBruger(Bruger bruger);
+
+
+    }
 }
 
