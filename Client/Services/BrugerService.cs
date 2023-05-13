@@ -8,8 +8,7 @@ namespace Client.Services
 {
     public class BrugerService : IBrugerService
     {
-
-        private Bruger[]? brugerlist = new Bruger[0];
+      
 
         HttpClient http;
         public BrugerService(HttpClient http)
@@ -19,10 +18,8 @@ namespace Client.Services
 
         public async Task<IEnumerable<Bruger>> getAll()
         {
-            var bruger = await http.GetFromJsonAsync<Bruger[]>("api/brugere");
-
-            return bruger;
-
+            var brugerlist = await http.GetFromJsonAsync<Bruger[]>("https://localhost:7004/api/brugere");
+            return brugerlist;
         }
 
         public async Task Add(Bruger bruger)

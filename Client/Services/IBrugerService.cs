@@ -6,9 +6,9 @@ namespace Client.Services
 {
 	public interface IBrugerService
 	{
-		Task<IEnumerable<Bruger>> getAll();
+		public Task<IEnumerable<Bruger>> getAll();
 
-		Task Add(Bruger bruger);
+        Task Add(Bruger bruger);
 	}
 }
 

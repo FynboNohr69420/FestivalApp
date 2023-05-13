@@ -1,6 +1,7 @@
 ﻿@page "/brugerlist"
 @using Common.Model
 @using Client.Services
+@using System.Net.Http.Json;
 @inject HttpClient Http;
 
 <PageTitle>Bruger</PageTitle>
@@ -49,12 +50,12 @@
     private Bruger bruger = new Bruger(); // Opretter et tomt Booking objekt
     private Bruger[]? brugerlist = new Bruger[0]; // Opretter en tom liste af Booking objekter
 
-    //[Inject]
-    //private IBrugerService mService { get; set; }
+    [Inject]
+    private IBrugerService mService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        brugerlist = await Http.GetFromJsonAsync<Bruger[]>("https://localhost:7004/api/brugere");
+        brugerlist = (await mService.getAll()).ToArray();
     }
 
 }
