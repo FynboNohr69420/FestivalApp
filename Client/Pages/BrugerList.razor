@@ -6,7 +6,10 @@
 <PageTitle>Bruger listen</PageTitle>
 
 <h1>Bruger listen</h1>
-
+<form>
+    <input type="text" placeholder="Søg...">
+    <button type="submit">Søg</button>
+</form>
 
 <div class="row">
     <div class="col-md-8">
@@ -56,6 +59,7 @@
     {
         brugerlist = (await mService.getAll()).ToArray();
     }
+
 
 }
 
