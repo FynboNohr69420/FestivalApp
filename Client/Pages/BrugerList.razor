@@ -34,8 +34,8 @@
                         <td>@bruger.Fødselsdag</td>
                         <td>@bruger.IsKoordinator</td>
                         <td>
-                        <button class="Submit">Rediger</button> @*dummy*@
-                        </td>
+                            <a href="@($"/redigerbruger?id={bruger.ID}")"> <button class="btn btn-primary">Rediger bruger</button></a>
+                        </td>                       
                     </tr>
                 }
             </tbody>
