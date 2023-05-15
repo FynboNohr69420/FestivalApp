@@ -7,24 +7,24 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Server.Repositories
 {
-    public class BrugerRepositorySQL : IBruger
+    public class VagterRepositorySQL : IVagt
     {
         private const string connectionString = "UserID=eehvkyxg;Password=DpGHcrCDBfK_RrcdKdwSNiUR3t_PWx-1;Host=balarama.db.elephantsql.com;Port=5432;Database=eehvkyxg";
 
 
-        public BrugerRepositorySQL()
+        public VagterRepositorySQL()
         {
         }
 
-        public Bruger[] getAll()
+        public Vagt[] getAll()
         {
-            var result = new List<Bruger>();
+            var result = new List<Vagt>();
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
 
                 var command = connection.CreateCommand();
-                command.CommandText = "SELECT * FROM \"Bruger\"";
+                command.CommandText = "SELECT * FROM \"Navn\"";
 
 
                 using (var reader = command.ExecuteReader())
@@ -33,26 +33,24 @@ namespace Server.Repositories
                     while (reader.Read())
                     {
                         var Id = reader.GetInt32(0);
-                        var Fornavn = reader.GetString(1);
-                        var Efternavn = reader.GetString(2);
-                        var Telefonnummer = reader.GetInt32(3);
-                        var Adresse = reader.GetString(4);
-                        var Email = reader.GetString(5);
-                        var Password = reader.GetString(6);
-                        var Iskoordinator = reader.GetBoolean(7);
-                        var Fødselsdag = DateTime.Parse(reader.GetString(8).Replace(".", "/").Remove(10, 9)); // Fjerner tidspunkt og erstatter . med / så strengen kan konverteres til en dato
+                        var Navn = reader.GetString(1);
+                        var Kategori = reader.GetString(2);
+                        var Point = reader.GetInt32(3);
+                        var Start = reader.GetString(4);
+                        var Slut = reader.GetString(5);
+                        var Antal = reader.GetInt32(6);
+                        var Beskrivelse = reader.GetString(7);
 
-                        Bruger b = new Bruger
+                        Vagt b = new Vagt
                         {
                             ID = Id,
-                            Fornavn = Fornavn,
-                            Efternavn = Efternavn,
-                            Telefonnummer = Telefonnummer,
-                            Adresse = Adresse,
-                            Email = Email,
-                            Fødselsdag = Fødselsdag,
-                            Password = Password,
-                            IsKoordinator = Iskoordinator
+                            Navn = Navn,
+                            Kategori = Kategori,
+                            Point = Point,
+                            Start = Start,
+                            Slut = Slut,
+                            Antal = Antal,
+                            Beskrivelse = Beskrivelse,
                         };
                         result.Add(b);
                     }
@@ -61,47 +59,63 @@ namespace Server.Repositories
             return result.ToArray();
         }
 
-        public void Add(Bruger bruger)
+        public void Add(Vagt vagt)
         {
-
-
 
             using (var connection = new NpgsqlConnection(connectionString))
             {
-
-                string datoString = bruger.Fødselsdag.Date.ToString();
-
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "INSERT INTO \"Bruger\" (\"Fornavn\", \"Efternavn\", \"Telefonnummer\", \"Adresse\", \"Email\", \"Fødselsdag\", \"Password\", \"isKoordinator\") VALUES (@Fornavn, @Efternavn, @Telefonnummer, @Adresse, @Email, @Fødselsdag, @Password, @isKoordinator)";
-                command.Parameters.AddWithValue("@Fornavn", bruger.Fornavn);
-                command.Parameters.AddWithValue("@Efternavn", bruger.Efternavn);
-                command.Parameters.AddWithValue("@Telefonnummer", bruger.Telefonnummer);
-                command.Parameters.AddWithValue("@Adresse", bruger.Adresse);
-                command.Parameters.AddWithValue("@Email", bruger.Email);
-                command.Parameters.AddWithValue("@Fødselsdag", datoString);
-                command.Parameters.AddWithValue("@Password", bruger.Password);
-                command.Parameters.AddWithValue("@isKoordinator", bruger.IsKoordinator);
+                command.CommandText = "INSERT INTO \"Id\" (\"Navn\", \"Kategori\", \"Point\", \"Start\", \"Slut\", \"Antal\", \"Beskrivelse\",) VALUES (\'@Navn\', \'@Kategori\', @Point, \'@Start\', \'@Slut\', \'@Antal\', \'@Beskrivelse\')";
+                command.Parameters.AddWithValue("@Navn", vagt);
+                command.Parameters.AddWithValue("@Kategori", vagt);
+                command.Parameters.AddWithValue("@Point", vagt);
+                command.Parameters.AddWithValue("@Start", vagt);
+                command.Parameters.AddWithValue("@Slut", vagt);
+                command.Parameters.AddWithValue("@Antal", vagt);
+                command.Parameters.AddWithValue("@Beskrivelse", vagt);
                 command.ExecuteNonQuery();
             }
         }
 
+        //public int GetNextId()
+        //{
+        //    int id = 0;
 
-        public void DeleteBruger(int Id)
+        //    using (var connection = new NpgsqlConnection(connectionString))
+        //    {
+        //        connection.Open();
+        //        var command = connection.CreateCommand();
+        //        command.CommandText = @"SELECT MAX(Id) FROM public.Bruger";
+
+        //        using (var reader = command.ExecuteReader())
+        //        {
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    id = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return id;
+        //}
+
+        public void DeleteVagt(int Id)
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "DELETE FROM \"Bruger\" WHERE \"ID\" = @ID";
+                command.CommandText = "DELETE FROM \"NAVN\" WHERE \"ID\" = @ID";
                 command.Parameters.AddWithValue("@ID", Id); ;
                 command.ExecuteNonQuery();
             }
         }
 
-        public void UpdateBruger(Bruger bruger)
+        public void UpdateVagt(Vagt vagt)
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -111,49 +125,5 @@ namespace Server.Repositories
 
             }
         }
-
-        //public Bruger GetBruger(int brugerID)
-        //{
-        //    using (var connection = new NpgsqlConnection(connectionString))
-        //    {
-        //        connection.Open();
-
-        //        var command = connection.CreateCommand();
-        //        command.CommandText = "SELECT * FROM \"Bruger\" WHERE \"ID\" = @Id";
-
-        //        using (var reader = command.ExecuteReader())
-        //        {
-        //            while (reader.Read())
-        //            {
-        //                var Id = reader.GetInt32(0);
-        //                var Fornavn = reader.GetString(1);
-        //                var Efternavn = reader.GetString(2);
-        //                var Telefonnummer = reader.GetInt32(3);
-        //                var Adresse = reader.GetString(4);
-        //                var Email = reader.GetString(5);
-        //                var Password = reader.GetString(6);
-        //                var Iskoordinator = reader.GetBoolean(7);
-        //                var Fødselsdag = DateTime.Parse(reader.GetString(8).Replace(".", "/").Remove(10, 9)); // Fjerner tidspunkt og erstatter . med / så strengen kan konverteres til en dato
-
-        //                Bruger b = new Bruger
-        //                {
-        //                    ID = Id,
-        //                    Fornavn = Fornavn,
-        //                    Efternavn = Efternavn,
-        //                    Telefonnummer = Telefonnummer,
-        //                    Adresse = Adresse,
-        //                    Email = Email,
-        //                    Fødselsdag = Fødselsdag,
-        //                    Password = Password,
-        //                    IsKoordinator = Iskoordinator
-        //                };
-        //            }
-        //        }
-        //    }
-
-
-
-        //}
     }
-
 }
