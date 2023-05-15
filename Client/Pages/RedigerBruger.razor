@@ -1,0 +1,132 @@
+﻿@page "/redigerbruger"
+@using Common.Model;
+@using Client.Services;
+@inject NavigationManager NavigationManager
+@inject HttpClient http;
+
+
+<h3>Bruger informationer</h3>
+<div>
+    <p><strong>Fornavn:</strong> @bruger.Fornavn</p>
+    <p><strong>Efternavn:</strong> @bruger.Efternavn</p>
+    <p><strong>Telefonnummer:</strong> @bruger.Telefonnummer</p>
+    <p><strong>Addresse:</strong> @bruger.Adresse</p>
+    <p><strong>Email:</strong> @bruger.Email</p>
+    <p><strong>Fødselsdagsdato:</strong> @bruger.Fødselsdag</p>
+    <p><strong>Password:</strong> @bruger.Password</p>
+    <p><strong>Koordinator:</strong> @bruger.IsKoordinator</p>
+</div>
+
+<EditForm Model="@aEditContext" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <h3>Rediger information</h3>
+    <hr />
+    <ValidationSummary />
+    <div class="form-group row">
+        <label for="firstName" class="col-sm-2 col-form-label">
+            Fornavn
+        </label>
+        <div class="col-sm-10">
+            <InputText id="Fornavn" class="form-control" placeholder="First Name"
+                       @bind-Value="bruger.Fornavn" />
+            <ValidationMessage For="@(() => bruger.Fornavn)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Efternavn" class="col-sm-2 col-form-label">
+            Efternavn
+        </label>
+        <div class="col-sm-10">
+            <InputText id="lastName" class="form-control" placeholder="Last Name"
+                       @bind-Value="bruger.Efternavn" />
+            <ValidationMessage For="@(() => bruger.Efternavn)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Telefonummer" class="col-sm-2 col-form-label">
+            Telefonnummer
+        </label>
+        <div class="col-sm-10">
+            <InputNumber id="email" class="form-control" placeholder="Email"
+                         @bind-Value="bruger.Telefonnummer" />
+            <ValidationMessage For="@(() => bruger.Telefonnummer)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Addresse" class="col-sm-2 col-form-label">
+            Addresse
+        </label>
+        <div class="col-sm-10">
+            <InputText id="confirmEmail" class="form-control"
+                       @bind-Value="bruger.Adresse" />
+            <ValidationMessage For="@(() => bruger.Adresse)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Email" class="col-sm-2 col-form-label">
+            Email
+        </label>
+        <div class="col-sm-10">
+            <InputText id="confirmEmail" class="form-control"
+                       @bind-Value="bruger.Email" />
+            <ValidationMessage For="@(() => bruger.Email)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Fødselsdagsdato" class="col-sm-2 col-form-label">
+            Fødselsdagsdato
+        </label>
+        <div class="col-sm-10">
+            <InputDate @bind-Value="bruger.Fødselsdag" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Password" class="col-sm-2 col-form-label">
+            Password
+        </label>
+        <div class="col-sm-10">
+            <InputText @bind-Value="bruger.Password" class="form-control" />
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private Bruger bruger = new Bruger();
+    private Bruger[]? brugerlist = new Bruger[0];
+
+    //private string? UrlId; // Deklarerer en variabel til at holde på ID'en fra URL'en
+
+    private EditContext aEditContext;
+
+    [Inject]
+    private IBrugerService mService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        //GetUrlID(); // Kalder GetUrlID metoden for at få ID'en fra URL'en
+        aEditContext = new EditContext(bruger);
+        bruger.Fødselsdag = DateTime.Now;
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //GetUrlID();
+        //bruger = await http.GetFromJsonAsync<Bruger>($"api/Brugere/GetBruger/" + UrlId);
+    }
+
+    public async Task HandleValidSubmit()
+    {
+
+        bruger.Fødselsdag = DateTime.Now;
+    }
+
+    //public void GetUrlID()
+    //{
+    //    var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
+    //    var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
+    //    UrlId = queryParameters.Get("ID"); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
+    //}
+}
+

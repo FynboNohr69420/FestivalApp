@@ -38,9 +38,9 @@ namespace Server.Repositories
                         var Telefonnummer = reader.GetInt32(3);
                         var Adresse = reader.GetString(4);
                         var Email = reader.GetString(5);
-                        var Fødselsdag = reader.GetDateTime(6);
-                        var Password = reader.GetString(7);
-                        var Iskoordinator = reader.GetBoolean(8);
+                        var Password = reader.GetString(6);
+                        var Iskoordinator = reader.GetBoolean(7);
+                        var Fødselsdag = DateTime.Parse(reader.GetString(8).Replace(".", "/").Remove(10, 9)); // Fjerner tidspunkt og erstatter . med / så strengen kan konverteres til en dato
 
                         Bruger b = new Bruger
                         {
@@ -87,28 +87,6 @@ namespace Server.Repositories
             }
         }
 
-        //public int GetNextId()
-        //{
-        //    int id = 0;
-
-        //    using (var connection = new NpgsqlConnection(connectionString))
-        //    {
-        //        connection.Open();
-        //        var command = connection.CreateCommand();
-        //        command.CommandText = @"SELECT MAX(Id) FROM public.Bruger";
-
-        //        using (var reader = command.ExecuteReader())
-        //        {
-        //            {
-        //                while (reader.Read())
-        //                {
-        //                    id = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return id;
-        //}
 
         public void DeleteBruger(int Id)
         {
@@ -130,12 +108,52 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-            
+
             }
         }
 
+        //public Bruger GetBruger(int brugerID)
+        //{
+        //    using (var connection = new NpgsqlConnection(connectionString))
+        //    {
+        //        connection.Open();
+
+        //        var command = connection.CreateCommand();
+        //        command.CommandText = "SELECT * FROM \"Bruger\" WHERE \"ID\" = @Id";
+
+        //        using (var reader = command.ExecuteReader())
+        //        {
+        //            while (reader.Read())
+        //            {
+        //                var Id = reader.GetInt32(0);
+        //                var Fornavn = reader.GetString(1);
+        //                var Efternavn = reader.GetString(2);
+        //                var Telefonnummer = reader.GetInt32(3);
+        //                var Adresse = reader.GetString(4);
+        //                var Email = reader.GetString(5);
+        //                var Password = reader.GetString(6);
+        //                var Iskoordinator = reader.GetBoolean(7);
+        //                var Fødselsdag = DateTime.Parse(reader.GetString(8).Replace(".", "/").Remove(10, 9)); // Fjerner tidspunkt og erstatter . med / så strengen kan konverteres til en dato
+
+        //                Bruger b = new Bruger
+        //                {
+        //                    ID = Id,
+        //                    Fornavn = Fornavn,
+        //                    Efternavn = Efternavn,
+        //                    Telefonnummer = Telefonnummer,
+        //                    Adresse = Adresse,
+        //                    Email = Email,
+        //                    Fødselsdag = Fødselsdag,
+        //                    Password = Password,
+        //                    IsKoordinator = Iskoordinator
+        //                };
+        //            }
+        //        }
+        //    }
 
 
+
+        //}
     }
-    
+
 }

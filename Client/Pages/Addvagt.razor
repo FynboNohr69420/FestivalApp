@@ -1,0 +1,78 @@
+﻿@page "/addvagt"
+@using Client.Services;
+@using Common.Model;
+
+@inject HttpClient Http;
+
+<PageTitle>Registrering</PageTitle>
+
+<EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="col-md-12 mb-3">
+        <label for="Navn">Navn</label>
+        <InputText id="Navn" @bind-Value="vagt.Navn" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Telefonnummer">Start dato</label>
+        <InputDate id="StartDato" @bind-Value="vagt.Start" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Adresse">Slut dato</label>
+        <InputDate id="SlutDato" @bind-Value="vagt.Slut" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Email">Kategori</label>
+        <InputText id="Kategori" @bind-Value="vagt.Kategori" class="form-control" />
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="Fødselsdag">Antal pladser</label>
+        <InputNumber id="Antal" @bind-Value="vagt.Antal" class="form-control" />
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="Password">Beskrivelse</label>
+        <InputText id="Beskrivelse" @bind-Value="vagt.Beskrivelse" class="form-control" />
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+</EditForm>
+
+
+@code {
+
+    private Vagt vagt = new Vagt();
+    private Vagt[]? vagtlist = new Vagt[0];
+
+    private EditContext aEditContext;
+
+    [Inject]
+    private IVagtService mService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        aEditContext = new EditContext(vagt);
+        vagt.Start = DateTime.Now;
+        vagt.Slut = DateTime.Now;
+
+
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        await Add();
+        vagt.Start = DateTime.Now;
+        vagt.Slut = DateTime.Now;
+
+    }
+
+    public async Task Add()
+    {
+        await mService.Add(vagt);
+        Console.WriteLine("klient: add " + vagt.Navn); // Udskriver informationer om den nye booking i konsollen
+        vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
+    }
+
+
+}

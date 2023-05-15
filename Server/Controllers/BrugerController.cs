@@ -14,11 +14,6 @@ namespace Server.Controllers
     [Route("api/brugere")]
     public class BrugerController : ControllerBase
     {
-        // En tom liste til senere brug
-        private static List<Bruger> mBruger = new List<Bruger>()
-        {
-            // Der er ingen shelters i listen, så den er tom
-        };
 
         private IBruger myRepo;
 
@@ -28,7 +23,7 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Bruger> getBruger()
+        public IEnumerable<Bruger> getAll()
         {
             Console.WriteLine("get ");
             return myRepo.getAll();
@@ -55,6 +50,34 @@ namespace Server.Controllers
             myRepo.DeleteBruger(Id);
         }
 
+        //[HttpGet] // Angiver, at denne metode skal køre, når en HTTP GET-anmodning modtages.
+        //[Route("GetBruger/{brugerID}")] // Angiver, at denne metode skal matche en rute med en enkelt parametre "shelterId"
+        //public Bruger GetBruger(int brugerID) // Henter et enkelt Shelter-objekt fra vores repository baseret på den angivne shelterId.
+        //{
+        //    Console.WriteLine("Bruger found OK");
+        //    return myRepo.GetBruger(brugerID);
+        //}
+
+        //[HttpPut]
+        //public async Task<ActionResult<Bruger>> UpdateBruger(Bruger bruger)
+        //{
+        //    try
+        //    {
+        //        var BrugerToUpdate = await bruger.GetEmployee(id);
+
+        //        if (employeeToUpdate == null)
+        //        {
+        //            return NotFound($"Employee with Id = {id} not found");
+        //        }
+
+        //        return await employeeRepository.UpdateEmployee(employee);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError,
+        //            "Error updating data");
+        //    }
+        //}
 
     }
 }
