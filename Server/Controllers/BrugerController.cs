@@ -58,10 +58,10 @@ namespace Server.Controllers
         //    return myRepo.GetBruger(brugerID);
         //}
 
-        [HttpPut]
+        [HttpPost]
         public void UpdateBruger(Bruger bruger)
         {
-            Console.WriteLine("Updated");
+            Console.WriteLine("Updated" + bruger.ID);
 
             myRepo.UpdateBruger(bruger);
         }

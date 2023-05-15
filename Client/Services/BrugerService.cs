@@ -38,7 +38,7 @@ namespace Client.Services
 
         public async Task UpdateBruger(Bruger bruger)
         {
-            await http.PutAsJsonAsync<Bruger>("https://localhost:7004/api/brugere", bruger);
+            await http.PostAsJsonAsync<Bruger>("https://localhost:7004/api/brugere", bruger);
             Console.WriteLine("klient: add " + bruger.Fornavn + bruger.Efternavn); 
             bruger = new();
         }

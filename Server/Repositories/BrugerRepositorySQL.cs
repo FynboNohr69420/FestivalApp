@@ -111,7 +111,7 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "UPDATE \"Bruger\" SET \"Fornavn\"=@Fornavn, \"Efternavn\"=@Efternavn, \"Telefonnummer\"=@Telefonnummer, \"Adresse\"=@Adresse, \"Email\"=@Email, \"Password\"=@Password, \"isKoordinator\"=@isKoordinator, \"Fødselsdag\"=@ WHERE \"ID\" = @ID";
+                command.CommandText = "UPDATE FROM \"Bruger\" SET \"Fornavn\"=@Fornavn, \"Efternavn\"=@Efternavn, \"Telefonnummer\"=@Telefonnummer, \"Adresse\"=@Adresse, \"Email\"=@Email, \"Password\"=@Password, \"isKoordinator\"=@isKoordinator, \"Fødselsdag\"=@Fødselsdag WHERE \"ID\" = @ID";
                 command.Parameters.AddWithValue("@Fornavn", bruger.Fornavn);
                 command.Parameters.AddWithValue("@Efternavn", bruger.Efternavn);
                 command.Parameters.AddWithValue("@Telefonnummer", bruger.Telefonnummer);
