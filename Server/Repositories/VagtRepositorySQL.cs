@@ -36,8 +36,8 @@ namespace Server.Repositories
                         var Id = reader.GetInt32(0);
                         var Navn = reader.GetString(1);
                         var Point = reader.GetInt32(2);
-                        var Start = DateTime.Parse(reader.GetString(3).Replace(".", "/").Remove(10, 9));
-                        var Slut = DateTime.Parse(reader.GetString(4).Replace(".", "/").Remove(10, 9));
+                        var Start = reader.GetDateTime(3);
+                        var Slut = reader.GetDateTime(4);
                         var Beskrivelse = reader.GetString(5);
                         var KategoriID = reader.GetInt32(6);
                         var Antal_Pladser = reader.GetInt32(7);
@@ -155,8 +155,8 @@ namespace Server.Repositories
                         var Id = reader.GetInt32(0);
                         var Navn = reader.GetString(1);
                         var Point = reader.GetInt32(2);
-                        var Start = DateTime.Parse(reader.GetString(3).Replace(".", "/").Remove(10, 9));
-                        var Slut = DateTime.Parse(reader.GetString(4).Replace(".", "/").Remove(10, 9));
+                        var Start = reader.GetDateTime(3);
+                        var Slut = reader.GetDateTime(4);
                         var Beskrivelse = reader.GetString(5);
                         var KategoriID = reader.GetInt32(6);
                         var Antal_Pladser = reader.GetInt32(7);

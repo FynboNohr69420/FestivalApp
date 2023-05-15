@@ -19,7 +19,7 @@ namespace Client.Services
 
         public async Task<IEnumerable<Vagt>> getAll()
         {
-            var vagt = await http.GetFromJsonAsync<Vagt[]>("api/vagter");
+            var vagt = await http.GetFromJsonAsync<Vagt[]>("https://localhost:7004/api/vagter");
 
             return vagt;
 
@@ -35,13 +35,15 @@ namespace Client.Services
 
         public async Task<Vagt> GetVagt(int id)
         {
-            return await http.GetFromJsonAsync<Vagt>($"https://localhost:7004/api/vagter/{id}");
+            return await http.GetFromJsonAsync<Vagt>($"https://localhost:7004/api/vagter/vagter/{id}");
         }
 
         public async Task<Vagt> UpdateVagt(Vagt vagt)
         {
             await http.PutAsJsonAsync<Vagt>("https://localhost:7004/api/vagter", vagt);
             return vagt;
+            vagt = new();
+
         }
 
         public async Task<Vagt> GetSpecificVagt(int id)
