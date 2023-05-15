@@ -178,6 +178,46 @@ namespace Server.Repositories
             }
             return result;
         }
+
+        public Vagt GetSpecificVagt(int VagtID)
+        {
+            var result = new Vagt();
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM \"Vagt\" WHERE \"ID\" =" + "'" + VagtID + "'";
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var Id = reader.GetInt32(0);
+                        var Navn = reader.GetString(1);
+                        var Point = reader.GetInt32(2);
+                        var Start = DateTime.Parse(reader.GetString(3).Replace(".", "/").Remove(10, 9));
+                        var Slut = DateTime.Parse(reader.GetString(4).Replace(".", "/").Remove(10, 9));
+                        var Beskrivelse = reader.GetString(5);
+                        var KategoriID = reader.GetInt32(6);
+                        var Antal_Pladser = reader.GetInt32(7);
+
+                        Vagt b = new Vagt
+                        {
+                            ID = Id,
+                            Navn = Navn,
+                            Kategori = KategoriID,
+                            Point = Point,
+                            Start = Start,
+                            Slut = Slut,
+                            Antal = Antal_Pladser,
+                            Beskrivelse = Beskrivelse,
+                        };
+                        result = b;
+                    }
+                }
+            }
+            return result;
+        }
     }
 
 }

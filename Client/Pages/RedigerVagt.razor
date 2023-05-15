@@ -98,12 +98,14 @@
 
     private EditContext aEditContext;
 
+    private int UrlId = 0;
+
     [Inject]
     private IVagtService mService { get; set; }
 
     protected override void OnInitialized()
     {
-        //GetUrlID(); // Kalder GetUrlID metoden for at få ID'en fra URL'en
+
         aEditContext = new EditContext(vagt);
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
@@ -112,13 +114,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        private 
         GetUrlID();
-        vagt = await http.GetFromJsonAsync<Vagt>($"api/vagter/getvagter/" + UrlId);
+        vagt = await mService.GetVagt(UrlId);
     }
 
     public async Task HandleValidSubmit()
     {
+        vagt.ID = UrlId;
+        await UpdateVagt();
 
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
@@ -128,6 +131,11 @@
     {
         var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
         var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
-        UrlId = queryParameters.Get("id"); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
+        UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
+    }
+
+    public async Task UpdateVagt()
+    {
+       await mService.UpdateVagt(vagt);
     }
 }

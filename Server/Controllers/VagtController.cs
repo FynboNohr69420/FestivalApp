@@ -28,6 +28,14 @@ namespace Server.Controllers
             return myRepo.getAll();
         }
 
+        [HttpGet]
+        [Route("gs/{VagtID}")]
+        public Vagt GetSpecificVagt(int vagtID)
+      
+        {
+            return myRepo.GetSpecificVagt(vagtID);
+        }
+
         // En metode, der håndterer HTTP POST requests til /api/Booking
         [HttpPost]
         [Route("ny")]
@@ -48,6 +56,23 @@ namespace Server.Controllers
             Console.WriteLine("Deleted");
             // Sletter bookingen fra databasen gennem vores repository
             myRepo.DeleteVagt(ID);
+        }
+
+        [HttpGet] // Angiver, at denne metode skal køre, når en HTTP GET-anmodning modtages.
+        [Route("vagter/{vagtID}")] // Angiver, at denne metode skal matche en rute med en enkelt parametre "shelterId"
+        public Vagt GetVagt(int vagtID) // Henter et enkelt Shelter-objekt fra vores repository baseret på den angivne shelterId.
+        {
+            Console.WriteLine("Bruger found OK");
+            return myRepo.GetVagt(vagtID);
+        }
+
+        [HttpPost]
+        [Route("update")]
+        public void UpdateBruger(Vagt vagt)
+        {
+            Console.WriteLine("Updated" + vagt.ID);
+
+            myRepo.UpdateVagt(vagt);
         }
     }
 }

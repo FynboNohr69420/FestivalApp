@@ -43,5 +43,12 @@ namespace Client.Services
             await http.PutAsJsonAsync<Vagt>("https://localhost:7004/api/vagter", vagt);
             return vagt;
         }
+
+        public async Task<Vagt> GetSpecificVagt(int id)
+        {
+           var result = await http.GetFromJsonAsync<Vagt>($"https://localhost:7004/api/vagter/gs/{id}");
+
+            return result;
+        }
     }
 }
