@@ -5,8 +5,10 @@ namespace Server.Repositories
     public interface IVagt
     {
         Vagt[] getAll();
-        void Add(Vagt vagt);
+        void AddVagt(Vagt vagt);
         void DeleteVagt(int ID);
         void UpdateVagt(Vagt vagt);
+        Vagt GetVagt (int vagtID);
+        Vagt GetSpecificVagt (int vagtID);
     }
 }
