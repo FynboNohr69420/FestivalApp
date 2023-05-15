@@ -59,6 +59,7 @@ namespace Server.Controllers
         //}
 
         [HttpPost]
+        [Route("update")]
         public void UpdateBruger(Bruger bruger)
         {
             Console.WriteLine("Updated" + bruger.ID);
