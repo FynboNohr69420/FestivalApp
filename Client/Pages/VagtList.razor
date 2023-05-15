@@ -1,0 +1,64 @@
+﻿@page "/Vagtliste"
+@using Common.Model
+@using Client.Services
+@using System.Net.Http.Json;
+
+<PageTitle>Bruger listen</PageTitle>
+
+<h1>Bruger listen</h1>
+<form>
+    <input type="text" placeholder="Søg...">
+    <button type="submit">Søg</button>
+</form>
+
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Fornavn</th>
+                    <th>Efternavn</th>
+                    <th>Telefonnummer</th>
+                    <th>Addresse</th>
+                    <th>Email</th>
+                    <th>Fødselsdagsdato</th>
+                    <th>koordinator: </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vagt in vagtlist)
+                {
+                    <tr>
+                        <td>@vagt.Navn</td>
+                        <td>@vagt.Point</td>
+                        <td>@vagt.Start</td>
+                        <td>@vagt.Slut</td>
+                        <td>@vagt.Beskrivelse</td>
+                        <td>@vagt.Kategori</td>
+                        <td>@vagt.Antal</td>
+                        <td>
+                            <a href="@($"/redigerbruger?id={bruger.ID}")"> <button class="btn btn-primary">Rediger bruger</button></a>
+                        </td>                       
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@code {
+
+    private Vagt vagt = new Vagt();
+    private Vagt[]? vagtlist = new Vagt[0];
+
+    [Inject]
+    private IVagtService mService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        vagtlist = (await mService.getAll()).ToArray();
+    }
+
+
+}
