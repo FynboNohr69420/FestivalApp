@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Json;
+using Amazon.Runtime.Internal.Endpoints.StandardLibrary;
 using Client.Pages;
 using Common.Model;
+using Microsoft.AspNetCore.Components;
 using static System.Net.WebRequestMethods;
 
 namespace Client.Services
@@ -49,6 +51,12 @@ namespace Client.Services
 
             return result;
 
+        }
+        public void GetUrlID()
+        {
+            var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
+            var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
+            UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
         }
     }
 }
