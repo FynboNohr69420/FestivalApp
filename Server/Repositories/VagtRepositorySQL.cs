@@ -7,12 +7,12 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Server.Repositories
 {
-    public class VagterRepositorySQL : IVagt
+    public class VagtRepositorySQL : IVagt
     {
         private const string connectionString = "UserID=eehvkyxg;Password=DpGHcrCDBfK_RrcdKdwSNiUR3t_PWx-1;Host=balarama.db.elephantsql.com;Port=5432;Database=eehvkyxg";
 
 
-        public VagterRepositorySQL()
+        public VagtRepositorySQL()
         {
         }
 
