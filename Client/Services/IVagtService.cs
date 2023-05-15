@@ -10,5 +10,7 @@ namespace Client.Services
         Task<Vagt> GetVagt(int id);
         Task AddVagt(Vagt vagt);
         public Task<Vagt> UpdateVagt(Vagt vagt);
+
+        public void 
     }
 }
