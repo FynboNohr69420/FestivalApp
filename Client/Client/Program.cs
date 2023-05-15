@@ -20,7 +20,12 @@ namespace Client
                 Client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
             });
 
-            
+            builder.Services.AddHttpClient<IVagtService, VagtService>(Client =>
+            {
+                Client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+            });
+
+
 
             await builder.Build().RunAsync();
         }

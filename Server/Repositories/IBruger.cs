@@ -9,6 +9,8 @@ namespace Server.Repositories
         void DeleteBruger(int Id);
         void UpdateBruger(Bruger bruger);
         Bruger getSpecific(string email);
+        //Bruger GetBruger(int brugerID);
+
     }
 }
 

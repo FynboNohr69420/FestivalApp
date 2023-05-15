@@ -1,45 +1,65 @@
 ﻿@page "/brugerlist"
 @using Common.Model
 @using Client.Services
+@using System.Net.Http.Json;
 
-<PageTitle>Bruger</PageTitle>
+<PageTitle>Bruger listen</PageTitle>
 
-<h1>Bruger</h1>
+<h1>Bruger listen</h1>
+<form>
+    <input type="text" placeholder="Søg...">
+    <button type="submit">Søg</button>
+</form>
 
-@if (bruger == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-
-    <table class="table">
-
-        <tbody>
-            @foreach (var bruger in bruger)
-            {
-                <tr class="brugerRow">
-                    <td>
-                        <h2>@bruger.Fornavn - @bruger.Efternavn</h2><br />
-                    </td>
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Fornavn</th>
+                    <th>Efternavn</th>
+                    <th>Telefonnummer</th>
+                    <th>Addresse</th>
+                    <th>Email</th>
+                    <th>Fødselsdagsdato</th>
+                    <th>koordinator: </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var bruger in brugerlist)
+                {
+                    <tr>
+                        <td>@bruger.Fornavn</td>
+                        <td>@bruger.Efternavn</td>
+                        <td>@bruger.Telefonnummer</td>
+                        <td>@bruger.Adresse</td>
+                        <td>@bruger.Email</td>
+                        <td>@bruger.Fødselsdag</td>
+                        <td>@bruger.IsKoordinator</td>
+                        <td>
+                            <a href="@($"/redigerbruger?id={bruger.ID}")"> <button class="btn btn-primary">Rediger bruger</button></a>
+                        </td>                       
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-}
 
 @code {
 
-    private Bruger[]? bruger;
+    private Bruger bruger = new Bruger(); // Opretter et tomt Booking objekt
+    private Bruger[]? brugerlist = new Bruger[0]; // Opretter en tom liste af Booking objekter
 
     [Inject]
     private IBrugerService mService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        bruger = (await mService.getAll()).ToArray();
+        brugerlist = (await mService.getAll()).ToArray();
     }
+
 
 }
 

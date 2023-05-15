@@ -6,10 +6,18 @@ namespace Client.Services
 {
 	public interface IBrugerService
 	{
-		Task<IEnumerable<Bruger>> getAll();
+		public Task<IEnumerable<Bruger>> getAll();
 
 		Task Add(Bruger bruger);
 		Task<Bruger> getSpecific(string email);
 	}
+        Task<Bruger> GetBruger(int id);
+
+        Task Add(Bruger bruger);
+
+        Task UpdateBruger(Bruger bruger);
+
+
+    }
 }
 

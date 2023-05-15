@@ -1,7 +1,6 @@
 ﻿@page "/addbruger"
 @using Client.Services;
 @using Common.Model;
-
 @inject HttpClient Http;
 
 <PageTitle>Registrering</PageTitle>
@@ -40,10 +39,10 @@
     <div class="col-md-1 mb-3">
         <label for="IsKoordinator">Koordinator</label>
         <InputSelect id="IsKoordinator" @bind-Value="bruger.IsKoordinator" class="form-control">
-            <option value="true">true</option>
-            <option value="false">false</option>
+            <option value="true">Ja</option>
+            <option value="false">Nej</option>
         </InputSelect>
-    </div>
+    </div> 
     <div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
@@ -71,6 +70,7 @@
     {
         await Add();
         bruger.Fødselsdag = DateTime.Now;
+
     }
 
     public async Task Add()
