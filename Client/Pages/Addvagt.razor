@@ -61,15 +61,15 @@
 
     public async Task HandleValidSubmit()
     {
-        await Add();
+        await AddVagt();
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
 
     }
 
-    public async Task Add()
+    public async Task AddVagt()
     {
-        await mService.Add(vagt);
+        await mService.AddVagt(vagt);
         Console.WriteLine("klient: add " + vagt.Navn); // Udskriver informationer om den nye booking i konsollen
         vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
     }

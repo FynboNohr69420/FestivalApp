@@ -8,6 +8,6 @@ namespace Client.Services
     {
         Task<IEnumerable<Vagt>> getAll();
 
-        Task Add(Vagt vagt);
+        Task AddVagt(Vagt vagt);
     }
 }

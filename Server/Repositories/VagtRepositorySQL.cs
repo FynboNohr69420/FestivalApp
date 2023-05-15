@@ -24,7 +24,7 @@ namespace Server.Repositories
                 connection.Open();
 
                 var command = connection.CreateCommand();
-                command.CommandText = "SELECT * FROM \"Navn\"";
+                command.CommandText = "SELECT * FROM \"Vagt\"";
 
 
                 using (var reader = command.ExecuteReader())
@@ -34,22 +34,22 @@ namespace Server.Repositories
                     {
                         var Id = reader.GetInt32(0);
                         var Navn = reader.GetString(1);
-                        var Kategori = reader.GetString(2);
-                        var Point = reader.GetInt32(3);
-                        var Start = reader.GetDateTime(4);
-                        var Slut = reader.GetDateTime(5);
-                        var Antal = reader.GetInt32(6);
-                        var Beskrivelse = reader.GetString(7);
+                        var Point = reader.GetInt32(2);
+                        var Start = DateTime.Parse(reader.GetString(3).Replace(".", "/").Remove(10, 9));
+                        var Slut = DateTime.Parse(reader.GetString(4).Replace(".", "/").Remove(10, 9));
+                        var Beskrivelse = reader.GetString(5);
+                        var KategoriID = reader.GetString(6);
+                        var Antal_Pladser = reader.GetInt32(7);
 
                         Vagt b = new Vagt
                         {
                             ID = Id,
                             Navn = Navn,
-                            Kategori = Kategori,
+                            Kategori = KategoriID,
                             Point = Point,
                             Start = Start,
                             Slut = Slut,
-                            Antal = Antal,
+                            Antal = Antal_Pladser,
                             Beskrivelse = Beskrivelse,
                         };
                         result.Add(b);
@@ -59,7 +59,7 @@ namespace Server.Repositories
             return result.ToArray();
         }
 
-        public void Add(Vagt vagt)
+        public void AddVagt(Vagt vagt)
         {
 
             using (var connection = new NpgsqlConnection(connectionString))
@@ -67,7 +67,7 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "INSERT INTO \"ID\" (\"Navn\", \"Kategori\", \"Point\", \"Start\", \"Slut\", \"Antal\", \"Beskrivelse\",) VALUES (\'@Navn\', \'@Kategori\', @Point, \'@Start\', \'@Slut\', \'@Antal\', \'@Beskrivelse\')";
+                command.CommandText = "INSERT INTO \"Vagt\"(\"Id\", \"Navn\", \"Point\", \"Start\", \"Slut\", \"Beskrivelse\", \"Kategori_ID\") VALUES (@Navn, @Point, @Start, @Slut, @Beskrivelse, @Kategori, @Antal)";
                 command.Parameters.AddWithValue("@Navn", vagt.Navn);
                 command.Parameters.AddWithValue("@Kategori", vagt.Kategori);
                 command.Parameters.AddWithValue("@Point", vagt.Point);
