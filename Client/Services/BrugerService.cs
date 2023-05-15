@@ -52,11 +52,6 @@ namespace Client.Services
             return result;
 
         }
-        public void GetUrlID()
-        {
-            var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
-            var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
-            UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
-        }
+     
     }
 }
