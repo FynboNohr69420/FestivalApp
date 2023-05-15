@@ -9,6 +9,5 @@ namespace Server.Repositories
         void DeleteVagt(int ID);
         void UpdateVagt(Vagt vagt);
         Vagt GetVagt (int vagtID);
-        Vagt GetSpecificVagt (int vagtID);
     }
 }

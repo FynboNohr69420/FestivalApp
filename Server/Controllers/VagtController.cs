@@ -28,13 +28,6 @@ namespace Server.Controllers
             return myRepo.getAll();
         }
 
-        [HttpGet]
-        [Route("gs/{VagtID}")]
-        public Vagt GetSpecificVagt(int vagtID)
-      
-        {
-            return myRepo.GetSpecificVagt(vagtID);
-        }
 
         // En metode, der håndterer HTTP POST requests til /api/Booking
         [HttpPost]
@@ -66,8 +59,7 @@ namespace Server.Controllers
             return myRepo.GetVagt(vagtID);
         }
 
-        [HttpPost]
-        [Route("update")]
+        [HttpPut]
         public void UpdateBruger(Vagt vagt)
         {
             Console.WriteLine("Updated" + vagt.ID);
