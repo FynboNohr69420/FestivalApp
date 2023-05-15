@@ -1,0 +1,132 @@
+﻿@page "/redigervagt"
+@using Common.Model;
+@using Client.Services;
+@inject NavigationManager NavigationManager
+@inject HttpClient http;
+
+
+<h3>Bruger informationer</h3>
+<div>
+    <p><strong>Navn:</strong> @vagt.Navn</p>
+    <p><strong>Point:</strong> @vagt.Point</p>
+    <p><strong>Start:</strong> @vagt.Start</p>
+    <p><strong>Slut:</strong> @vagt.Slut</p>
+    <p><strong>Beskrivelse:</strong> @vagt.Beskrivelse</p>
+    <p><strong>Kategori:</strong> @vagt.Kategori</p>
+    <p><strong>Antal:</strong> @vagt.Antal</p>
+</div>
+
+<EditForm Model="@aEditContext" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <h3>Rediger information</h3>
+    <hr />
+    <ValidationSummary />
+    <div class="form-group row">
+        <label for="navn" class="col-sm-2 col-form-label">
+            Navn
+        </label>
+        <div class="col-sm-10">
+            <InputText id="vagt navn" class="form-control" placeholder="Navn"
+                       @bind-Value="vagt.Navn" />
+            <ValidationMessage For="@(() => vagt.Navn)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Point" class="col-sm-2 col-form-label">
+            Point
+        </label>
+        <div class="col-sm-10">
+            <InputNumber id="point" class="form-control" placeholder="Point"
+                       @bind-Value="vagt.Point" />
+            <ValidationMessage For="@(() => vagt.Point)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="start" class="col-sm-2 col-form-label">
+            Start 
+        </label>
+        <div class="col-sm-10">
+            <InputDate id="email" class="form-control" placeholder="starttidspunkt"
+                         @bind-Value="vagt.Start" />
+            <ValidationMessage For="@(() => vagt.Start)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="slut" class="col-sm-2 col-form-label">
+            Slut
+        </label>
+        <div class="col-sm-10">
+            <InputDate id="slut" class="form-control"
+                       @bind-Value="vagt.Slut" />
+            <ValidationMessage For="@(() => vagt.Slut)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="beskrivelse" class="col-sm-2 col-form-label">
+            Beskrivelse
+        </label>
+        <div class="col-sm-10">
+            <InputText id="confirmBeskrivelse" class="form-control"
+                       @bind-Value="vagt.Beskrivelse" />
+            <ValidationMessage For="@(() => vagt.Beskrivelse)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="kategori" class="col-sm-2 col-form-label">
+            Kategori
+        </label>
+        <div class="col-sm-10">
+            <InputNumber @bind-Value="vagt.Kategori" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Password" class="col-sm-2 col-form-label">
+            Antal Pladser 
+        </label>
+        <div class="col-sm-10">
+            <InputNumber @bind-Value="vagt.Antal" class="form-control" />
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private Vagt vagt = new Vagt();
+    private Vagt[]? vagtlist = new Vagt[0];
+
+    //private string? UrlId; // Deklarerer en variabel til at holde på ID'en fra URL'en
+
+    private EditContext aEditContext;
+
+    [Inject]
+    private IVagtService mService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        //GetUrlID(); // Kalder GetUrlID metoden for at få ID'en fra URL'en
+        aEditContext = new EditContext(vagt);
+        vagt.Start = DateTime.Now;
+        vagt.Slut = DateTime.Now;
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //GetUrlID();
+        //bruger = await http.GetFromJsonAsync<Bruger>($"api/Brugere/GetBruger/" + UrlId);
+    }
+
+    public async Task HandleValidSubmit()
+    {
+
+        vagt.Start = DateTime.Now;
+        vagt.Slut = DateTime.Now;
+    }
+
+    //public void GetUrlID()
+    //{
+    //    var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
+    //    var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
+    //    UrlId = queryParameters.Get("ID"); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
+    //}
+}
