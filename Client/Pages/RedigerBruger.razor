@@ -5,15 +5,7 @@
 @inject HttpClient http;
 
 
-<h3>Bruger informationer</h3>
 <div>
-    <p><strong>Fornavn:</strong> @bruger.Fornavn</p>
-    <p><strong>Efternavn:</strong> @bruger.Efternavn</p>
-    <p><strong>Telefonnummer:</strong> @bruger.Telefonnummer</p>
-    <p><strong>Addresse:</strong> @bruger.Adresse</p>
-    <p><strong>Email:</strong> @bruger.Email</p>
-    <p><strong>Fødselsdagsdato:</strong> @bruger.Fødselsdag</p>
-    <p><strong>Password:</strong> @bruger.Password</p>
     <p><strong>Koordinator:</strong> @bruger.IsKoordinator</p>
 </div>
 
@@ -27,7 +19,7 @@
             Fornavn
         </label>
         <div class="col-sm-10">
-            <InputText id="Fornavn" class="form-control" placeholder="Fornavn"
+            <InputText id="Fornavn" class="form-control" placeholder="@bruger.Fornavn"
                        @bind-Value="bruger.Fornavn" />
             <ValidationMessage For="@(() => bruger.Fornavn)" />
         </div>
@@ -37,7 +29,7 @@
             Efternavn
         </label>
         <div class="col-sm-10">
-            <InputText id="lastName" class="form-control" placeholder="Efternavn"
+            <InputText id="lastName" class="form-control" placeholder="@(() => bruger.Efternavn)"
                        @bind-Value="bruger.Efternavn" />
             <ValidationMessage For="@(() => bruger.Efternavn)" />
         </div>
@@ -48,7 +40,7 @@
         </label>
         <div class="col-sm-10">
             <InputNumber id="email" class="form-control" placeholder="Telefonnummer"
-                         @bind-Value="bruger.Telefonnummer" />
+                         @bind-Value="bruger.Telefonnummer" /> 
             <ValidationMessage For="@(() => bruger.Telefonnummer)" />
         </div>
     </div>
@@ -88,7 +80,7 @@
             <InputText @bind-Value="bruger.Password" class="form-control" />
         </div>
     </div>
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-primary" type="submit">Gem</button>
 </EditForm>
 
 @code {
@@ -113,7 +105,7 @@
     protected override async Task OnInitializedAsync()
     {
         GetUrlID();
-        bruger.Fødselsdag = DateTime.Now;
+        bruger = await mService.GetBruger(UrlId);
     }
 
     public async Task HandleValidSubmit()

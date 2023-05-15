@@ -25,7 +25,7 @@ namespace Client.Services
 
         public async Task<Bruger> GetBruger(int id)
         {
-            return await http.GetFromJsonAsync<Bruger>($"https://localhost:7004/api/brugere/{id}");
+            return await http.GetFromJsonAsync<Bruger>($"https://localhost:7004/api/brugere/bruger/{id}");
         }
 
         public async Task Add(Bruger bruger)

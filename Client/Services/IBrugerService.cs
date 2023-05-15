@@ -10,10 +10,8 @@ namespace Client.Services
 
 		Task Add(Bruger bruger);
 		Task<Bruger> getSpecific(string email);
-	}
-        Task<Bruger> GetBruger(int id);
 
-        Task Add(Bruger bruger);
+        Task<Bruger> GetBruger(int id);
 
         Task UpdateBruger(Bruger bruger);
 

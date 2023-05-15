@@ -8,8 +8,8 @@ namespace Common.Model
 
         [Key]
         public int ID { get; set; } = 0;
-        public string Fornavn { get; set; } = " ";
-        public string Efternavn { get; set; } = " ";
+        public string Fornavn { get; set; }
+        public string Efternavn { get; set; }
         public int Telefonnummer { get; set; } = 0;
         public string Adresse { get; set; } = " ";
         public string Email { get; set; } = " ";
