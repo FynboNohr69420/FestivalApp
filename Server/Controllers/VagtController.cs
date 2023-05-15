@@ -30,7 +30,7 @@ namespace Server.Controllers
 
         // En metode, der håndterer HTTP POST requests til /api/Booking
         [HttpPost]
-        [Route ("ny")]
+        [Route("ny")]
         public void AddVagt(Vagt vagt)
         {
             // Skriver en besked til konsollen med bookingens ID

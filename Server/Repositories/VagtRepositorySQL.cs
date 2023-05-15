@@ -67,7 +67,7 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "INSERT INTO \"Vagt\"(\"Navn\", \"Point\", \"Start\", \"Slut\", \"Beskrivelse\", \"Kategori_ID\", \"Antal_Pladser) VALUES (@Navn, @Point, @Start, @Slut, @Beskrivelse, @Kategori, @Antal)";
+                command.CommandText = "INSERT INTO \"Vagt\"(\"Navn\", \"Point\", \"Start\", \"Slut\", \"Beskrivelse\", \"Kategori_ID\", \"Antal_Pladser\") VALUES (@Navn, @Point, @Start, @Slut, @Beskrivelse, @Kategori, @Antal)";
                 command.Parameters.AddWithValue("@Navn", vagt.Navn);
                 command.Parameters.AddWithValue("@Kategori", vagt.Kategori);
                 command.Parameters.AddWithValue("@Point", vagt.Point);
