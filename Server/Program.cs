@@ -19,6 +19,7 @@ namespace Server
             builder.Services.AddRazorPages();
             builder.Services.AddControllers();
             builder.Services.AddSingleton<IBruger, BrugerRepositorySQL>();
+            builder.Services.AddSingleton<IVagt, VagtRepositorySQL>();
 
           
             builder.Services.AddCors(options => // policy der sl�r CORS fra, s� der er adgang fra alle sources

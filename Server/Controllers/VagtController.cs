@@ -12,11 +12,11 @@ namespace Server.Controllers
 {
     [ApiController]
     [Route("api/vagter")]
-    public class VagterController : ControllerBase
+    public class VagtController : ControllerBase
     {
         private IVagt myRepo;
 
-        public VagterController(IVagt myRepo)
+        public VagtController(IVagt myRepo)
         {
             this.myRepo = myRepo;
         }
@@ -30,12 +30,13 @@ namespace Server.Controllers
 
         // En metode, der håndterer HTTP POST requests til /api/Booking
         [HttpPost]
-        public void Add(Vagt vagt)
+        [Route ("ny")]
+        public void AddVagt(Vagt vagt)
         {
             // Skriver en besked til konsollen med bookingens ID
             Console.WriteLine("post " + vagt.ID);
             // Tilføjer bookingen til databasen gennem vores repository
-            myRepo.Add(vagt);
+            myRepo.AddVagt(vagt);
         }
 
         // En metode, der håndterer HTTP DELETE requests til /api/Booking/{Id}

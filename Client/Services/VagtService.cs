@@ -25,9 +25,9 @@ namespace Client.Services
 
         }
 
-        public async Task Add(Vagt vagt)
+        public async Task AddVagt(Vagt vagt)
         {
-            await http.PostAsJsonAsync<Vagt>("https://localhost:7004/api/vagter", vagt); // Sender en POST request med booking som JSON payload til API'en
+            await http.PostAsJsonAsync<Vagt>("https://localhost:7004/api/vagter/ny", vagt); // Sender en POST request med booking som JSON payload til API'en
             Console.WriteLine("klient: add " + vagt.ID + vagt.Navn); // Udskriver informationer om den nye booking i konsollen//
             vagt = new();
         }

@@ -15,14 +15,9 @@ namespace Common.Model
         public DateTime Slut { get; set; }
         public int Antal { get; set; } = 1;
         public string Beskrivelse { get; set; } = " ";
-        
+
 
         public static List<Vagt> ToList()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static implicit operator Vagt(Vagt v)
         {
             throw new NotImplementedException();
         }
