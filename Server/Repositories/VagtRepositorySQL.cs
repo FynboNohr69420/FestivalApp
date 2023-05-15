@@ -109,7 +109,7 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "DELETE FROM \"NAVN\" WHERE \"ID\" = @ID";
+                command.CommandText = "DELETE FROM \"Vagt\" WHERE \"ID\" = @ID";
                 command.Parameters.AddWithValue("@ID", Id); ;
                 command.ExecuteNonQuery();
             }
