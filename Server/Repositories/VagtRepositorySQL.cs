@@ -67,14 +67,14 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "INSERT INTO \"Id\" (\"Navn\", \"Kategori\", \"Point\", \"Start\", \"Slut\", \"Antal\", \"Beskrivelse\",) VALUES (\'@Navn\', \'@Kategori\', @Point, \'@Start\', \'@Slut\', \'@Antal\', \'@Beskrivelse\')";
-                command.Parameters.AddWithValue("@Navn", vagt);
-                command.Parameters.AddWithValue("@Kategori", vagt);
-                command.Parameters.AddWithValue("@Point", vagt);
-                command.Parameters.AddWithValue("@Start", vagt);
-                command.Parameters.AddWithValue("@Slut", vagt);
-                command.Parameters.AddWithValue("@Antal", vagt);
-                command.Parameters.AddWithValue("@Beskrivelse", vagt);
+                command.CommandText = "INSERT INTO \"ID\" (\"Navn\", \"Kategori\", \"Point\", \"Start\", \"Slut\", \"Antal\", \"Beskrivelse\",) VALUES (\'@Navn\', \'@Kategori\', @Point, \'@Start\', \'@Slut\', \'@Antal\', \'@Beskrivelse\')";
+                command.Parameters.AddWithValue("@Navn", vagt.Navn);
+                command.Parameters.AddWithValue("@Kategori", vagt.Kategori);
+                command.Parameters.AddWithValue("@Point", vagt.Point);
+                command.Parameters.AddWithValue("@Start", vagt.Start);
+                command.Parameters.AddWithValue("@Slut", vagt.Slut);
+                command.Parameters.AddWithValue("@Antal", vagt.Antal);
+                command.Parameters.AddWithValue("@Beskrivelse", vagt.Beskrivelse);
                 command.ExecuteNonQuery();
             }
         }
