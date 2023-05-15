@@ -8,7 +8,7 @@ namespace Server.Repositories
         void Add(Bruger bruger);
         void DeleteBruger(int Id);
         void UpdateBruger(Bruger bruger);
-        void GetBruger(int brugerID);
+        Bruger GetBruger(int brugerID);
 
     }
 }
