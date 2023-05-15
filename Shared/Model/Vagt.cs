@@ -21,5 +21,10 @@ namespace Common.Model
         {
             throw new NotImplementedException();
         }
+
+        public static implicit operator Vagt(Vagt v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
