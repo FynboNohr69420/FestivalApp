@@ -12,11 +12,11 @@ namespace Server.Controllers
 {
     [ApiController]
     [Route("api/vagter")]
-    public class VagterController : ControllerBase
+    public class VagtController : ControllerBase
     {
         private IVagt myRepo;
 
-        public VagterController(IVagt myRepo)
+        public VagtController(IVagt myRepo)
         {
             this.myRepo = myRepo;
         }
