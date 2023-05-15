@@ -111,8 +111,12 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
+<<<<<<< HEAD
                 command.CommandText = "UPDATE FROM \"Bruger\" SET \"Fornavn\"=@Fornavn, \"Efternavn\"=@Efternavn, \"Telefonnummer\"=@Telefonnummer, \"Adresse\"=@Adresse, \"Email\"=@Email, \"Password\"=@Password, \"isKoordinator\"=@isKoordinator, \"Fødselsdag\"=@Fødselsdag WHERE \"ID\" = @ID";
 
+=======
+                command.CommandText = "UPDATE \"Bruger\" SET \"Fornavn\"=@Fornavn, \"Efternavn\"=@Efternavn, \"Telefonnummer\"=@Telefonnummer, \"Adresse\"=@Adresse, \"Email\"=@Email, \"Password\"=@Password, \"isKoordinator\"=@isKoordinator, \"Fødselsdag\"=@Fødselsdag WHERE \"ID\" = @ID";
+>>>>>>> d2550531677a26ad71be7e080b0fcfc293486d06
                 command.Parameters.AddWithValue("@Fornavn", bruger.Fornavn);
                 command.Parameters.AddWithValue("@Efternavn", bruger.Efternavn);
                 command.Parameters.AddWithValue("@Telefonnummer", bruger.Telefonnummer);
@@ -121,8 +125,13 @@ namespace Server.Repositories
                 command.Parameters.AddWithValue("@Fødselsdag", datoString);
                 command.Parameters.AddWithValue("@Password", bruger.Password);
                 command.Parameters.AddWithValue("@isKoordinator", bruger.IsKoordinator);
+<<<<<<< HEAD
                 command.ExecuteNonQuery();
 
+=======
+                command.Parameters.AddWithValue("@ID", bruger.ID);
+                command.ExecuteNonQuery();
+>>>>>>> d2550531677a26ad71be7e080b0fcfc293486d06
             }
         }
 
