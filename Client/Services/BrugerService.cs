@@ -52,6 +52,6 @@ namespace Client.Services
             return result;
 
         }
-     
+
     }
 }
