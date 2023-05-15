@@ -36,8 +36,8 @@ namespace Server.Repositories
                         var Navn = reader.GetString(1);
                         var Kategori = reader.GetString(2);
                         var Point = reader.GetInt32(3);
-                        var Start = reader.GetString(4);
-                        var Slut = reader.GetString(5);
+                        var Start = reader.GetDateTime(4);
+                        var Slut = reader.GetDateTime(5);
                         var Antal = reader.GetInt32(6);
                         var Beskrivelse = reader.GetString(7);
 
