@@ -12,7 +12,7 @@ namespace Client.Services
 
         Task Add(Bruger bruger);
 
-        public Task<Bruger> UpdateBruger(Bruger bruger);
+        Task UpdateBruger(Bruger bruger);
 
 
     }

@@ -4,6 +4,7 @@ using Dapper;
 using Npgsql;
 using Microsoft.Data.SqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Microsoft.AspNetCore.Http;
 
 namespace Server.Repositories
 {
@@ -105,9 +106,20 @@ namespace Server.Repositories
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
+                string datoString = bruger.Fødselsdag.Date.ToString();
+
                 connection.Open();
                 var command = connection.CreateCommand();
 
+                command.CommandText = "UPDATE \"Bruger\" SET \"Fornavn\"=@Fornavn, \"Efternavn\"=@Efternavn, \"Telefonnummer\"=@Telefonnummer, \"Adresse\"=@Adresse, \"Email\"=@Email, \"Password\"=@Password, \"isKoordinator\"=@isKoordinator, \"Fødselsdag\"=@ WHERE \"ID\" = @ID";
+                command.Parameters.AddWithValue("@Fornavn", bruger.Fornavn);
+                command.Parameters.AddWithValue("@Efternavn", bruger.Efternavn);
+                command.Parameters.AddWithValue("@Telefonnummer", bruger.Telefonnummer);
+                command.Parameters.AddWithValue("@Adresse", bruger.Adresse);
+                command.Parameters.AddWithValue("@Email", bruger.Email);
+                command.Parameters.AddWithValue("@Fødselsdag", datoString);
+                command.Parameters.AddWithValue("@Password", bruger.Password);
+                command.Parameters.AddWithValue("@isKoordinator", bruger.IsKoordinator);
 
             }
         }

@@ -58,26 +58,13 @@ namespace Server.Controllers
         //    return myRepo.GetBruger(brugerID);
         //}
 
-        //[HttpPut]
-        //public async Task<ActionResult<Bruger>> UpdateBruger(Bruger bruger)
-        //{
-        //    try
-        //    {
-        //        var BrugerToUpdate = await bruger.GetEmployee(id);
+        [HttpPut]
+        public void UpdateBruger(Bruger bruger)
+        {
+            Console.WriteLine("Updated");
 
-        //        if (employeeToUpdate == null)
-        //        {
-        //            return NotFound($"Employee with Id = {id} not found");
-        //        }
-
-        //        return await employeeRepository.UpdateEmployee(employee);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError,
-        //            "Error updating data");
-        //    }
-        //}
+            myRepo.UpdateBruger(bruger);
+        }
 
     }
 }

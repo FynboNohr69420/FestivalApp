@@ -27,7 +27,7 @@
             Fornavn
         </label>
         <div class="col-sm-10">
-            <InputText id="Fornavn" class="form-control" placeholder="First Name"
+            <InputText id="Fornavn" class="form-control" placeholder="Fornavn"
                        @bind-Value="bruger.Fornavn" />
             <ValidationMessage For="@(() => bruger.Fornavn)" />
         </div>
@@ -37,7 +37,7 @@
             Efternavn
         </label>
         <div class="col-sm-10">
-            <InputText id="lastName" class="form-control" placeholder="Last Name"
+            <InputText id="lastName" class="form-control" placeholder="Efternavn"
                        @bind-Value="bruger.Efternavn" />
             <ValidationMessage For="@(() => bruger.Efternavn)" />
         </div>
@@ -47,7 +47,7 @@
             Telefonnummer
         </label>
         <div class="col-sm-10">
-            <InputNumber id="email" class="form-control" placeholder="Email"
+            <InputNumber id="email" class="form-control" placeholder="Telefonnummer"
                          @bind-Value="bruger.Telefonnummer" />
             <ValidationMessage For="@(() => bruger.Telefonnummer)" />
         </div>
@@ -95,7 +95,6 @@
     private Bruger bruger = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
 
-    //private string? UrlId; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
     private EditContext aEditContext;
 
@@ -104,7 +103,6 @@
 
     protected override void OnInitialized()
     {
-        //GetUrlID(); // Kalder GetUrlID metoden for at få ID'en fra URL'en
         aEditContext = new EditContext(bruger);
         bruger.Fødselsdag = DateTime.Now;
 
@@ -112,21 +110,22 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //GetUrlID();
-        //bruger = await http.GetFromJsonAsync<Bruger>($"api/Brugere/GetBruger/" + UrlId);
+        bruger.Fødselsdag = DateTime.Now;
     }
 
     public async Task HandleValidSubmit()
     {
 
+        await UpdateBruger();
         bruger.Fødselsdag = DateTime.Now;
     }
 
-    //public void GetUrlID()
-    //{
-    //    var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
-    //    var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
-    //    UrlId = queryParameters.Get("ID"); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
-    //}
+    public async Task UpdateBruger()
+    {
+        await mService.UpdateBruger(bruger);
+        Console.WriteLine("klient: add " + bruger.Fornavn); // Udskriver informationer om den nye booking i konsollen
+        bruger = new();
+    }
+
 }
 
