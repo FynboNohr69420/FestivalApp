@@ -9,7 +9,7 @@ namespace Common.Model
         [Key]
         public int ID { get; set; } = 0;
         public string Navn { get; set; } = " ";
-        public string Kategori { get; set; } = " ";
+        public int Kategori { get; set; } = 0;
         public int Point { get; set; } = 0;
         public DateTime Start { get; set; }
         public DateTime Slut { get; set; }
