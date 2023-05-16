@@ -12,12 +12,12 @@
 
 <div>
     <input type="text" @bind="@searchKeyword" placeholder="Search by name" />
-    <label>Sort Order:</label>
+    <label>Sorter point:</label>
     <select @bind="@sortOrder">
-        <option value="ascending">Point Ascending</option>
-        <option value="descending">Point Descending</option>
+        <option value="ascending">Laveste point</option>
+        <option value="descending">Højeste point</option>
     </select>
-    <button @onclick="FilterAndSort">Submit</button>
+    <button @onclick="FilterAndSort" hidden>Submit</button>
 
 </div>
 
@@ -128,10 +128,7 @@
             : point.OrderByDescending(p => p.Point);
     }
 
-    private void ToggleSortOrder()
-    {
-        sortOrder = sortOrder == "ascending" ? "descending" : "ascending";
-    }
+  
 
     private void FilterAndSort()
     {
