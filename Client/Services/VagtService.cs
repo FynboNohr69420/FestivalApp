@@ -46,10 +46,10 @@ namespace Client.Services
 
         }
 
-        public async void DeleteVagt(int id)
+        public void DeleteVagt(int ID)
         {
-            await http.DeleteFromJsonAsync<Vagt>("https://localhost:7004/api/vagter/{id}");
-            Console.WriteLine("Klient: deleted" +  id);
+            http.DeleteFromJsonAsync<Vagt>($"https://localhost:7004/api/vagter/{ID}");
+            Console.WriteLine("Klient: deleted" +  ID);
         }
     }
 }

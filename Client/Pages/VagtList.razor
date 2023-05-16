@@ -137,7 +137,7 @@
     {
         // Opdatering af komponenten er automatisk, da den afhænger af filteredAndSortedPersons
     }
- 
+
     private EditContext aEditContext;
 
     protected override void OnInitialized()
@@ -161,9 +161,8 @@
         vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
     }
 
-    public async void DeleteVagt(int id)
+    public void DeleteVagt(int ID)
     {
-        await Http.DeleteFromJsonAsync<Vagt>("https://localhost:7004/api/vagter/{id}");
-        Console.WriteLine("Klient: deleted" + id);
+        mService.DeleteVagt(ID);
     }
 }
