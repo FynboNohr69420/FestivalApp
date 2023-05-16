@@ -10,7 +10,7 @@ namespace Server.Repositories
 {
     public class VagtRepositorySQL : IVagt
     {
-        private const string connectionString = "UserID=eehvkyxg;Password=DpGHcrCDBfK_RrcdKdwSNiUR3t_PWx-1;Host=balarama.db.elephantsql.com;Port=5432;Database=eehvkyxg";
+        private const string connectionString = "UserID=eehvkyxg;Password=DpGHcrCDBfK_RrcdKdwSNiUR3t_PWx-1;Host=balarama.db.elephantsql.com;Port=5432;Database=eehvkyxg;Pooling=false";
 
 
         public VagtRepositorySQL()
@@ -56,6 +56,7 @@ namespace Server.Repositories
                         result.Add(b);
                     }
                 }
+                connection.Close();
             }
             return result.ToArray();
         }
@@ -77,31 +78,9 @@ namespace Server.Repositories
                 command.Parameters.AddWithValue("@Antal", vagt.Antal);
                 command.Parameters.AddWithValue("@Beskrivelse", vagt.Beskrivelse);
                 command.ExecuteNonQuery();
+                connection.Close();
             }
         }
-
-        //public int GetNextId()
-        //{
-        //    int id = 0;
-
-        //    using (var connection = new NpgsqlConnection(connectionString))
-        //    {
-        //        connection.Open();
-        //        var command = connection.CreateCommand();
-        //        command.CommandText = @"SELECT MAX(Id) FROM public.Bruger";
-
-        //        using (var reader = command.ExecuteReader())
-        //        {
-        //            {
-        //                while (reader.Read())
-        //                {
-        //                    id = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return id;
-        //}
 
         public void DeleteVagt(int Id)
         {
@@ -113,6 +92,7 @@ namespace Server.Repositories
                 command.CommandText = "DELETE FROM \"Vagt\" WHERE \"ID\" = @ID";
                 command.Parameters.AddWithValue("@ID", Id); ;
                 command.ExecuteNonQuery();
+                connection.Close();
             }
         }
 
@@ -135,6 +115,7 @@ namespace Server.Repositories
                 command.Parameters.AddWithValue("@Antal_Pladser", vagt.Antal);
                 command.Parameters.AddWithValue("@ID", vagt.ID);
                 command.ExecuteNonQuery();
+                connection.Close();
             }
         }
 
@@ -174,6 +155,7 @@ namespace Server.Repositories
                         result = b;
                     }
                 }
+                connection.Close();
             }
             return result;
         }

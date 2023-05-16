@@ -10,7 +10,7 @@ namespace Server.Repositories
 {
     public class BrugerRepositorySQL : IBruger
     {
-        private const string connectionString = "UserID=eehvkyxg;Password=DpGHcrCDBfK_RrcdKdwSNiUR3t_PWx-1;Host=balarama.db.elephantsql.com;Port=5432;Database=eehvkyxg";
+        private const string connectionString = "UserID=eehvkyxg;Password=DpGHcrCDBfK_RrcdKdwSNiUR3t_PWx-1;Host=balarama.db.elephantsql.com;Port=5432;Database=eehvkyxg;Pooling=false";
 
 
         public BrugerRepositorySQL()
@@ -58,6 +58,7 @@ namespace Server.Repositories
                         result.Add(b);
                     }
                 }
+                connection.Close();
             }
             return result.ToArray();
         }
@@ -103,6 +104,7 @@ namespace Server.Repositories
                         result = b;
                     }
                 }
+                connection.Close();
             }
             return result;
         }
@@ -130,6 +132,7 @@ namespace Server.Repositories
                 command.Parameters.AddWithValue("@Password", bruger.Password);
                 command.Parameters.AddWithValue("@isKoordinator", bruger.IsKoordinator);
                 command.ExecuteNonQuery();
+                connection.Close();
             }
         }
 
@@ -144,6 +147,7 @@ namespace Server.Repositories
                 command.CommandText = "DELETE FROM \"Bruger\" WHERE \"ID\" = @ID";
                 command.Parameters.AddWithValue("@ID", Id); ;
                 command.ExecuteNonQuery();
+                connection.Close();
             }
         }
 
@@ -167,6 +171,7 @@ namespace Server.Repositories
                 command.Parameters.AddWithValue("@isKoordinator", bruger.IsKoordinator);
                 command.Parameters.AddWithValue("@ID", bruger.ID);
                 command.ExecuteNonQuery();
+                connection.Close();
             }
         }
 
@@ -208,6 +213,7 @@ namespace Server.Repositories
                         result = b;
                     }
                 }
+                connection.Close();
             }
             return result;
         }
