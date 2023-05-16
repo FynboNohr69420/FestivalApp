@@ -63,13 +63,15 @@ namespace Server.Repositories
 
         public void AddVagt(Vagt vagt)
         {
-
+            int? resID = null; // Placeholder variabel til ID'et af indsat data
+            
+            // Indsætter stamdata om vagten i vagt tabellen
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "INSERT INTO \"Vagt\"(\"Navn\", \"Point\", \"Start\", \"Slut\", \"Beskrivelse\", \"Kategori_ID\", \"Antal_Pladser\") VALUES (@Navn, @Point, @Start, @Slut, @Beskrivelse, @Kategori, @Antal)";
+                command.CommandText = "INSERT INTO \"Vagt\"(\"Navn\", \"Point\", \"Start\", \"Slut\", \"Beskrivelse\", \"Kategori_ID\", \"Antal_Pladser\", \"isLocked\") VALUES (@Navn, @Point, @Start, @Slut, @Beskrivelse, @Kategori, @Antal, @isLocked) RETURNING \"ID\"";
                 command.Parameters.AddWithValue("@Navn", vagt.Navn);
                 command.Parameters.AddWithValue("@Kategori", vagt.Kategori);
                 command.Parameters.AddWithValue("@Point", vagt.Point);
@@ -77,20 +79,47 @@ namespace Server.Repositories
                 command.Parameters.AddWithValue("@Slut", vagt.Slut);
                 command.Parameters.AddWithValue("@Antal", vagt.Antal);
                 command.Parameters.AddWithValue("@Beskrivelse", vagt.Beskrivelse);
-                command.ExecuteNonQuery();
+                command.Parameters.AddWithValue("@isLocked", vagt.isLocked);
+                resID = (Int32)command.ExecuteScalar(); // Kører query'en, men returnerer 'RETURNING' værdien. (Se CommandText herover)
+                connection.Close();
+            }
+            // Indsætter linjer i bemandings-tabellen
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+
+                command.CommandText = "INSERT INTO \"Bemanding\"(\"Vagt_ID\") VALUES (@ID)";
+                command.Parameters.AddWithValue("@ID", resID);
+
+                for (int i = 1; i <= vagt.Antal; i++) // Loop der indsætter den mængde bemandings-linger som er defineret i vagten
+                    {
+                    command.ExecuteNonQuery();
+                    }
                 connection.Close();
             }
         }
 
-        public void DeleteVagt(int Id)
+        public void DeleteVagt(int Id) //KFN: Opdater så bemanding fjernes først
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
                 var command = connection.CreateCommand();
 
+                command.CommandText = "DELETE FROM \"Bemanding\" WHERE \"Vagt_ID\" = @ID";
+                command.Parameters.AddWithValue("@ID", Id);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+
                 command.CommandText = "DELETE FROM \"Vagt\" WHERE \"ID\" = @ID";
-                command.Parameters.AddWithValue("@ID", Id); ;
+                command.Parameters.AddWithValue("@ID", Id);
                 command.ExecuteNonQuery();
                 connection.Close();
             }
