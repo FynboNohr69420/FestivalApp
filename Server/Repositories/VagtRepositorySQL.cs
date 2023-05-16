@@ -4,15 +4,16 @@ using Dapper;
 using Npgsql;
 using Microsoft.Data.SqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using MongoDB.Driver.Core.Configuration;
 
 namespace Server.Repositories
 {
-    public class VagterRepositorySQL : IVagt
+    public class VagtRepositorySQL : IVagt
     {
         private const string connectionString = "UserID=eehvkyxg;Password=DpGHcrCDBfK_RrcdKdwSNiUR3t_PWx-1;Host=balarama.db.elephantsql.com;Port=5432;Database=eehvkyxg";
 
 
-        public VagterRepositorySQL()
+        public VagtRepositorySQL()
         {
         }
 
@@ -24,7 +25,7 @@ namespace Server.Repositories
                 connection.Open();
 
                 var command = connection.CreateCommand();
-                command.CommandText = "SELECT * FROM \"Navn\"";
+                command.CommandText = "SELECT * FROM \"Vagt\"";
 
 
                 using (var reader = command.ExecuteReader())
@@ -34,22 +35,22 @@ namespace Server.Repositories
                     {
                         var Id = reader.GetInt32(0);
                         var Navn = reader.GetString(1);
-                        var Kategori = reader.GetString(2);
-                        var Point = reader.GetInt32(3);
-                        var Start = reader.GetDateTime(4);
-                        var Slut = reader.GetDateTime(5);
-                        var Antal = reader.GetInt32(6);
-                        var Beskrivelse = reader.GetString(7);
+                        var Point = reader.GetInt32(2);
+                        var Start = reader.GetDateTime(3);
+                        var Slut = reader.GetDateTime(4);
+                        var Beskrivelse = reader.GetString(5);
+                        var KategoriID = reader.GetInt32(6);
+                        var Antal_Pladser = reader.GetInt32(7);
 
                         Vagt b = new Vagt
                         {
                             ID = Id,
                             Navn = Navn,
-                            Kategori = Kategori,
+                            Kategori = KategoriID,
                             Point = Point,
                             Start = Start,
                             Slut = Slut,
-                            Antal = Antal,
+                            Antal = Antal_Pladser,
                             Beskrivelse = Beskrivelse,
                         };
                         result.Add(b);
@@ -59,7 +60,7 @@ namespace Server.Repositories
             return result.ToArray();
         }
 
-        public void Add(Vagt vagt)
+        public void AddVagt(Vagt vagt)
         {
 
             using (var connection = new NpgsqlConnection(connectionString))
@@ -67,14 +68,14 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "INSERT INTO \"Id\" (\"Navn\", \"Kategori\", \"Point\", \"Start\", \"Slut\", \"Antal\", \"Beskrivelse\",) VALUES (\'@Navn\', \'@Kategori\', @Point, \'@Start\', \'@Slut\', \'@Antal\', \'@Beskrivelse\')";
-                command.Parameters.AddWithValue("@Navn", vagt);
-                command.Parameters.AddWithValue("@Kategori", vagt);
-                command.Parameters.AddWithValue("@Point", vagt);
-                command.Parameters.AddWithValue("@Start", vagt);
-                command.Parameters.AddWithValue("@Slut", vagt);
-                command.Parameters.AddWithValue("@Antal", vagt);
-                command.Parameters.AddWithValue("@Beskrivelse", vagt);
+                command.CommandText = "INSERT INTO \"Vagt\"(\"Navn\", \"Point\", \"Start\", \"Slut\", \"Beskrivelse\", \"Kategori_ID\", \"Antal_Pladser\") VALUES (@Navn, @Point, @Start, @Slut, @Beskrivelse, @Kategori, @Antal)";
+                command.Parameters.AddWithValue("@Navn", vagt.Navn);
+                command.Parameters.AddWithValue("@Kategori", vagt.Kategori);
+                command.Parameters.AddWithValue("@Point", vagt.Point);
+                command.Parameters.AddWithValue("@Start", vagt.Start);
+                command.Parameters.AddWithValue("@Slut", vagt.Slut);
+                command.Parameters.AddWithValue("@Antal", vagt.Antal);
+                command.Parameters.AddWithValue("@Beskrivelse", vagt.Beskrivelse);
                 command.ExecuteNonQuery();
             }
         }
@@ -109,7 +110,7 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "DELETE FROM \"NAVN\" WHERE \"ID\" = @ID";
+                command.CommandText = "DELETE FROM \"Vagt\" WHERE \"ID\" = @ID";
                 command.Parameters.AddWithValue("@ID", Id); ;
                 command.ExecuteNonQuery();
             }
@@ -119,11 +120,67 @@ namespace Server.Repositories
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
+                
+
                 connection.Open();
                 var command = connection.CreateCommand();
 
-
+                command.CommandText = "UPDATE \"Vagt\" SET \"Navn\"=@Navn, \"Point\"=@Point, \"Start\"=@Start, \"Slut\"=@Slut, \"Beskrivelse\"=@Beskrivelse, \"Kategori_ID\"=@Kategori_ID, \"Antal_Pladser\"=@Antal_Pladser WHERE \"ID\" = @ID";
+                command.Parameters.AddWithValue("@Navn", vagt.Navn);
+                command.Parameters.AddWithValue("@Point", vagt.Point);
+                command.Parameters.AddWithValue("@Start", vagt.Start);
+                command.Parameters.AddWithValue("@Slut", vagt.Slut);
+                command.Parameters.AddWithValue("@Beskrivelse", vagt.Beskrivelse);
+                command.Parameters.AddWithValue("@Kategori_ID", vagt.Kategori );
+                command.Parameters.AddWithValue("@Antal_Pladser", vagt.Antal);
+                command.Parameters.AddWithValue("@ID", vagt.ID);
+                command.ExecuteNonQuery();
             }
         }
+
+        public Vagt GetVagt(int VagtID)
+        {
+            var result = new Vagt();
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM \"Vagt\" WHERE \"ID\" =" + "'" + VagtID + "'";
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var Id = reader.GetInt32(0);
+                        var Navn = reader.GetString(1);
+                        var Point = reader.GetInt32(2);
+                        var Start = reader.GetDateTime(3);
+                        var Slut = reader.GetDateTime(4);
+                        var Beskrivelse = reader.GetString(5);
+                        var KategoriID = reader.GetInt32(6);
+                        var Antal_Pladser = reader.GetInt32(7);
+
+                        Vagt b = new Vagt
+                        {
+                            ID = Id,
+                            Navn = Navn,
+                            Kategori = KategoriID,
+                            Point = Point,
+                            Start = Start,
+                            Slut = Slut,
+                            Antal = Antal_Pladser,
+                            Beskrivelse = Beskrivelse,
+                        };
+                        result = b;
+                    }
+                }
+            }
+            return result;
+        }
+
+        
+         
+       
     }
+
 }
