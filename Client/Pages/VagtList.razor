@@ -9,7 +9,19 @@
 
 <h1>Vagt listen</h1>
 
-<input type="text" @bind="@searchKeyword" placeholder="Search by name" />
+
+<div>
+    <input type="text" @bind="@searchKeyword" placeholder="Search by name" />
+    <label>Sort Order:</label>
+    <select @bind="@sortOrder">
+        <option value="ascending">Point Ascending</option>
+        <option value="descending">Point Descending</option>
+    </select>
+    <button @onclick="FilterAndSort">Submit</button>
+
+</div>
+
+
 
 <div class="row">
     <div class="col-md-8">
@@ -26,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var vagt in filteredVagtList)
+                @foreach (var vagt in filteredVagtlist)
                 {
                     <tr>
                         <td>@vagt.Navn</td>
@@ -50,8 +62,6 @@
 @code {
     private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
     private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
-    private string searchKeyword = "";
-
 
     [Inject]
     private IVagtService mService { get; set; }
@@ -63,8 +73,28 @@
 
     }
 
-    private IEnumerable<Vagt> filteredVagtList => string.IsNullOrWhiteSpace(searchKeyword) ? vagtlist : vagtlist.Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
+
+    private string searchKeyword = "";
+    private string sortOrder = "ascending";
+
+    private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? SortPoint(vagtlist) : SortPoint(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
 
 
+    private IEnumerable<Vagt> SortPoint(IEnumerable<Vagt> point)
+    {
+        return sortOrder == "ascending"
+            ? point.OrderBy(p => p.Point)
+            : point.OrderByDescending(p => p.Point);
+    }
+
+    private void ToggleSortOrder()
+    {
+        sortOrder = sortOrder == "ascending" ? "descending" : "ascending";
+    }
+
+    private void FilterAndSort()
+    {
+        // Opdatering af komponenten er automatisk, da den afhænger af filteredAndSortedPersons
+    }
 
 }
