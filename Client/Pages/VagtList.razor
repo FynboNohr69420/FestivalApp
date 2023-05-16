@@ -10,21 +10,22 @@
 <h1>Vagt listen</h1>
 
 
-    <div>
-        <label>Sortering af:</label>
-        <select @bind="@selectedSortOption">
-            <option value="point">Point</option>
-            <option value="startDate">Start dato</option>
-        </select>
-    </div>
+<div>
+    <label>Sortering af:</label>
+    <select @bind="@selectedSortOption">
+        <option value="point">Point</option>
+        <option value="startDate">Start dato</option>
+        <option value="antal">Antal</option>
+    </select>
+</div>
 
-    <div>
-        <label>Sorter efter:</label>
-        <select @bind="@Sortering">
-            <option value="ascending">Stigende</option>
-            <option value="descending">Faldende</option>
-        </select>
-    </div>
+<div>
+    <label>Sorter efter:</label>
+    <select @bind="@Sortering">
+        <option value="ascending">Stigende</option>
+        <option value="descending">Faldende</option>
+    </select>
+</div>
 
 
 <div class="row">
@@ -141,6 +142,13 @@
                 Sorter = Sorter.OrderBy(p => p.Start);
             else
                 Sorter = Sorter.OrderByDescending(p => p.Start);
+        }
+        else if (selectedSortOption == "antal")
+        {
+            if (Sortering == "ascending")
+                Sorter = Sorter.OrderBy(p => p.Antal);
+            else
+                Sorter = Sorter.OrderByDescending(p => p.Antal);
         }
 
         return Sorter;
