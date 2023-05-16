@@ -46,11 +46,10 @@ namespace Client.Services
 
         }
 
-        public async Task<Vagt> GetSpecificVagt(int id)
+        public async void DeleteVagt(int id)
         {
-           var result = await http.GetFromJsonAsync<Vagt>($"https://localhost:7004/api/vagter/gs/{id}");
-
-            return result;
+            await http.DeleteFromJsonAsync<Vagt>("https://localhost:7004/api/vagter/{id}");
+            Console.WriteLine("Klient: deleted" +  id);
         }
     }
 }
