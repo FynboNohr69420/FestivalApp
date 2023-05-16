@@ -2,14 +2,14 @@
 @using Common.Model
 @using Client.Services
 @using System.Net.Http.Json;
+@using Client.Pages;
+
 
 <PageTitle>Vagt listen</PageTitle>
 
 <h1>Vagt listen</h1>
-<form>
-    <input type="text" placeholder="Søg...">
-    <button type="submit">Søg</button>
-</form>
+
+<input type="text" @bind="@searchKeyword" placeholder="Search by name" />
 
 <div class="row">
     <div class="col-md-8">
@@ -26,7 +26,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var vagt in vagtlist)
+                @foreach (var vagt in filteredVagtList)
                 {
                     <tr>
                         <td>@vagt.Navn</td>
@@ -38,7 +38,7 @@
                         <td>@vagt.Antal</td>
                         <td>
                             <a href="@($"/redigervagt?id={vagt.ID}")"> <button class="btn btn-primary">Rediger vagt</button></a>
-                        </td>                       
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -48,17 +48,23 @@
 
 
 @code {
-
     private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
-    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter 
+    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+    private string searchKeyword = "";
+
 
     [Inject]
     private IVagtService mService { get; set; }
 
+
     protected override async Task OnInitializedAsync()
     {
         vagtlist = (await mService.getAll()).ToArray();
+
     }
+
+    private IEnumerable<Vagt> filteredVagtList => string.IsNullOrWhiteSpace(searchKeyword) ? vagtlist : vagtlist.Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
+
 
 
 }

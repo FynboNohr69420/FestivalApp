@@ -6,10 +6,8 @@
 <PageTitle>Bruger listen</PageTitle>
 
 <h1>Bruger listen</h1>
-<form>
-    <input type="text" placeholder="Søg...">
-    <button type="submit">Søg</button>
-</form>
+<input type="text" @bind="@searchKeyword" placeholder="Søg på navn" />
+
 
 <div class="row">
     <div class="col-md-8">
@@ -26,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var bruger in brugerlist)
+                @foreach (var bruger in filteredBrugerList)
                 {
                     <tr>
                         <td>@bruger.Fornavn</td>
@@ -38,7 +36,7 @@
                         <td>@bruger.IsKoordinator</td>
                         <td>
                             <a href="@($"/redigerbruger?id={bruger.ID}")"> <button class="btn btn-primary">Rediger bruger</button></a>
-                        </td>                       
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -51,6 +49,8 @@
 
     private Bruger bruger = new Bruger(); // Opretter et tomt Booking objekt
     private Bruger[]? brugerlist = new Bruger[0]; // Opretter en tom liste af Booking objekter
+    private string searchKeyword = "";
+
 
     [Inject]
     private IBrugerService mService { get; set; }
@@ -59,6 +59,9 @@
     {
         brugerlist = (await mService.getAll()).ToArray();
     }
+
+    private IEnumerable<Bruger> filteredBrugerList => string.IsNullOrWhiteSpace(searchKeyword) ? brugerlist : brugerlist.Where(v => v.Fornavn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
+
 
 
 }
