@@ -6,6 +6,11 @@
 @inject HttpClient Http;
 
 <PageTitle>Registrering</PageTitle>
+
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
 @if (visFormular)
 {
     <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
@@ -17,7 +22,8 @@
         </div>
         <div class="col-md-12 mb-3">
             <label for="Password" style="font-weight:bold">Password</label>
-            <InputText type="password" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
+            <InputText type="@passwordType" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
+            <i @onclick="TogglePasswordVisibility" class="material-icons">visibility</i>
         </div>
         <div>
             <button type="submit" class="btn btn-login">Submit</button>
@@ -30,7 +36,7 @@
 
 
 @if (showEditForm)
-    {
+{
     <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Allerede oprettet?</button>
     <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
@@ -78,25 +84,25 @@
             <button type="submit" class="btn btn-primary">Registrer</button>
         </div>
     </EditForm>
-    }
+}
 
-    @if (showPopup)
-    {
-        <div class="popup">
-            <h2>Betingelser</h2>
-            <p>Her er vores betingelser:</p>
-            <ol>
-                <li>Du skal være mindst 18 år gammel for at være frivillig på festivalen.</li>
-                <li>Du skal være til rådighed i mindst 24 timer som frivillig under festivalen.</li>
-                <li>Du skal overholde alle instruktioner og anvisninger fra festivalens personale.</li>
-                <li>Du skal behandle festivalgæster, kunstnere og andre frivillige med respekt og venlighed.</li>
-                <li>Du skal være ansvarlig for dit eget velbefindende og sikkerhed under festivalen.</li>
-                <li>Du skal respektere festivalens regler og politikker, herunder reglerne for alkohol- og narkotikabrug.</li>
-                <li>Du accepterer, at festivalens arrangører ikke kan holdes ansvarlige for eventuelle skader eller tab, der opstår under din frivillige tjeneste.</li>
-            </ol>
-            <button class="btn btn-danger" @onclick="HidePopup">Luk</button>
-        </div>
-    }
+@if (showPopup)
+{
+    <div class="popup">
+        <h2>Betingelser</h2>
+        <p>Her er vores betingelser:</p>
+        <ol>
+            <li>Du skal være mindst 18 år gammel for at være frivillig på festivalen.</li>
+            <li>Du skal være til rådighed i mindst 24 timer som frivillig under festivalen.</li>
+            <li>Du skal overholde alle instruktioner og anvisninger fra festivalens personale.</li>
+            <li>Du skal behandle festivalgæster, kunstnere og andre frivillige med respekt og venlighed.</li>
+            <li>Du skal være ansvarlig for dit eget velbefindende og sikkerhed under festivalen.</li>
+            <li>Du skal respektere festivalens regler og politikker, herunder reglerne for alkohol- og narkotikabrug.</li>
+            <li>Du accepterer, at festivalens arrangører ikke kan holdes ansvarlige for eventuelle skader eller tab, der opstår under din frivillige tjeneste.</li>
+        </ol>
+        <button class="btn btn-danger" @onclick="HidePopup">Luk</button>
+    </div>
+}
 
 
 @code {
@@ -104,6 +110,17 @@
     private Bruger bruger = new Bruger();
     private Bruger brugerForm = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
+    private string billede = "visibility.png";
+
+
+    private bool showPassword = false;
+    private string passwordType = "password";
+
+    private void TogglePasswordVisibility()
+    {
+        showPassword = !showPassword;
+        passwordType = showPassword ? "text" : "password";
+    }
 
     bool showPopup = false;
 
