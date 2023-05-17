@@ -156,11 +156,7 @@
     }
 
 
-    private void FilterAndSort()
-    {
-        // Opdatering af komponenten er automatisk, da den afhænger af filteredAndSortedPersons
-    }
-
+   
     private EditContext aEditContext;
 
     protected override void OnInitialized()
@@ -180,8 +176,6 @@
     public async Task AddVagt()
     {
         await mService.AddVagt(vagt);
-        Console.WriteLine("klient: add " + vagt.Navn); // Udskriver informationer om den nye booking i konsollen
-        vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
     }
 
     public void DeleteVagt(int ID)
