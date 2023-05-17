@@ -51,15 +51,22 @@
 
 
 <div>
-    <input type="text" @bind="@searchKeyword" placeholder="Search by name" />
-    <label>Sorter point:</label>
-    <select @bind="@sortOrder">
-        <option value="ascending">Laveste point</option>
-        <option value="descending">Højeste point</option>
+    <label>Sortering af:</label>
+    <select @bind="@selectedSortOption">
+        <option value="point">Point</option>
+        <option value="startDate">Start dato</option>
+        <option value="antal">Antal</option>
     </select>
-    <button @onclick="FilterAndSort" hidden>Submit</button>
-
 </div>
+
+<div>
+    <label>Sorter efter:</label>
+    <select @bind="@Sortering">
+        <option value="ascending">Stigende</option>
+        <option value="descending">Faldende</option>
+    </select>
+</div>
+<input type="text" @bind="@searchKeyword" placeholder="Søg på vagt" />
 
 
 
@@ -70,11 +77,11 @@
                 <tr>
                     <th>Navn</th>
                     <th>Point</th>
-                    <th>Telefonnummer</th>
-                    <th>Addresse</th>
-                    <th>Email</th>
-                    <th>Fødselsdagsdato</th>
-                    <th>koordinator: </th>
+                    <th>Start dato</th>
+                    <th>Slut dato</th>
+                    <th>Beskrivelse</th>
+                    <th>KategoriID</th>
+                    <th>Antal pladser</th>
                 </tr>
             </thead>
             <tbody>
@@ -125,18 +132,38 @@
 
 
     private string searchKeyword = "";
-    private string sortOrder = "ascending";
+    private string selectedSortOption = "point";
+    private string Sortering = "ascending";
 
-    private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? SortPoint(vagtlist) : SortPoint(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
 
+    private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? Sorter(vagtlist) : Sorter(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
 
-    private IEnumerable<Vagt> SortPoint(IEnumerable<Vagt> point)
+    private IEnumerable<Vagt> Sorter(IEnumerable<Vagt> Sorter)
     {
-        return sortOrder == "ascending"
-            ? point.OrderBy(p => p.Point)
-            : point.OrderByDescending(p => p.Point);
-    }
+        if (selectedSortOption == "point")
+        {
+            if (Sortering == "ascending")
+                Sorter = Sorter.OrderBy(p => p.Point);
+            else
+                Sorter = Sorter.OrderByDescending(p => p.Point);
+        }
+        else if (selectedSortOption == "startDate")
+        {
+            if (Sortering == "ascending")
+                Sorter = Sorter.OrderBy(p => p.Start);
+            else
+                Sorter = Sorter.OrderByDescending(p => p.Start);
+        }
+        else if (selectedSortOption == "antal")
+        {
+            if (Sortering == "ascending")
+                Sorter = Sorter.OrderBy(p => p.Antal);
+            else
+                Sorter = Sorter.OrderByDescending(p => p.Antal);
+        }
 
+        return Sorter;
+    }
 
 
     private void FilterAndSort()

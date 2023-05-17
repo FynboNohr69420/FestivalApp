@@ -18,22 +18,75 @@
         <label for="Password" style="font-weight:bold">Password</label>
         <InputText type="password" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
     </div>
-    <div id="register-link">
-        <a href="/addbruger" class="text">Bliv frivillig her</a>
-    </div>
     <div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-login">Submit</button>
+        <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Registrer her</button>
     </div>
 
 </EditForm>
 <p style="display: @showerror; color: red">Hov, der er sket en fejl. Har du skrevet din email og password rigtigt?</p>
 
 
-@code {
-    public string showerror = "none";
+@if (showEditForm)
+    {
+    <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="col-md-12 mb-3">
+            <label for="Navn">Navn</label>
+            <InputText id="Navn" @bind-Value="bruger.Fornavn" class="form-control" />
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Navn">Efternavn</label>
+            <InputText id="Navn" @bind-Value="bruger.Efternavn" class="form-control" />
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Telefonnummer">Telefonnummer</label>
+            <InputNumber id="Telefonnummer" @bind-Value="bruger.Telefonnummer" class="form-control" />
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Adresse">Adresse</label>
+            <InputText id="Adresse" @bind-Value="bruger.Adresse" class="form-control" />
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Email">Email</label>
+            <InputText id="Email" @bind-Value="bruger.Email" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="Fødselsdag">Fødselsdag</label>
+            <InputDate id="Fødselsdag" @bind-Value="bruger.Fødselsdag" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="Password">Password</label>
+            <InputText id="Password" @bind-Value="bruger.Password" class="form-control" />
+        </div>
+        <div class="col-md-1 mb-3">
+            <label for="IsKoordinator">Koordinator</label>
+            <InputSelect id="IsKoordinator" @bind-Value="bruger.IsKoordinator" class="form-control">
+                <option value="true">Ja</option>
+                <option value="false">Nej</option>
+            </InputSelect>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </EditForm>
+    }
+
+
+    @code {
+public string showerror = "none";
     private Bruger bruger = new Bruger();
     private Bruger brugerForm = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
+
+    private bool showEditForm = false;
+
+    private void ToggleEditForm()
+    {
+        showEditForm = !showEditForm;
+    }
+
 
     private EditContext aEditContext;
 
@@ -48,7 +101,7 @@
 
     public async Task HandleValidSubmit()
     {
-        if(brugerForm.Email == " ")
+        if (brugerForm.Email == " ")
         {
             showerror = "inline";
         }
@@ -61,6 +114,9 @@
 
             login();
         }
+
+        await Add();
+        bruger.Fødselsdag = DateTime.Now;
     }
 
     public async Task<Bruger> getSpecific(string email)
@@ -72,19 +128,27 @@
 
     }
 
+
+    public async Task Add()
+    {
+        await mService.Add(bruger);
+        bruger = new();
+
+    }
+
     public void login()
     {
-        if(bruger.Efternavn == null || bruger.Email == null || bruger.Password == null)
+        if (bruger.Efternavn == null || bruger.Email == null || bruger.Password == null)
         {
             showerror = "inline";
-    }
+        }
         else
         {
-        if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == true)
+            if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == true)
             {
                 NavigationManager.NavigateTo($"/redigerbruger?id={bruger.ID}"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
-        else if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == false)
+            else if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == false)
             {
                 NavigationManager.NavigateTo("brugerlist"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
@@ -93,6 +157,6 @@
                 showerror = "inline";
             }
         }
-        
+
     }
-}
+    }
