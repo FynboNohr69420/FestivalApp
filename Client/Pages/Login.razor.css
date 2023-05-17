@@ -82,6 +82,21 @@ a:hover {
     text-decoration: underline !important;
 }
 
+.form-group {
+    position: relative;
+}
+
+.input-container {
+    position: relative;
+}
+
+    .input-container i {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+    }
+
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
     span.psw {

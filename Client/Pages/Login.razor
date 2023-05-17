@@ -20,10 +20,12 @@
             <label for="Email" style="font-weight:bold">Email</label>
             <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control" />
         </div>
-        <div class="col-md-12 mb-3">
-            <label for="Password" style="font-weight:bold">Password</label>
-            <InputText type="@passwordType" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
-            <i @onclick="TogglePasswordVisibility" class="material-icons">visibility</i>
+        <label for="Password" style="font-weight:bold">Password</label>
+        <div class="form-group">
+            <div class="input-container">
+                <InputText type="@passwordType" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
+                <i @onclick="TogglePasswordVisibility" class="material-icons">visibility</i>
+            </div>
         </div>
         <div>
             <button type="submit" class="btn btn-login">Submit</button>
