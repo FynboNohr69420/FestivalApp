@@ -5,6 +5,43 @@
 @using Client.Pages;
 @inject HttpClient Http;
 
+<h1> Opret Ny Vagt </h1>
+
+<PageTitle>Registrering</PageTitle>
+
+<EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="col-md-12 mb-3">
+        <label for="Navn">Navn</label>
+        <InputText id="Navn" @bind-Value="vagt.Navn" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Telefonnummer">Start dato</label>
+        <InputDate id="StartDato" @bind-Value="vagt.Start" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Adresse">Slut dato</label>
+        <InputDate id="SlutDato" @bind-Value="vagt.Slut" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Email">Kategori</label>
+        <InputNumber id="Kategori" @bind-Value="vagt.Kategori" class="form-control" />
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="Fødselsdag">Antal pladser</label>
+        <InputNumber id="Antal" @bind-Value="vagt.Antal" class="form-control" />
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="Password">Beskrivelse</label>
+        <InputText id="Beskrivelse" @bind-Value="vagt.Beskrivelse" class="form-control" />
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+</EditForm>
+
 <PageTitle>Vagt listen</PageTitle>
 
 <h1>Vagt listen</h1>
@@ -49,7 +86,7 @@
                         <td>@vagt.Kategori</td>
                         <td>@vagt.Antal</td>
                         <td>
-                            <a href="@($"/redigervagt?id={vagt.ID}")"> <button class="btn btn-primary">Rediger vagt</button></a> 
+                            <a href="@($"/redigervagt?id={vagt.ID}")"> <button class="btn btn-primary">Rediger vagt</button></a>
                         </td>
                         <td>
                             <button class="btn btn-danger" @onclick="() => DeleteVagt(vagt.ID)">Slet Vagt</button>
@@ -60,44 +97,6 @@
         </table>
     </div>
 </div>
-
-
-<h1> Opret Ny Vagt </h1>
-
-<PageTitle>Registrering</PageTitle>
-
-<EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="col-md-12 mb-3">
-        <label for="Navn">Navn</label>
-        <InputText id="Navn" @bind-Value="vagt.Navn" class="form-control" />
-    </div>
-    <div class="col-md-12 mb-3">
-        <label for="Telefonnummer">Start dato</label>
-        <InputDate id="StartDato" @bind-Value="vagt.Start" class="form-control" />
-    </div>
-    <div class="col-md-12 mb-3">
-        <label for="Adresse">Slut dato</label>
-        <InputDate id="SlutDato" @bind-Value="vagt.Slut" class="form-control" />
-    </div>
-    <div class="col-md-12 mb-3">
-        <label for="Email">Kategori</label>
-        <InputNumber id="Kategori" @bind-Value="vagt.Kategori" class="form-control" />
-    </div>
-    <div class="col-md-6 mb-3">
-        <label for="Fødselsdag">Antal pladser</label>
-        <InputNumber id="Antal" @bind-Value="vagt.Antal" class="form-control" />
-    </div>
-    <div class="col-md-6 mb-3">
-        <label for="Password">Beskrivelse</label>
-        <InputText id="Beskrivelse" @bind-Value="vagt.Beskrivelse" class="form-control" />
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-
-</EditForm>
 
 
 @code {
