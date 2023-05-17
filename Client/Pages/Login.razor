@@ -6,29 +6,32 @@
 @inject HttpClient Http;
 
 <PageTitle>Registrering</PageTitle>
+@if (visFormular)
+{
+    <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="col-md-12 mb-3">
+            <label for="Email" style="font-weight:bold">Email</label>
+            <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control" />
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Password" style="font-weight:bold">Password</label>
+            <InputText type="password" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
+        </div>
+        <div>
+            <button type="submit" class="btn btn-login">Submit</button>
+            <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Bliv frivillig her</button>
+        </div>
 
-<EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="col-md-12 mb-3">
-        <label for="Email" style="font-weight:bold">Email</label>
-        <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control" />
-    </div>
-    <div class="col-md-12 mb-3">
-        <label for="Password" style="font-weight:bold">Password</label>
-        <InputText type="password" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
-    </div>
-    <div>
-        <button type="submit" class="btn btn-login">Submit</button>
-        <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Registrer her</button>
-    </div>
-
-</EditForm>
-<p style="display: @showerror; color: red">Hov, der er sket en fejl. Har du skrevet din email og password rigtigt?</p>
+    </EditForm>
+    <p style="display: @showerror; color: red">Hov, der er sket en fejl. Har du skrevet din email og password rigtigt?</p>
+}
 
 
 @if (showEditForm)
-    {
+{
+    <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Allerede oprettet?</button>
     <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -68,23 +71,27 @@
             </InputSelect>
         </div>
         <div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Registrer</button>
         </div>
     </EditForm>
-    }
+}
 
 
-    @code {
-public string showerror = "none";
+@code {
+    public string showerror = "none";
     private Bruger bruger = new Bruger();
     private Bruger brugerForm = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
 
-    private bool showEditForm = false;
+    bool showEditForm = false;
+    bool visFormular = true;
+
 
     private void ToggleEditForm()
     {
+        visFormular = !visFormular;
         showEditForm = !showEditForm;
+
     }
 
 
@@ -159,4 +166,4 @@ public string showerror = "none";
         }
 
     }
-    }
+}
