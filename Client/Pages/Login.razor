@@ -30,7 +30,7 @@
 
 
 @if (showEditForm)
-{
+    {
     <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Allerede oprettet?</button>
     <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
@@ -71,10 +71,32 @@
             </InputSelect>
         </div>
         <div>
+            <p>
+                <a @onclick="ShowPopup" style="color:#027C50">Læs vores betingelser her</a>.
+                <input type="checkbox" checked="checked" name="Accepterer" style="margin-bottom:15px"> Jeg accepterer betingelserne
+            </p>
             <button type="submit" class="btn btn-primary">Registrer</button>
         </div>
     </EditForm>
-}
+    }
+
+    @if (showPopup)
+    {
+        <div class="popup">
+            <h2>Betingelser</h2>
+            <p>Her er vores betingelser:</p>
+            <ol>
+                <li>Du skal være mindst 18 år gammel for at være frivillig på festivalen.</li>
+                <li>Du skal være til rådighed i mindst 24 timer som frivillig under festivalen.</li>
+                <li>Du skal overholde alle instruktioner og anvisninger fra festivalens personale.</li>
+                <li>Du skal behandle festivalgæster, kunstnere og andre frivillige med respekt og venlighed.</li>
+                <li>Du skal være ansvarlig for dit eget velbefindende og sikkerhed under festivalen.</li>
+                <li>Du skal respektere festivalens regler og politikker, herunder reglerne for alkohol- og narkotikabrug.</li>
+                <li>Du accepterer, at festivalens arrangører ikke kan holdes ansvarlige for eventuelle skader eller tab, der opstår under din frivillige tjeneste.</li>
+            </ol>
+            <button class="btn btn-danger" @onclick="HidePopup">Luk</button>
+        </div>
+    }
 
 
 @code {
@@ -82,6 +104,18 @@
     private Bruger bruger = new Bruger();
     private Bruger brugerForm = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
+
+    bool showPopup = false;
+
+    void ShowPopup()
+    {
+        showPopup = true;
+    }
+
+    void HidePopup()
+    {
+        showPopup = false;
+    }
 
     bool showEditForm = false;
     bool visFormular = true;
