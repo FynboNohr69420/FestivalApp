@@ -128,7 +128,7 @@
             : point.OrderByDescending(p => p.Point);
     }
 
-  
+
 
     private void FilterAndSort()
     {
@@ -161,5 +161,6 @@
     public void DeleteVagt(int ID)
     {
         mService.DeleteVagt(ID);
+        Console.WriteLine("klient: deleted" + ID);
     }
 }
