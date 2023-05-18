@@ -103,5 +103,8 @@ a:hover {
         cursor: pointer; /* Erstat med den ønskede musemarkør */
     }
 
+.div-margin {
+    margin-bottom: 20px;
+}
 
 }
