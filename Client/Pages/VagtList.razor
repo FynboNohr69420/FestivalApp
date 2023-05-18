@@ -21,12 +21,12 @@
             <InputText id="Navn" @bind-Value="vagt.Navn" class="form-control" />
         </div>
         <div class="col-md-12 mb-3">
-            <label for="Telefonnummer">Start dato</label>
-            <InputDate id="StartDato" @bind-Value="vagt.Start" class="form-control" />
+            <label for="Adresse">Start dato</label>
+            <input type="datetime" @bind="vagt.Start" class="form-control" />
         </div>
         <div class="col-md-12 mb-3">
             <label for="Adresse">Slut dato</label>
-            <InputDate id="SlutDato" @bind-Value="vagt.Slut" class="form-control" />
+            <input type="datetime" @bind="vagt.Slut" class="form-control" />
         </div>
         <div class="col-md-12 mb-3">
             <label for="Email">Kategori</label>
@@ -71,7 +71,7 @@
 
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12 mb-10">
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>

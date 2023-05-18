@@ -46,8 +46,8 @@
             Start 
         </label>
         <div class="col-sm-10">
-            <InputDate id="email" class="form-control" placeholder="starttidspunkt"
-                         @bind-Value="vagt.Start" />
+            <input type="datetime" id="vagt" class="form-control" placeholder="starttidspunkt"
+                         @bind="vagt.Start" />
             <ValidationMessage For="@(() => vagt.Start)" />
         </div>
     </div>
@@ -56,8 +56,8 @@
             Slut
         </label>
         <div class="col-sm-10">
-            <InputDate id="slut" class="form-control"
-                       @bind-Value="vagt.Slut" />
+            <input type="datetime" id="slut" class="form-control"
+                       @bind="vagt.Slut" />
             <ValidationMessage For="@(() => vagt.Slut)" />
         </div>
     </div>
