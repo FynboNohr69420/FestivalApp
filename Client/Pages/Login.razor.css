@@ -107,4 +107,20 @@ a:hover {
     margin-bottom: 20px;
 }
 
+.icon {
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    transform: translateY(-50%);
+    color: #999;
+    padding: 0 10px;
 }
+
+.div-margin {
+    margin-bottom: 20px;
+}
+
+
+
+
+
