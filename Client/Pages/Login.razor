@@ -53,8 +53,26 @@
                 Forbered dig på at træde ind i en verden af forførende musik, elektrificerende atmosfære og ustyrlige dansetrin. Vi ses i hjertet af skoven, hvor grænserne opløses, og vildskaben hersker!
             </p>
 
-            <img src="~/billeder/gg.jpg" alt="Beskrivelse af billedet">
 
+
+
+        <h3>Infobox</h3>
+
+        @foreach (var image in images)
+        {
+            <div class="image-container" @onclick="() => ShowPopup(image)">
+                <img src="/billeder/Festival gg.png">
+                <img src="/billeder/gg.jpg">
+            </div>
+        }
+
+        @if (selectedImage != null)
+        {
+            <div class="popup-container" @onclick="ClosePopup">
+                <span class="close-button">&times;</span>
+                <img src="/billeder/Festival gg.png">
+            </div>
+        }
 
         </EditForm>
 }
@@ -206,6 +224,31 @@
 
         return bruger;
 
+    }
+
+
+    class ImageData
+    {
+        public string ImageUrl { get; set; }
+        public string AltText { get; set; }
+    }
+
+    List<ImageData> images = new List<ImageData>
+    {
+        new ImageData { ImageUrl = "gg.jpg" },
+        new ImageData { ImageUrl = "Festival gg.png" }
+    };
+
+    ImageData selectedImage;
+
+    void ShowPopup(ImageData image)
+    {
+        selectedImage = image;
+    }
+
+    void ClosePopup()
+    {
+        selectedImage = null;
     }
 
 
