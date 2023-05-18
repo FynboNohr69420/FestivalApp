@@ -53,28 +53,12 @@
                 Forbered dig på at træde ind i en verden af forførende musik, elektrificerende atmosfære og ustyrlige dansetrin. Vi ses i hjertet af skoven, hvor grænserne opløses, og vildskaben hersker!
             </p>
 
-
-
-
-        <h3>Infobox</h3>
-
-        @foreach (var image in images)
-        {
-            <div class="image-container" @onclick="() => ShowPopup(image)">
-                <img src="/billeder/Festival gg.png">
-                <img src="/billeder/gg.jpg">
-            </div>
-        }
-
-        @if (selectedImage != null)
-        {
-            <div class="popup-container" @onclick="ClosePopup">
-                <span class="close-button">&times;</span>
-                <img src="/billeder/Festival gg.png">
-            </div>
-        }
-
         </EditForm>
+        <div class="row">
+   <img class="festival" src="/billeder/Festival gg.png">
+   <img class= "festival2" src="/billeder/gg.jpg">
+   </div>
+
 }
 
 
@@ -121,24 +105,24 @@
             <button type="submit" class="btn btn-primary">Registrer</button>
         </div>
     </EditForm>
-}
 
-@if (showPopup)
-{
-    <div class="popup">
-        <h2>Betingelser</h2>
-        <p>Her er vores betingelser:</p>
-        <ol>
-            <li>Du skal være mindst 18 år gammel for at være frivillig på festivalen.</li>
-            <li>Du skal være til rådighed i mindst 24 timer som frivillig under festivalen.</li>
-            <li>Du skal overholde alle instruktioner og anvisninger fra festivalens personale.</li>
-            <li>Du skal behandle festivalgæster, kunstnere og andre frivillige med respekt og venlighed.</li>
-            <li>Du skal være ansvarlig for dit eget velbefindende og sikkerhed under festivalen.</li>
-            <li>Du skal respektere festivalens regler og politikker, herunder reglerne for alkohol- og narkotikabrug.</li>
-            <li>Du accepterer, at festivalens arrangører ikke kan holdes ansvarlige for eventuelle skader eller tab, der opstår under din frivillige tjeneste.</li>
-        </ol>
-        <button class="btn btn-danger" @onclick="HidePopup">Luk</button>
-    </div>
+    @if (showPopup)
+    {
+        <div class="popup">
+            <h2>Betingelser</h2>
+            <p>Her er vores betingelser:</p>
+            <ol>
+                <li>Du skal være mindst 18 år gammel for at være frivillig på festivalen.</li>
+                <li>Du skal være til rådighed i mindst 24 timer som frivillig under festivalen.</li>
+                <li>Du skal overholde alle instruktioner og anvisninger fra festivalens personale.</li>
+                <li>Du skal behandle festivalgæster, kunstnere og andre frivillige med respekt og venlighed.</li>
+                <li>Du skal være ansvarlig for dit eget velbefindende og sikkerhed under festivalen.</li>
+                <li>Du skal respektere festivalens regler og politikker, herunder reglerne for alkohol- og narkotikabrug.</li>
+                <li>Du accepterer, at festivalens arrangører ikke kan holdes ansvarlige for eventuelle skader eller tab, der opstår under din frivillige tjeneste.</li>
+            </ol>
+            <button class="btn btn-danger" @onclick="HidePopup">Luk</button>
+        </div>
+    }
 }
 
 
@@ -175,11 +159,23 @@
     bool visFormular = true;
 
 
+    bool showPopupPic = false;
+
+    void ShowPopupPic()
+    {
+        showPopupPic = true;
+    }
+
+    void HidePopupPic()
+    {
+        showPopupPic = false;
+    }
+
+
     private void ToggleEditForm()
     {
         visFormular = !visFormular;
         showEditForm = !showEditForm;
-
     }
 
 
@@ -226,30 +222,6 @@
 
     }
 
-
-    class ImageData
-    {
-        public string ImageUrl { get; set; }
-        public string AltText { get; set; }
-    }
-
-    List<ImageData> images = new List<ImageData>
-    {
-        new ImageData { ImageUrl = "gg.jpg" },
-        new ImageData { ImageUrl = "Festival gg.png" }
-    };
-
-    ImageData selectedImage;
-
-    void ShowPopup(ImageData image)
-    {
-        selectedImage = image;
-    }
-
-    void ClosePopup()
-    {
-        selectedImage = null;
-    }
 
 
     public async Task Add()
