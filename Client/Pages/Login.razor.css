@@ -97,11 +97,14 @@ a:hover {
         transform: translateY(-50%);
     }
 
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-    span.psw {
-        display: block;
-        float: none;
+.hover-effect {
+    transition: color 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+    .hover-effect:hover {
+        color: green; /* Erstat med den ønskede farve */
+        cursor: pointer; /* Erstat med den ønskede musemarkør */
     }
 
 

@@ -13,7 +13,8 @@
 
 @if (visFormular)
 {
-    <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
+        <h1>Login</h1>
+        <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="col-md-12 mb-3">
@@ -24,7 +25,7 @@
         <div class="form-group">
             <div class="input-container">
                 <InputText type="@passwordType" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
-                <i @onclick="TogglePasswordVisibility" class="material-icons">visibility</i>
+                <i @onclick="TogglePasswordVisibility" class="material-icons hover-effect">visibility</i>
             </div>
         </div>
         <div>
@@ -40,9 +41,10 @@
 @if (showEditForm)
 {
     <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Allerede oprettet?</button>
-    <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
+    <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidRegister">
         <DataAnnotationsValidator />
         <ValidationSummary />
+         <h1>Bliv medlem</h1>
         <div class="col-md-12 mb-3">
             <label for="Navn">Navn</label>
             <InputText id="Navn" @bind-Value="bruger.Fornavn" class="form-control" />
@@ -70,13 +72,6 @@
         <div class="col-md-6 mb-3">
             <label for="Password">Password</label>
             <InputText id="Password" @bind-Value="bruger.Password" class="form-control" />
-        </div>
-        <div class="col-md-1 mb-3">
-            <label for="IsKoordinator">Koordinator</label>
-            <InputSelect id="IsKoordinator" @bind-Value="bruger.IsKoordinator" class="form-control">
-                <option value="true">Ja</option>
-                <option value="false">Nej</option>
-            </InputSelect>
         </div>
         <div>
             <p>
@@ -174,7 +169,10 @@
 
             login();
         }
+    }
 
+    public async Task HandleValidRegister()
+    {
         await Add();
         bruger.Fødselsdag = DateTime.Now;
     }
