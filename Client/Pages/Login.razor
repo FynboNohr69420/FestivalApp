@@ -16,17 +16,25 @@
     <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
+
         <div class="col-md-12 mb-3">
             <label for="Email" style="font-weight:bold">Email</label>
-            <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control" />
+            <div class="input-container">
+                <span class="icon"><i class="material-icons">mail</i></span>
+                <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control" />
+            </div>
         </div>
+
+
         <label for="Password" style="font-weight:bold">Password</label>
         <div class="form-group">
             <div class="input-container">
                 <InputText type="@passwordType" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
+                <span class="icon"><i class="material-icons">lock</i></span>
                 <i @onclick="TogglePasswordVisibility" class="material-icons">visibility</i>
             </div>
         </div>
+
         <div>
             <button type="submit" class="btn btn-login">Submit</button>
             <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Bliv frivillig her</button>

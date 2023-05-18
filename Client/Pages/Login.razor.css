@@ -102,3 +102,18 @@ a:hover {
 
 
 }
+
+
+.icon {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+
+
+
+
+
