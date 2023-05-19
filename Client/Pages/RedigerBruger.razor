@@ -110,7 +110,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var vagt in myvagtlist)
+                            @foreach (var vagt in myvagtlist) 
                             {
                                 <tr>
                                     <td>@vagt.ID</td>
@@ -120,7 +120,7 @@
                                     <td>@vagt.Slut</td>
                                     <td>@vagt.Beskrivelse</td>
                                     <td>
-                                        @if(vagt.isLocked == true){
+                                        @if(vagt.isLocked == true){ // This shit doesn't work yet. And I don't know why
                                             <button class="btn btn-secondary">Vagten er låst</button>
                                         }
                                         else if(vagt.isLocked == false)
