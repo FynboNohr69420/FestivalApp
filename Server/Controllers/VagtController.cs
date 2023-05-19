@@ -27,6 +27,13 @@ namespace Server.Controllers
             Console.WriteLine("get ");
             return myRepo.getAll();
         }
+        [HttpGet]
+        [Route("spec/{b_id}")]
+        public IEnumerable<Vagt> GetAllMine(int b_id)
+        {
+            Console.WriteLine("get ");
+            return myRepo.getAllMine(b_id);
+        }
 
 
         // En metode, der håndterer HTTP POST requests til /api/Booking
@@ -38,6 +45,13 @@ namespace Server.Controllers
             Console.WriteLine("post " + vagt.ID);
             // Tilføjer bookingen til databasen gennem vores repository
             myRepo.AddVagt(vagt);
+        }
+
+        [HttpPost]
+        [Route("tag/{bruger}")]
+        public void TagVagt(Vagt vagt, int bruger)
+        {
+            myRepo.TagVagt(vagt, bruger);
         }
 
         // En metode, der håndterer HTTP DELETE requests til /api/Booking/{Id}

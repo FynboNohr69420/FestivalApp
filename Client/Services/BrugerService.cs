@@ -48,7 +48,6 @@ namespace Client.Services
             var result = await http.GetFromJsonAsync<Bruger>("https://localhost:7004/api/brugere/" + email);
 
             return result;
-
         }
 
     }

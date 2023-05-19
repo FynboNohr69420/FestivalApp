@@ -25,7 +25,7 @@ namespace Server.Repositories
                 connection.Open();
 
                 var command = connection.CreateCommand();
-                command.CommandText = "SELECT * FROM \"Vagt\"";
+                command.CommandText = "SELECT * FROM \"FullVagt\"";
 
 
                 using (var reader = command.ExecuteReader())
@@ -41,6 +41,7 @@ namespace Server.Repositories
                         var Beskrivelse = reader.GetString(5);
                         var KategoriID = reader.GetInt32(6);
                         var Antal_Pladser = reader.GetInt32(7);
+                        var Pladser_Tilbage = reader.GetInt32(10);
 
                         Vagt b = new Vagt
                         {
@@ -52,6 +53,53 @@ namespace Server.Repositories
                             Slut = Slut,
                             Antal = Antal_Pladser,
                             Beskrivelse = Beskrivelse,
+                            Pladser_Tilbage = Pladser_Tilbage
+                        };
+                        result.Add(b);
+                    }
+                }
+                connection.Close();
+            }
+            return result.ToArray();
+        }
+
+        public Vagt[] getAllMine(int b_id)
+        {
+            var result = new List<Vagt>();
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM \"BrugersVagter\" WHERE \"Bruger_ID\" =" + b_id;
+
+
+                using (var reader = command.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        var Id = reader.GetInt32(0);
+                        var Navn = reader.GetString(1);
+                        var Point = reader.GetInt32(2);
+                        var Start = reader.GetDateTime(3);
+                        var Slut = reader.GetDateTime(4);
+                        var Beskrivelse = reader.GetString(5);
+                        var KategoriID = reader.GetInt32(6);
+                        var Antal_Pladser = reader.GetInt32(7);
+                        var Pladser_Tilbage = reader.GetInt32(10);
+
+                        Vagt b = new Vagt
+                        {
+                            ID = Id,
+                            Navn = Navn,
+                            Kategori = KategoriID,
+                            Point = Point,
+                            Start = Start,
+                            Slut = Slut,
+                            Antal = Antal_Pladser,
+                            Beskrivelse = Beskrivelse,
+                            Pladser_Tilbage = Pladser_Tilbage
                         };
                         result.Add(b);
                     }
@@ -96,6 +144,42 @@ namespace Server.Repositories
                     {
                     command.ExecuteNonQuery();
                     }
+                connection.Close();
+            }
+        }
+
+        public void TagVagt(Vagt vagt, int bruger)
+        {
+            var result = 0;
+            int vagtID;
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT \"ID\" FROM \"Bemanding\" WHERE \"Vagt_ID\" =" + vagt.ID + "LIMIT 1";
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result = reader.GetInt32(0);
+                    }
+                    vagtID = result;
+                }
+                connection.Close();
+            }
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+
+                command.CommandText = "UPDATE \"Bemanding\" SET \"Vagt_ID\" = @ID, \"Bruger_ID\" = @Bruger_ID WHERE \"ID\" =" + vagtID;
+                command.Parameters.AddWithValue("@ID", vagt.ID);
+                command.Parameters.AddWithValue("@Bruger_ID", bruger);
+                command.ExecuteNonQuery();
+
                 connection.Close();
             }
         }

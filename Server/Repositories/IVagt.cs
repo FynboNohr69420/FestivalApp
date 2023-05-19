@@ -8,6 +8,9 @@ namespace Server.Repositories
         void AddVagt(Vagt vagt);
         void DeleteVagt(int ID);
         void UpdateVagt(Vagt vagt);
-        Vagt GetVagt (int vagtID);
+        Vagt GetVagt(int vagtID);
+        public void TagVagt(Vagt vagt, int bruger);
+
+        Vagt[] getAllMine(int b_id);
     }
 }
