@@ -7,23 +7,126 @@
 
 <PageTitle>Registrering</PageTitle>
 
-<EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="col-md-12 mb-3">
-        <label for="Email"style="font-weight:bold">Email</label>
-        <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control"  />
-    </div>
-    <div class="col-md-12 mb-3">
-        <label for="Password"style="font-weight:bold">Password</label>
-        <InputText type="password" id="Password" @bind-Value="brugerForm.Password" class="form-control"  />
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
 
-</EditForm>
-<p style="display: @showerror; color: red">Hov, der er sket en fejl. Har du skrevet din email og password rigtigt?</p>
+@if (visFormular)
+{
+    <h1>Login</h1>
+    <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="col-md-12 mb-3">
+            <label for="Email" style="font-weight:bold">Email</label>
+            <div class="input-container">
+                <span class="icon"><i class="material-icons">mail</i></span>
+                <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control" />
+            </div>
+        </div>
+
+
+        <label for="Password" style="font-weight:bold">Password</label>
+        <div class="form-group">
+            <div class="input-container">
+                <InputText type="@passwordType" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
+                <span class="icon"><i class="material-icons">lock</i></span>
+                <i @onclick="TogglePasswordVisibility" class="material-icons">visibility</i>
+                <i @onclick="TogglePasswordVisibility" class="material-icons hover-effect">visibility</i>
+            </div>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-login">Submit</button>
+        </div>
+        <div class="div-margin">
+            <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Bliv frivillig her</button>
+        </div>
+        <hr>
+    </EditForm>
+
+    <h5> Træd ind i en forrygende verden af musikalsk ekstase og uforlignelig feststemning! </h5>
+    <p>
+        Velkommen til RythmRage Festival - epicentret for det mest vilde og adrenalinpumpende eventyr!
+
+        Dette er den eksklusive medlemsportal for vores utæmmede og lidenskabelige festivalfamilie på ikke mindre end 3.000 frygtløse frivillige. <br /> <br />
+        Bliv en del af dette vildtvoksende fællesskab ved at oprette din brugerprofil her - find det hold, der venter på netop din unikke energi og talent. Med over 100 utæmte hold på RythmRage Festival er formændene konstant på udkig efter nye eventyrlystne sjæle, der vil opleve rædselsvækkende glæde og uforglemmelige øjeblikke på rythmcrew.dk
+        Forbered dig på at træde ind i en verden af forførende musik, elektrificerende atmosfære og ustyrlige dansetrin. Vi ses i hjertet af skoven, hvor grænserne opløses, og vildskaben hersker!
+    </p>
+
+
+    <img class="festival" src="/billeder/Festival gg.png">
+    <img class="festival2" src="/billeder/gg.jpg">
+
+
+
+
+
+}
+
+
+@if (showEditForm)
+{
+    <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Allerede oprettet?</button>
+    <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidRegister">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <h1>Bliv medlem</h1>
+        <div class="col-md-12 mb-3">
+            <label for="Navn">Navn</label>
+            <InputText id="Navn" @bind-Value="bruger.Fornavn" class="form-control" />
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Navn">Efternavn</label>
+            <InputText id="Navn" @bind-Value="bruger.Efternavn" class="form-control" />
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Telefonnummer">Telefonnummer</label>
+            <InputNumber id="Telefonnummer" @bind-Value="bruger.Telefonnummer" class="form-control" />
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Adresse">Adresse</label>
+            <InputText id="Adresse" @bind-Value="bruger.Adresse" class="form-control" />
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Email">Email</label>
+            <InputText id="Email" @bind-Value="bruger.Email" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="Fødselsdag">Fødselsdag</label>
+            <InputDate id="Fødselsdag" @bind-Value="bruger.Fødselsdag" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="Password">Password</label>
+            <InputText id="Password" @bind-Value="bruger.Password" class="form-control" />
+        </div>
+        <div>
+            <p>
+                <a @onclick="ShowPopup" style="color:#027C50">Læs vores betingelser her</a>.
+                <input type="checkbox" checked="checked" name="Accepterer" style="margin-bottom:15px"> Jeg accepterer betingelserne
+            </p>
+            <button type="submit" class="btn btn-primary">Registrer</button>
+        </div>
+    </EditForm>
+
+    @if (showPopup)
+    {
+        <div class="popup">
+            <h2>Betingelser</h2>
+            <p>Her er vores betingelser:</p>
+            <ol>
+                <li>Du skal være mindst 18 år gammel for at være frivillig på festivalen.</li>
+                <li>Du skal være til rådighed i mindst 24 timer som frivillig under festivalen.</li>
+                <li>Du skal overholde alle instruktioner og anvisninger fra festivalens personale.</li>
+                <li>Du skal behandle festivalgæster, kunstnere og andre frivillige med respekt og venlighed.</li>
+                <li>Du skal være ansvarlig for dit eget velbefindende og sikkerhed under festivalen.</li>
+                <li>Du skal respektere festivalens regler og politikker, herunder reglerne for alkohol- og narkotikabrug.</li>
+                <li>Du accepterer, at festivalens arrangører ikke kan holdes ansvarlige for eventuelle skader eller tab, der opstår under din frivillige tjeneste.</li>
+            </ol>
+            <button class="btn btn-danger" @onclick="HidePopup">Luk</button>
+        </div>
+    }
+}
 
 
 @code {
@@ -31,6 +134,40 @@
     private Bruger bruger = new Bruger();
     private Bruger brugerForm = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
+    private string billede = "visibility.png";
+
+
+    private bool showPassword = false;
+    private string passwordType = "password";
+
+    private void TogglePasswordVisibility()
+    {
+        showPassword = !showPassword;
+        passwordType = showPassword ? "text" : "password";
+    }
+
+    bool showPopup = false;
+
+    void ShowPopup()
+    {
+        showPopup = true;
+    }
+
+    void HidePopup()
+    {
+        showPopup = false;
+    }
+
+    bool showEditForm = false;
+    bool visFormular = true;
+
+
+    private void ToggleEditForm()
+    {
+        visFormular = !visFormular;
+        showEditForm = !showEditForm;
+    }
+
 
     private EditContext aEditContext;
 
@@ -45,7 +182,7 @@
 
     public async Task HandleValidSubmit()
     {
-        if(brugerForm.Email == " ")
+        if (brugerForm.Email == " ")
         {
             showerror = "inline";
         }
@@ -60,6 +197,12 @@
         }
     }
 
+    public async Task HandleValidRegister()
+    {
+        await Add();
+        bruger.Fødselsdag = DateTime.Now;
+    }
+
     public async Task<Bruger> getSpecific(string email)
     {
 
@@ -69,19 +212,28 @@
 
     }
 
+
+
+    public async Task Add()
+    {
+        await mService.Add(bruger);
+        bruger = new();
+
+    }
+
     public void login()
     {
-        if(bruger.Efternavn == null || bruger.Email == null || bruger.Password == null)
+        if (bruger.Efternavn == null || bruger.Email == null || bruger.Password == null)
         {
             showerror = "inline";
-    }
+        }
         else
         {
-        if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == true)
+            if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == true)
             {
                 NavigationManager.NavigateTo($"/redigerbruger?id={bruger.ID}"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
-        else if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == false)
+            else if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == false)
             {
                 NavigationManager.NavigateTo("brugerlist"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
@@ -90,6 +242,6 @@
                 showerror = "inline";
             }
         }
-        
+
     }
 }
