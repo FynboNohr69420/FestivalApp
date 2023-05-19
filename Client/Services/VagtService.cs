@@ -23,6 +23,14 @@ namespace Client.Services
 
             return vagt;
         }
+
+        public async Task<IEnumerable<Vagt>> getAvailable(int brugerid)
+        {
+            var vagt = await http.GetFromJsonAsync<Vagt[]>($"https://localhost:7004/api/vagter/avail/{brugerid}");
+
+            return vagt;
+        }
+
         public async Task<IEnumerable<Vagt>> getAllMine(int b_id)
         {
             var vagt = await http.GetFromJsonAsync<Vagt[]>($"https://localhost:7004/api/vagter/spec/{b_id}");
@@ -60,6 +68,10 @@ namespace Client.Services
         public async void TagVagt(Vagt vagt, int bruger)
         {
             await http.PostAsJsonAsync<Vagt>($"https://localhost:7004/api/vagter/tag/{bruger}", vagt); // Sender en POST request med booking som JSON payload til API'en
+        }
+        public async void AfmeldVagt(Vagt vagt, int bruger)
+        {
+            await http.PutAsJsonAsync<Vagt>($"https://localhost:7004/api/vagter/afmeld/{bruger}", vagt); // Sender en POST request med booking som JSON payload til API'en
         }
     }
 }

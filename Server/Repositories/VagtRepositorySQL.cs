@@ -25,7 +25,7 @@ namespace Server.Repositories
                 connection.Open();
 
                 var command = connection.CreateCommand();
-                command.CommandText = "SELECT * FROM \"FullVagt\"";
+                command.CommandText = "SELECT * FROM \"FullViewAdmin\"";
 
 
                 using (var reader = command.ExecuteReader())
@@ -48,6 +48,54 @@ namespace Server.Repositories
                             ID = Id,
                             Navn = Navn,
                             Kategori = KategoriID,
+                            Point = Point,
+                            Start = Start,
+                            Slut = Slut,
+                            Antal = Antal_Pladser,
+                            Beskrivelse = Beskrivelse,
+                            Pladser_Tilbage = Pladser_Tilbage
+                        };
+                        result.Add(b);
+                    }
+                }
+                connection.Close();
+            }
+            return result.ToArray();
+        }
+
+        public Vagt[] getAvailable(int brugerid)
+        {
+            var result = new List<Vagt>();
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM \"BrugerView\"";
+
+
+                using (var reader = command.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        var Id = reader.GetInt32(0);
+                        var Navn = reader.GetString(1);
+                        var Point = reader.GetInt32(2);
+                        var Start = reader.GetDateTime(3);
+                        var Slut = reader.GetDateTime(4);
+                        var Beskrivelse = reader.GetString(5);
+                        var Antal_Pladser = reader.GetInt32(6);
+                        var Pladser_Tilbage = 0;
+                        if (reader.GetInt32(7) != null)
+                        {
+                            Pladser_Tilbage = reader.GetInt32(7);
+                        }
+                        
+                        Vagt b = new Vagt
+                        {
+                            ID = Id,
+                            Navn = Navn,
                             Point = Point,
                             Start = Start,
                             Slut = Slut,
@@ -178,6 +226,21 @@ namespace Server.Repositories
                 command.CommandText = "UPDATE \"Bemanding\" SET \"Vagt_ID\" = @ID, \"Bruger_ID\" = @Bruger_ID WHERE \"ID\" =" + vagtID;
                 command.Parameters.AddWithValue("@ID", vagt.ID);
                 command.Parameters.AddWithValue("@Bruger_ID", bruger);
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
+
+        public void AfmeldVagt(Vagt vagt, int bruger)
+        {
+            
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+
+                command.CommandText = "UPDATE \"Bemanding\" SET \"Bruger_ID\" = NULL WHERE \"Vagt_ID\" =" + vagt.ID + "AND \"Bruger_ID\" =" + bruger;
                 command.ExecuteNonQuery();
 
                 connection.Close();
