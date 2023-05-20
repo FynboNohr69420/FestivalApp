@@ -2,7 +2,7 @@
 @using Common.Model;
 @using System.Web;
 @using Client.Services;
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JSRuntime // Injecter 'IJSRuntime' for at muliggøre interaktion med JavaScript på klienten .
 @inject NavigationManager NavigationManager
 @inject HttpClient http;
 
@@ -122,7 +122,7 @@
                                     <td>@vagt.Slut</td>
                                     <td>@vagt.Beskrivelse</td>
                                     <td>
-                                        @if(vagt.isLocked == true){ // This shit doesn't work yet. And I don't know why
+                                        @if(vagt.isLocked == true){ 
                                             <button class="btn btn-secondary">Vagten er låst</button>
                                         }
                                         else if(vagt.isLocked == false)
