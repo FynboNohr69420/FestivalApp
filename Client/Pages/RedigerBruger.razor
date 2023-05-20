@@ -131,6 +131,7 @@
                                         }
                                     </td>
                                 </tr>
+                                Console.WriteLine(vagt.isLocked);
                             }
                         </tbody>
                     </table>
@@ -292,6 +293,5 @@
     {
         await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
     }
-}
 }
 
