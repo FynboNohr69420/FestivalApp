@@ -1,6 +1,8 @@
 ﻿@page "/redigerbruger"
 @using Common.Model;
+@using System.Web;
 @using Client.Services;
+@inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
 @inject HttpClient http;
 
@@ -194,7 +196,7 @@
 @code {
     private Bruger bruger = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
-    
+
 
     private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
@@ -274,14 +276,22 @@
         // Opdatering af komponenten er automatisk, da den afhænger af filteredAndSortedPersons
     }
 
-    private void TagVagt(Vagt vagt, int bruger)
+    private async Task TagVagt(Vagt vagt, int bruger)
     {
         vService.TagVagt(vagt, bruger);
+        await Refresh();
     }
 
-    private void AfmeldVagt(Vagt vagt, int bruger)
+    private async Task AfmeldVagt(Vagt vagt, int bruger)
     {
         vService.AfmeldVagt(vagt, bruger);
+        await Refresh();
     }
+
+    public async Task Refresh()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
+    }
+}
 }
 
