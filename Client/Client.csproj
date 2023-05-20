@@ -37,4 +37,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Shared\Common.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\billeder\" />
+    <Content Remove="wwwroot\billeder\gg.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\billeder\gg.jpg" />
+  </ItemGroup>
 </Project>

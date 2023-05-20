@@ -27,6 +27,15 @@ namespace Server.Controllers
             Console.WriteLine("get ");
             return myRepo.getAll();
         }
+
+        [HttpGet]
+        [Route("avail/{brugerid}")]
+        public IEnumerable<Vagt> GetAvailable(int brugerid)
+        {
+            Console.WriteLine("get ");
+            return myRepo.getAvailable(brugerid);
+        }
+
         [HttpGet]
         [Route("spec/{b_id}")]
         public IEnumerable<Vagt> GetAllMine(int b_id)
@@ -52,6 +61,12 @@ namespace Server.Controllers
         public void TagVagt(Vagt vagt, int bruger)
         {
             myRepo.TagVagt(vagt, bruger);
+        }
+        [HttpPut]
+        [Route("afmeld/{bruger}")]
+        public void AfmeldVagt(Vagt vagt, int bruger)
+        {
+            myRepo.AfmeldVagt(vagt, bruger);
         }
 
         // En metode, der håndterer HTTP DELETE requests til /api/Booking/{Id}
