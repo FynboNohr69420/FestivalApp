@@ -336,11 +336,7 @@ namespace Server.Repositories
                 connection.Close();
             }
             return result;
-        }
-
-        
-         
-       
+        } 
     }
 
 }
