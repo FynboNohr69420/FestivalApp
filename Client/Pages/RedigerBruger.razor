@@ -128,7 +128,7 @@
                                         }
                                     </td>
                                 </tr>
-                                Console.WriteLine(vagt.isLocked);
+                                brugervagtersomid.Add(vagt.ID);
                             }
                         </tbody>
                     </table>
@@ -170,6 +170,8 @@
                     <tbody>
                         @foreach (var vagt in filteredVagtlist)
                         {
+                            if (!brugervagtersomid.Contains(vagt.ID))
+                            {
                             <tr>
                                 <td>@vagt.Navn</td>
                                 <td>@vagt.Point</td>
@@ -179,10 +181,10 @@
                                 <td>@vagt.Antal</td>
                                 <td>@vagt.Pladser_Tilbage</td>
                                 <td>
-                                    
                                     <button class="btn btn-success" @onclick="() => TagVagt(vagt, UrlId)">Tag Vagt</button>
                                 </td>
                             </tr>
+                            }
                         }
                     </tbody>
                 </table>
@@ -194,6 +196,7 @@
 @code {
     private Bruger bruger = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
+    private List<int> brugervagtersomid = new List<int>();
 
 
     private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
