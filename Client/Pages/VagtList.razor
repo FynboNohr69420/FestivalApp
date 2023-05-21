@@ -4,6 +4,7 @@
 @using System.Net.Http.Json;
 @using Client.Pages;
 @inject HttpClient Http;
+@inject NavigationManager NavigationMangager;
 
 <h5>Opret ny vagt</h5>
 
@@ -41,7 +42,7 @@
             <InputText id="Beskrivelse" @bind-Value="vagt.Beskrivelse" class="form-control" />
         </div>
         <div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" @onclick="() => HandleClick()" >Submit</button>
         </div>
     </EditForm>
 }
@@ -101,7 +102,7 @@
                             <a href="@($"/redigervagt?id={vagt.ID}")"> <button class="btn btn-primary">Rediger vagt</button></a>
                         </td>
                         <td>
-                            <button class="btn btn-danger" @onclick="() => DeleteVagt(vagt.ID)">Slet Vagt</button>
+                            <button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID); HandleClick(); }">Slet Vagt</button>
                         </td>
                     </tr>
                 }
@@ -196,9 +197,19 @@
         vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
     }
 
+    
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
     public void DeleteVagt(int ID)
     {
         mService.DeleteVagt(ID);
         Console.WriteLine("klient: deleted" + ID);
+    }
+
+    private void HandleClick()
+    {
+        NavigationManager.NavigateTo("vagtliste", forceLoad: true);
     }
 }
