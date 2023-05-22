@@ -174,21 +174,13 @@
                         <InputText @bind-Value="vagt.Beskrivelse" class="form-control" />
                     </div>
                 </div>
-                <button class="btn btn-primary" type="submit">Gem</button>
+                <button class="btn btn-primary" type="submit">Opret vagt</button>
                         </EditForm>
                     </div>
                     
                 </div>
             </div>
         </div>
-    </div>
-    <div>
-        @if (showMessage)
-        {
-            <div class="alert alert-success">
-                Dine oplysninger er gemt.
-            </div>
-        }
     </div>
     <hr />
 }
@@ -338,7 +330,6 @@
         await AddVagt();
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
-        showMessage = true;
         await Refresh();
     }
 
@@ -347,7 +338,6 @@
         bruger.ID = UrlId;
         await UpdateBruger();
         showMessage = true;
-        await Refresh();
     }
 
     public async Task AddVagt()
