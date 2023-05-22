@@ -4,6 +4,8 @@
 @using Common.Model;
 @inject NavigationManager NavigationManager
 @inject HttpClient Http;
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
 
 
 
@@ -15,7 +17,7 @@
 
 @if (visFormular)
 {
-    <h1>Login</h1>
+    <h1>Log på Calendarica</h1>
     <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -23,7 +25,7 @@
             <label for="Email" style="font-weight:bold">Email</label>
             <div class="input-container">
                 <span class="icon"><i class="material-icons">mail</i></span>
-                <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control form-control-sm" />
+                <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control" />
             </div>
         </div>
 
@@ -31,9 +33,8 @@
         <label for="Password" style="font-weight:bold">Password</label>
         <div class="form-group">
             <div class="input-container">
-                <InputText type="@passwordType" id="Password" @bind-Value="brugerForm.Password" class="form-control form-control-sm" />
+                <InputText type="@passwordType" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
                 <span class="icon"><i class="material-icons">lock</i></span>
-                <i @onclick="TogglePasswordVisibility" class="material-icons">visibility</i>
                 <i @onclick="TogglePasswordVisibility" class="material-icons hover-effect">visibility</i>
             </div>
         </div>
@@ -47,8 +48,8 @@
         <hr>
     </EditForm>
 
-    <h5> Træd ind i en forrygende verden af musikalsk ekstase og uforlignelig feststemning! </h5>
-    <p>
+    <h5 style="margin-left: 20px;"> Træd ind i en forrygende verden af musikalsk ekstase og uforlignelig feststemning! </h5>
+    <p style="margin-left: 20px;">
         Velkommen til RythmRage Festival - epicentret for det mest vilde og adrenalinpumpende eventyr!
 
         Dette er den eksklusive medlemsportal for vores utæmmede og lidenskabelige festivalfamilie på ikke mindre end 3.000 frygtløse frivillige. <br /> <br />
@@ -137,6 +138,7 @@
     private Bruger brugerForm = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
     private string billede = "visibility.png";
+    
 
 
     private bool showPassword = false;
@@ -197,6 +199,8 @@
 
             login();
         }
+
+
     }
 
     public async Task HandleValidRegister()
@@ -223,7 +227,7 @@
 
     }
 
-    public void login()
+    private async Task login()
     {
         if (bruger.Efternavn == null || bruger.Email == null || bruger.Password == null)
         {
@@ -233,17 +237,20 @@
         {
             if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == true)
             {
-                NavigationManager.NavigateTo($"/vagtliste?id={bruger.ID}"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
+                NavigationManager.NavigateTo($"/vagtliste"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
             else if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == false)
             {
-                NavigationManager.NavigateTo($"/redigerbruger?id={bruger.ID}"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
+                NavigationManager.NavigateTo($"/redigerbruger"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
             else
             {
                 showerror = "inline";
             }
         }
+
+        await sessionStorage.SetItemAsync("userId", bruger.ID);
+
 
     }
 }

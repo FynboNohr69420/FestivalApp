@@ -1,19 +1,25 @@
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
 /* Bordered form */
 form {
     border: 3px solid #f1f1f1;
 }
 
 
-/* Set a style for all buttons */
 .btn-login {
     background-color: #04AA6D;
     color: white;
-    padding: 7px 10x;
-    margin: 8px 0;
+    padding: 5px 8px;
     border: none;
     cursor: pointer;
-    width: 100%;
+    width: 15%;
+    margin-left: 20px;
+    margin-top: 15px;
 }
+
 
 /* Add a hover effect for buttons */
 button:hover {
@@ -24,7 +30,11 @@ button:hover {
 .btn-blue {
     background-color: steelblue;
     color: white;
+    padding: 5px 8px;
+    margin-left: 20px;
+    width: 15%;
 }
+
 
 .regibtn {
     width: auto;
@@ -69,19 +79,25 @@ a:hover {
 
 .form-group {
     position: relative;
-    margin-bottom: 10px;
+    height: 20px; /* Juster højden efter behov */
+    margin-bottom: 5px; /* Juster margenen efter behov */
+    margin: 0px 0;
 }
-
 .input-container {
     position: relative;
+    margin-left: 20px;
 }
-
     .input-container i {
         position: absolute;
         top: 50%;
-        right: 10px;
+        right: 35px;
         transform: translateY(-50%);
     }
+
+i.material-icons.hover-effect {
+    margin-left: 0px;
+}
+
 
 .hover-effect {
     transition: color 0.3s ease-in-out;
@@ -100,20 +116,27 @@ a:hover {
 .icon {
     position: absolute;
     top: 50%;
-    left: -20px;
+    left: 10px;
     transform: translateY(-50%);
     color: #999;
     padding: 0 10px;
 }
 
 .festival {
-    height: 250px;
-    width: 45%;
-    margin-bottom: 20px;
+    height: 200px;
+    width: 40%;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 0;
 }
 
 .festival2 {
-    height: 250px;
-    width: 45%;
-    margin-bottom: 20px;
+    height: 200px;
+    width: 40%;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 0;
 }
+
+
+
