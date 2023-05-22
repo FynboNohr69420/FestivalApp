@@ -6,6 +6,8 @@ namespace Server.Repositories
     {
         Vagt[] getAll();
         Vagt[] getAvailable(int brugerid);
+
+        Kategori[] getAllKategori();
         void AddVagt(Vagt vagt);
         void DeleteVagt(int ID);
         void UpdateVagt(Vagt vagt);

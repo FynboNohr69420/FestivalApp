@@ -111,6 +111,38 @@ namespace Server.Repositories
             return result.ToArray();
         }
 
+        public Kategori[] getAllKategori()
+        {
+            var result = new List<Kategori>();
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM \"Kategori\"";
+
+
+                using (var reader = command.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        var Id = reader.GetInt32(0);
+                        var Navn = reader.GetString(1);
+
+                        Kategori b = new Kategori
+                        {
+                            ID = Id,
+                            Navn = Navn
+                        };
+                        result.Add(b);
+                    }
+                }
+                connection.Close();
+            }
+            return result.ToArray();
+        }
+
         public Vagt[] getAllMine(int b_id)
         {
             var result = new List<Vagt>();

@@ -29,6 +29,14 @@ namespace Server.Controllers
         }
 
         [HttpGet]
+        [Route("kategorier")]
+        public IEnumerable<Kategori> GetAllKategori(int b_id)
+        {
+            Console.WriteLine("get ");
+            return myRepo.getAllKategori();
+        }
+
+        [HttpGet]
         [Route("avail/{brugerid}")]
         public IEnumerable<Vagt> GetAvailable(int brugerid)
         {

@@ -150,9 +150,12 @@
                         Kategori
                     </label>
                     <div class="col-sm-6">
-                        <InputNumber id="confirmEmail" class="form-control"
-                               @bind-Value="vagt.Kategori" />
-                        <ValidationMessage For="@(() => vagt.Kategori)" />
+                                    <InputSelect id="Kategori" @bind-Value="vagt.Kategori" class="form-control">
+                                        @foreach (var kat in kategorilist)
+                                        {
+                                            <option value="@kat.ID">@kat.Navn</option>
+                                        }
+                                    </InputSelect>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -263,6 +266,9 @@
     private bool showMessage = false;
     private int UrlId = 1; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
+    private Kategori[]? kategorilist = new Kategori[0];
+    
+
     [Inject]
     private IVagtService mService { get; set; }
     [Inject]
@@ -323,7 +329,7 @@
         GetUrlID();
         bruger = await bService.GetBruger(UrlId);
         vagtlist = (await mService.getAll()).ToArray();
-
+        kategorilist = (await mService.getAllKategori()).ToArray();
     }
 
 

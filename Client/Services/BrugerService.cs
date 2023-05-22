@@ -11,8 +11,6 @@ namespace Client.Services
 {
     public class BrugerService : IBrugerService
     {
-      
-
         HttpClient http;
         public BrugerService(HttpClient http)
         {
