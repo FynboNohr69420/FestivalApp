@@ -26,7 +26,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var bruger in filteredBrugerList)
+                @foreach (var bruger in filteredBrugerList.OrderBy(b => b.Fornavn))
                 {
                     <tr>
                         <td>@bruger.Fornavn</td>

@@ -7,11 +7,14 @@
 @inject NavigationManager NavigationManager
 @inject HttpClient Http;
 
-<h5>Opret ny vagt</h5>
-
 <PageTitle>Registrering</PageTitle>
 
-<button type="button" class="btn btn-primary" @onclick="ToggleEditForm">Tilføj vagt</button>
+<button type="button" class="btn btn-primary" @onclick="ToggleEditForm">Rediger oplysninger eller tilføj vagt</button>
+
+<div class="logout-button-container">
+    <button class="logout-button" @onclick="Logout">Log ud</button>
+</div>
+
 
 @if (showEditForm)
 {
@@ -115,11 +118,11 @@
             <InputText id="Navn" @bind-Value="vagt.Navn" class="form-control" />
         </div>
         <div class="col-md-12 mb-3">
-            <label for="Adresse">Start dato</label>
+            <label for="datetime">Start dato</label>
             <input type="datetime" @bind="vagt.Start" class="form-control" />
         </div>
         <div class="col-md-12 mb-3">
-            <label for="Adresse">Slut dato</label>
+            <label for="datetime">Slut dato</label>
             <input type="datetime" @bind="vagt.Slut" class="form-control" />
         </div>
         <div class="col-md-12 mb-3">
@@ -318,5 +321,11 @@
     private void ToggleEditForm()
     {
         showEditForm = !showEditForm;
+    }
+
+    //logud knap
+    private void Logout()
+    {
+        NavigationManager.NavigateTo("/login");
     }
 }
