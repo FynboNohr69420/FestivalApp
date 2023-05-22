@@ -118,7 +118,7 @@
     </div>
     <div class="col">
         <div>
-            <h3>Mine Vagter</h3>
+            <h3>Mine Vagter </h3>
             <hr />
             <div class="row">
                 <div class="col">
@@ -152,10 +152,19 @@
                                         }
                                     </td>
                                 </tr>
-                                brugervagtersomid.Add(vagt.ID);
-                            }
+                                    brugervagtersomid.Add(vagt.ID);
+                                    vagtCounter++;
+                                    pointSum += vagt.Point;
+
+
+                                }
                         </tbody>
                     </table>
+                </div>
+                <div>
+                    Antal vagter: @vagtCounter
+                    <br />
+                    Samlet antal point: @pointSum
                 </div>
             </div>
         </div>
@@ -321,7 +330,11 @@
 
     private void Logout()
     {
-        NavigationManager.NavigateTo("/login");
+        NavigationManager.NavigateTo("/");
     }
+
+    int vagtCounter = 0;
+
+    int pointSum = 0;
 }
 
