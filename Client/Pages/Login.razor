@@ -2,8 +2,9 @@
 @using Client.Services;
 @using Common.Model;
 @inject NavigationManager NavigationManager
-
 @inject HttpClient Http;
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
 
 <PageTitle>Registrering</PageTitle>
 
@@ -135,6 +136,7 @@
     private Bruger brugerForm = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
     private string billede = "visibility.png";
+    
 
 
     private bool showPassword = false;
@@ -195,6 +197,8 @@
 
             login();
         }
+
+
     }
 
     public async Task HandleValidRegister()
@@ -221,7 +225,7 @@
 
     }
 
-    public void login()
+    private async Task login()
     {
         if (bruger.Efternavn == null || bruger.Email == null || bruger.Password == null)
         {
@@ -231,17 +235,20 @@
         {
             if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == true)
             {
-                NavigationManager.NavigateTo($"/redigerbruger?id={bruger.ID}"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
+                NavigationManager.NavigateTo($"/vagtliste"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
             else if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == false)
             {
-                NavigationManager.NavigateTo("brugerlist"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
+                NavigationManager.NavigateTo($"/redigerbruger"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
             else
             {
                 showerror = "inline";
             }
         }
+
+        await sessionStorage.SetItemAsync("userId", bruger.ID);
+
 
     }
 }

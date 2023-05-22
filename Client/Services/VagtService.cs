@@ -24,6 +24,13 @@ namespace Client.Services
             return vagt;
         }
 
+        public async Task<IEnumerable<Kategori>> getAllKategori()
+        {
+            var kategorier = await http.GetFromJsonAsync<Kategori[]>("https://localhost:7004/api/vagter/kategorier");
+
+            return kategorier;
+        }
+
         public async Task<IEnumerable<Vagt>> getAvailable(int brugerid)
         {
             var vagt = await http.GetFromJsonAsync<Vagt[]>($"https://localhost:7004/api/vagter/avail/{brugerid}");

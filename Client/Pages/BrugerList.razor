@@ -2,6 +2,8 @@
 @using Common.Model
 @using Client.Services
 @using System.Net.Http.Json;
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
 
 <PageTitle>Brugerlisten</PageTitle>
 
@@ -26,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var bruger in filteredBrugerList)
+                @foreach (var bruger in filteredBrugerList.OrderBy(b => b.Fornavn))
                 {
                     <tr>
                         <td>@bruger.Fornavn</td>
@@ -37,7 +39,10 @@
                         <td>@bruger.Fødselsdag</td>
                         <td>@bruger.IsKoordinator</td>
                         <td>
-                            <a href="@($"/redigerbruger?id={bruger.ID}")"> <button class="btn btn-primary">Rediger bruger</button></a>
+                            <a href="@($"/redigerbruger?id={userId}")"> <button class="btn btn-primary">Rediger bruger</button></a>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" @onclick="() => DeleteBruger(bruger.ID)">Slet Vagt</button>
                         </td>
                     </tr>
                 }
@@ -49,6 +54,8 @@
 
 @code {
 
+    private int userId { get; set; }
+
     private Bruger bruger = new Bruger(); // Opretter et tomt Booking objekt
     private Bruger[]? brugerlist = new Bruger[0]; // Opretter en tom liste af Booking objekter
     private string searchKeyword = "";
@@ -59,12 +66,17 @@
 
     protected override async Task OnInitializedAsync()
     {
+        userId = await sessionStorage.GetItemAsync<int>("userId");
         brugerlist = (await mService.getAll()).ToArray();
     }
 
     private IEnumerable<Bruger> filteredBrugerList => string.IsNullOrWhiteSpace(searchKeyword) ? brugerlist : brugerlist.Where(v => v.Fornavn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
 
-
+    public void DeleteBruger(int ID)
+    {
+        mService.DeleteBruger(ID);
+        Console.WriteLine("klient: deleted" + ID);
+    }
 
 }
 

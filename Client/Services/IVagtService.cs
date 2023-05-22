@@ -8,6 +8,7 @@ namespace Client.Services
     {
         Task<IEnumerable<Vagt>> getAll();
         Task<IEnumerable<Vagt>> getAvailable(int brugerid);
+        Task<IEnumerable<Kategori>> getAllKategori();
         Task<Vagt> GetVagt(int id);
         Task AddVagt(Vagt vagt);
         Task<Vagt> UpdateVagt(Vagt vagt);

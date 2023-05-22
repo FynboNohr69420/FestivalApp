@@ -1,3 +1,4 @@
+using Blazored.SessionStorage;
 using Client;
 using Client.Services;
 using Microsoft.AspNetCore.Components.Web;
@@ -13,6 +14,7 @@ namespace Client
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
+            builder.Services.AddBlazoredSessionStorage();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             builder.Services.AddHttpClient<IBrugerService, BrugerService>(Client =>
@@ -25,6 +27,7 @@ namespace Client
                 Client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
             });
 
+            
 
 
             await builder.Build().RunAsync();

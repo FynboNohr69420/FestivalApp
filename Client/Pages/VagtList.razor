@@ -1,53 +1,193 @@
 ﻿@page "/vagtliste"
 @using Common.Model
 @using Client.Services
-@using System.Net.Http.Json;
-@using Client.Pages;
+@using System.Net.Http.Json
+@using Client.Pages
+@using System.Web
+@inject IJSRuntime JSRuntime // Injecter 'IJSRuntime' for at muliggøre interaktion med JavaScript på klienten .
+@inject NavigationManager NavigationManager
 @inject HttpClient Http;
 @inject NavigationManager NavigationMangager;
 
-<h5>Opret ny vagt</h5>
-
 <PageTitle>Registrering</PageTitle>
 
-<button type="button" class="btn btn-primary" @onclick="ToggleEditForm">Tilføj vagt</button>
+<button type="button" class="btn btn-primary" @onclick="ToggleEditForm">Rediger oplysninger eller tilføj vagt</button>
+
+<div class="logout-button-container">
+    <button class="logout-button" @onclick="Logout">Log ud</button>
+</div>
+
 
 @if (showEditForm)
 {
-    <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="col-md-12 mb-3">
-            <label for="Navn">Navn</label>
-            <InputText id="Navn" @bind-Value="vagt.Navn" class="form-control" />
+    <div class="row">
+        <div class="col-sm-4">
+            <EditForm Model="@aEditContext" OnValidSubmit="HandleUpdateSubmitBruger">
+                <DataAnnotationsValidator />
+                <h3>Rediger information</h3>
+                <hr />
+                <ValidationSummary />
+                <div class="form-group row">
+                    <label for="firstName" class="col-sm-3 col-form-label">
+                        Fornavn
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText id="Fornavn" class="form-control" placeholder="@bruger.Fornavn"
+                               @bind-Value="bruger.Fornavn" />
+                        <ValidationMessage For="@(() => bruger.Fornavn)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Efternavn" class="col-sm-3 col-form-label">
+                        Efternavn
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText id="lastName" class="form-control" placeholder="@(() => bruger.Efternavn)"
+                               @bind-Value="bruger.Efternavn" />
+                        <ValidationMessage For="@(() => bruger.Efternavn)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Telefonummer" class="col-sm-3 col-form-label">
+                        Telefonnummer
+                    </label>
+                    <div class="col-sm-6">
+                        <InputNumber id="email" class="form-control" placeholder="Telefonnummer"
+                                 @bind-Value="bruger.Telefonnummer" />
+                        <ValidationMessage For="@(() => bruger.Telefonnummer)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Addresse" class="col-sm-3 col-form-label">
+                        Addresse
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText id="confirmEmail" class="form-control"
+                               @bind-Value="bruger.Adresse" />
+                        <ValidationMessage For="@(() => bruger.Adresse)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Email" class="col-sm-3 col-form-label">
+                        Email
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText id="confirmEmail" class="form-control"
+                               @bind-Value="bruger.Email" />
+                        <ValidationMessage For="@(() => bruger.Email)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Fødselsdagsdato" class="col-sm-3 col-form-label">
+                        Fødselsdagsdato
+                    </label>
+                    <div class="col-sm-6">
+                        <InputDate @bind-Value="bruger.Fødselsdag" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Password" class="col-sm-3 col-form-label">
+                        Password
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText @bind-Value="bruger.Password" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="isKoordinator" class="col-sm-3 col-form-label">Er koordinator:</label>
+                    <div class="col-sm-6">
+                        <label class="form-control locked">@bruger.IsKoordinator</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Gem</button>
+                <div>
+                    @if (showMessage)
+                    {
+                        <div class="alert alert-success">
+                            Dine oplysninger er gemt.
+                        </div>
+                    }
+                </div>
+
+            </EditForm>
         </div>
-        <div class="col-md-12 mb-3">
-            <label for="Adresse">Start dato</label>
-            <input type="datetime" @bind="vagt.Start" class="form-control" />
+        <div class="col">
+            <div>
+                <div class="row">
+                    <div class="col">
+                        <EditForm Model="@aEditContext" OnValidSubmit="HandleValidSubmitVagt">
+                <DataAnnotationsValidator />
+                <h3>Opret Ny Vagt</h3>
+                <hr />
+                <ValidationSummary />
+                <div class="form-group row">
+                    <label for="Navn" class="col-sm-3 col-form-label">
+                        Navn
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText id="Navn" class="form-control" placeholder="@vagt.Navn"
+                                           @bind-Value="vagt.Navn" />
+                                    <ValidationMessage For="@(() => vagt.Navn)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Start" class="col-sm-3 col-form-label">
+                        Start
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="datetime" id="Start" @bind="vagt.Start" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                                <label for="Slut" class="col-sm-3 col-form-label">
+                                    Slut
+                                </label>
+                                <div class="col-sm-6">
+                                    <input type="datetime" id="Slut" @bind="vagt.Slut" class="form-control" />
+                                </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Kategori" class="col-sm-3 col-form-label">
+                        Kategori
+                    </label>
+                    <div class="col-sm-6">
+                                    <InputSelect id="Kategori" @bind-Value="vagt.Kategori" class="form-control">
+                                        @foreach (var kat in kategorilist)
+                                        {
+                                            <option value="@kat.ID">@kat.Navn</option>
+                                        }
+                                    </InputSelect>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Antal" class="col-sm-3 col-form-label">
+                        Antal
+                    </label>
+                    <div class="col-sm-6">
+                        <InputNumber @bind-Value="vagt.Antal" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Beskrivelse" class="col-sm-3 col-form-label">
+                        Beskrivelse
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText @bind-Value="vagt.Beskrivelse" class="form-control" />
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Opret vagt</button>
+                        </EditForm>
+                    </div>
+                    
+                </div>
+            </div>
         </div>
-        <div class="col-md-12 mb-3">
-            <label for="Adresse">Slut dato</label>
-            <input type="datetime" @bind="vagt.Slut" class="form-control" />
-        </div>
-        <div class="col-md-12 mb-3">
-            <label for="Email">Kategori</label>
-            <InputNumber id="Kategori" @bind-Value="vagt.Kategori" class="form-control" />
-        </div>
-        <div class="col-md-6 mb-3">
-            <label for="Fødselsdag">Antal pladser</label>
-            <InputNumber id="Antal" @bind-Value="vagt.Antal" class="form-control" />
-        </div>
-        <div class="col-md-6 mb-3">
-            <label for="Password">Beskrivelse</label>
-            <InputText id="Beskrivelse" @bind-Value="vagt.Beskrivelse" class="form-control" />
-        </div>
-        <div>
-            <button type="submit" class="btn btn-primary" @onclick="() => HandleClick()" >Submit</button>
-        </div>
-    </EditForm>
+    </div>
+    <hr />
 }
 
 
+<br />
 <h5>Vagt liste</h5>
 
 
@@ -115,29 +255,21 @@
 @code {
     private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
     private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+    private Bruger bruger = new Bruger();
+    private bool showMessage = false;
+    private int UrlId = 1; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
-    private bool showEditForm = false;
-
-    private void ToggleEditForm()
-    {
-        showEditForm = !showEditForm;
-    }
+    private Kategori[]? kategorilist = new Kategori[0];
+    
 
     [Inject]
     private IVagtService mService { get; set; }
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        vagtlist = (await mService.getAll()).ToArray();
-
-    }
-
+    [Inject]
+    private IBrugerService bService { get; set; }
 
     private string searchKeyword = "";
     private string selectedSortOption = "point";
     private string Sortering = "ascending";
-
 
     private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? Sorter(vagtlist) : Sorter(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
 
@@ -167,27 +299,46 @@
 
         return Sorter;
     }
-
-
-    private void FilterAndSort()
-    {
-        // Opdatering af komponenten er automatisk, da den afhænger af filteredAndSortedPersons
-    }
-
     private EditContext aEditContext;
+
+
+    public void GetUrlID()
+    {
+        var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
+        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
+        UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
+    }
 
     protected override void OnInitialized()
     {
+        aEditContext = new EditContext(bruger);
         aEditContext = new EditContext(vagt);
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
     }
 
-    public async Task HandleValidSubmit()
+    protected override async Task OnInitializedAsync()
+    {
+        GetUrlID();
+        bruger = await bService.GetBruger(UrlId);
+        vagtlist = (await mService.getAll()).ToArray();
+        kategorilist = (await mService.getAllKategori()).ToArray();
+    }
+
+
+    public async Task HandleValidSubmitVagt()
     {
         await AddVagt();
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
+        await Refresh();
+    }
+
+    public async Task HandleUpdateSubmitBruger()
+    {
+        bruger.ID = UrlId;
+        await UpdateBruger();
+        showMessage = true;
     }
 
     public async Task AddVagt()
@@ -197,19 +348,33 @@
         vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
     }
 
-    
-
-    [Inject]
-    private NavigationManager NavigationManager { get; set; }
-
-    public void DeleteVagt(int ID)
+    public async void DeleteVagt(int ID)
     {
         mService.DeleteVagt(ID);
         Console.WriteLine("klient: deleted" + ID);
+        await Refresh();
     }
 
-    private void HandleClick()
+    public async Task UpdateBruger()
     {
-        NavigationManager.NavigateTo("vagtliste", forceLoad: true);
+        await bService.UpdateBruger(bruger);
+    }
+
+
+    private bool showEditForm = false;
+
+    private void ToggleEditForm()
+    {
+        showEditForm = !showEditForm;
+    }
+
+    //logud knap
+    private void Logout()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+    public async Task Refresh()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
     }
 }
