@@ -49,6 +49,10 @@ namespace Client.Services
 
             return result;
         }
-
+        public void DeleteBruger(int ID)
+        {
+            http.DeleteFromJsonAsync<Vagt>($"https://localhost:7004/api/brugere/{ID}");
+            Console.WriteLine("Klient: deleted" +  ID);
+        }
     }
 }

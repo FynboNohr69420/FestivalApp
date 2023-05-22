@@ -39,6 +39,9 @@
                         <td>
                             <a href="@($"/redigerbruger?id={bruger.ID}")"> <button class="btn btn-primary">Rediger bruger</button></a>
                         </td>
+                        <td>
+                            <button class="btn btn-danger" @onclick="() => DeleteBruger(bruger.ID)">Slet Vagt</button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -64,7 +67,11 @@
 
     private IEnumerable<Bruger> filteredBrugerList => string.IsNullOrWhiteSpace(searchKeyword) ? brugerlist : brugerlist.Where(v => v.Fornavn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
 
-
+    public void DeleteBruger(int ID)
+    {
+        mService.DeleteBruger(ID);
+        Console.WriteLine("klient: deleted" + ID);
+    }
 
 }
 
