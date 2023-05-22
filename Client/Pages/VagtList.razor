@@ -1,8 +1,10 @@
 ﻿@page "/vagtliste"
 @using Common.Model
 @using Client.Services
-@using System.Net.Http.Json;
-@using Client.Pages;
+@using System.Net.Http.Json
+@using Client.Pages
+@using System.Web
+@inject NavigationManager NavigationManager
 @inject HttpClient Http;
 
 <h5>Opret ny vagt</h5>
@@ -212,37 +214,13 @@
     private bool showMessage = false;
     private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
-    private bool showEditForm = false;
-
-    private void ToggleEditForm()
-    {
-        showEditForm = !showEditForm;
-    }
-
     [Inject]
     private IVagtService mService { get; set; }
-    private IBrugerService lService { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        GetUrlID();
-        vagtlist = (await mService.getAll()).ToArray();
-        bruger = await lService.GetBruger(UrlId);
-
-    }
-
-    NavigationManager NavigationManager;
-    public void GetUrlID()
-    {
-        var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
-        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
-        UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
-    }
+    private IBrugerService bService { get; set; }
 
     private string searchKeyword = "";
     private string selectedSortOption = "point";
     private string Sortering = "ascending";
-
 
     private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? Sorter(vagtlist) : Sorter(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
 
@@ -272,20 +250,32 @@
 
         return Sorter;
     }
-
-
-
     private EditContext aEditContext;
+
+
+    public void GetUrlID()
+    {
+        var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
+        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
+        UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
+    }
 
     protected override void OnInitialized()
     {
-
-        bruger.ID = UrlId;
-        aEditContext = new EditContext(vagt);
         aEditContext = new EditContext(bruger);
+        aEditContext = new EditContext(vagt);
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        GetUrlID();
+        bruger = await bService.GetBruger(UrlId);
+        vagtlist = (await mService.getAll()).ToArray();
+
+    }
+
 
     public async Task HandleValidSubmit()
     {
@@ -318,6 +308,14 @@
 
     public async Task UpdateBruger()
     {
-        await lService.UpdateBruger(bruger);
+        await bService.UpdateBruger(bruger);
+    }
+
+
+    private bool showEditForm = false;
+
+    private void ToggleEditForm()
+    {
+        showEditForm = !showEditForm;
     }
 }
