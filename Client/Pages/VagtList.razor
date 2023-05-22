@@ -210,12 +210,12 @@
     private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
     private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
     private Bruger bruger = new Bruger();
-    private Bruger[]? brugerlist = new Bruger[0];
     private bool showMessage = false;
-    private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
+    private int UrlId = 1; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
     [Inject]
     private IVagtService mService { get; set; }
+    [Inject]
     private IBrugerService bService { get; set; }
 
     private string searchKeyword = "";
