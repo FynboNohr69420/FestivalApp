@@ -7,6 +7,16 @@
 @inject HttpClient http;
 
 <div class="row">
+    <div class="col"></div>
+    <div class="col" style="display:@loading;">
+        <h1 style="margin-right: .5em;">Knuser data</h1>
+
+        <img src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif" style="width: 35px;height: 35px" />
+</div>
+    <div class="col"></div>
+</div>
+
+    <div class="row">
 <div class="col-sm-4">
 
 
@@ -198,6 +208,8 @@
     private Bruger[]? brugerlist = new Bruger[0];
     private List<int> brugervagtersomid = new List<int>();
 
+    private string loading = "none";
+
 
     private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
@@ -217,10 +229,12 @@
 
     protected override async Task OnInitializedAsync()
     {
+        loading = "contents";
         GetUrlID();
         bruger = await mService.GetBruger(UrlId);
         vagtlist = (await vService.getAvailable(UrlId)).ToArray();
         myvagtlist = (await vService.getAllMine(UrlId)).ToArray();
+        loading = "none";
     }
 
     public async Task HandleValidSubmit()
