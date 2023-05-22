@@ -35,12 +35,26 @@
     </div>
     <div class="col-md-12-mb-3">
         <label for="kategori">Kategori</label>
-        <InputSelect id="Kategori" @bind-Value="vagt.Kategori" class="form-control">
+        <InputSelect id="Kategori" @bind-Value="vagt.Kategori" class="form-control"> 
             @foreach (var kat in kategorilist)
             {
                 <option value="@kat.ID">@kat.Navn</option>
             }
+            
         </InputSelect>
+        </div>
+    <div class="col-md-12 mb-3">
+        <label for="StartDato">Start dato</label>
+        <InputDate id="StartDato" @bind-Value="vagt.Start" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Slutdato">Slut dato</label>
+        <InputDate id="SlutDato" @bind-Value="vagt.Slut" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Kategori">Kategori</label>
+        <InputNumber id="Kategori" @bind-Value="vagt.Kategori" class="form-control" />
+
     </div>
     <div class="col-md-6 mb-3">
         <label for="Antal_Pladser">Antal pladser</label>

@@ -7,7 +7,8 @@
 @inject IJSRuntime JSRuntime // Injecter 'IJSRuntime' for at muliggøre interaktion med JavaScript på klienten .
 @inject NavigationManager NavigationManager
 @inject HttpClient Http;
-@inject NavigationManager NavigationMangager;
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
 
 <PageTitle>Registrering</PageTitle>
 
@@ -302,13 +303,6 @@
     private EditContext aEditContext;
 
 
-    public void GetUrlID()
-    {
-        var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
-        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
-        UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
-    }
-
     protected override void OnInitialized()
     {
         aEditContext = new EditContext(bruger);
@@ -319,10 +313,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        GetUrlID();
+        UrlId = await sessionStorage.GetItemAsync<int>("userId");
         bruger = await bService.GetBruger(UrlId);
         vagtlist = (await mService.getAll()).ToArray();
-        kategorilist = (await mService.getAllKategori()).ToArray();
     }
 
 
@@ -376,5 +369,11 @@
     public async Task Refresh()
     {
         await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
+    }
+
+
+    private void HandleClick()
+    {
+        NavigationManager.NavigateTo("vagtliste", forceLoad: true);
     }
 }
