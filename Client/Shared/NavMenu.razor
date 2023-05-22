@@ -2,9 +2,11 @@
 @using System.Web
 @using Client.Services
 @using Blazored.SessionStorage;
+@using Microsoft.JSInterop
 @inject NavigationManager NavigationManager
 @inject HttpClient http
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IJSRuntime JSRuntime
 
 
 <div class="top-row ps-3 navbar navbar-dark">
@@ -37,7 +39,7 @@
             </NavLink>
         </div
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="@NoAccess()">
+            <NavLink class="nav-link" href="@NoAccess(role)">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Vagtlisten
             </NavLink>
         </div>
@@ -59,27 +61,28 @@
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+    protected override async Task OnInitializedAsync()
+    {
+        role = await sessionStorage.GetItemAsync<bool>("IsKoordinator");
+    }
+
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
 
-    private string NoAccess(string approvedParam)
-{
-    if (role)
+    private string NoAccess(bool role)
     {
-        return "vagtliste";
+        if (role)
+        {
+            return "vagtliste";
+        }
+        else
+        {
+            return "login";
+        }
     }
-    else
-    {
-        return "login";
-    }
-    protected override async Task OnInitializedAsync()
-    {
-        
-    }
-    
-}
+
 
 
 
