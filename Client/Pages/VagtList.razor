@@ -7,6 +7,7 @@
 @inject IJSRuntime JSRuntime // Injecter 'IJSRuntime' for at muliggøre interaktion med JavaScript på klienten .
 @inject NavigationManager NavigationManager
 @inject HttpClient Http;
+@inject NavigationManager NavigationMangager;
 
 <PageTitle>Registrering</PageTitle>
 
@@ -241,7 +242,7 @@
                             <a href="@($"/redigervagt?id={vagt.ID}")"> <button class="btn btn-primary">Rediger vagt</button></a>
                         </td>
                         <td>
-                            <button class="btn btn-danger" @onclick="() => DeleteVagt(vagt.ID)">Slet Vagt</button>
+                            <button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID); HandleClick(); }">Slet Vagt</button>
                         </td>
                     </tr>
                 }

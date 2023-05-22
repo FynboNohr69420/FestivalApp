@@ -13,6 +13,7 @@
         <label for="Navn">Navn</label>
         <InputText id="Navn" @bind-Value="vagt.Navn" class="form-control" />
     </div>
+<<<<<<< HEAD
     <div class="col-md-6 mb-3">
         <label for="Fødselsdag">Antal Point</label>
         <InputNumber id="Point" @bind-Value="vagt.Point" class="form-control" />
@@ -41,13 +42,26 @@
                 <option value="@kat.ID">@kat.Navn</option>
             }
         </InputSelect>
+=======
+    <div class="col-md-12 mb-3">
+        <label for="StartDato">Start dato</label>
+        <InputDate id="StartDato" @bind-Value="vagt.Start" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Slutdato">Slut dato</label>
+        <InputDate id="SlutDato" @bind-Value="vagt.Slut" class="form-control" />
+    </div>
+    <div class="col-md-12 mb-3">
+        <label for="Kategori">Kategori</label>
+        <InputNumber id="Kategori" @bind-Value="vagt.Kategori" class="form-control" />
+>>>>>>> 5f21fa22d162d27e4212d1f186ec4fd8caf8171b
     </div>
     <div class="col-md-6 mb-3">
-        <label for="Fødselsdag">Antal pladser</label>
+        <label for="Antal_Pladser">Antal pladser</label>
         <InputNumber id="Antal" @bind-Value="vagt.Antal" class="form-control" />
     </div>
     <div class="col-md-6 mb-3">
-        <label for="Password">Beskrivelse</label>
+        <label for="Beskrivelse">Beskrivelse</label>
         <InputText id="Beskrivelse" @bind-Value="vagt.Beskrivelse" class="form-control" />
     </div>
     <div>
