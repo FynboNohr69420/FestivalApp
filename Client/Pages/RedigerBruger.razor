@@ -20,86 +20,94 @@
 <div class="col-sm-4">
 
 
-<EditForm Model="@aEditContext" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <h3>Rediger information</h3>
-    <hr />
-    <ValidationSummary />
-    <div class="form-group row">
-        <label for="firstName" class="col-sm-3 col-form-label">
-            Fornavn
-        </label>
-        <div class="col-sm-6">
-            <InputText id="Fornavn" class="form-control" placeholder="@bruger.Fornavn"
-                       @bind-Value="bruger.Fornavn" />
-            <ValidationMessage For="@(() => bruger.Fornavn)" />
+    <EditForm Model="@aEditContext" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <h3>Rediger information</h3>
+        <hr />
+        <ValidationSummary />
+        <div class="form-group row">
+            <label for="firstName" class="col-sm-3 col-form-label">
+                Fornavn
+            </label>
+            <div class="col-sm-6">
+                <InputText id="Fornavn" class="form-control" placeholder="@bruger.Fornavn"
+                           @bind-Value="bruger.Fornavn" />
+                <ValidationMessage For="@(() => bruger.Fornavn)" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="Efternavn" class="col-sm-3 col-form-label">
-            Efternavn
-        </label>
-        <div class="col-sm-6">
-            <InputText id="lastName" class="form-control" placeholder="@(() => bruger.Efternavn)"
-                       @bind-Value="bruger.Efternavn" />
-            <ValidationMessage For="@(() => bruger.Efternavn)" />
+        <div class="form-group row">
+            <label for="Efternavn" class="col-sm-3 col-form-label">
+                Efternavn
+            </label>
+            <div class="col-sm-6">
+                <InputText id="lastName" class="form-control" placeholder="@(() => bruger.Efternavn)"
+                           @bind-Value="bruger.Efternavn" />
+                <ValidationMessage For="@(() => bruger.Efternavn)" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="Telefonummer" class="col-sm-3 col-form-label">
-            Telefonnummer
-        </label>
-        <div class="col-sm-6">
-            <InputNumber id="email" class="form-control" placeholder="Telefonnummer"
-                         @bind-Value="bruger.Telefonnummer" />
-            <ValidationMessage For="@(() => bruger.Telefonnummer)" />
+        <div class="form-group row">
+            <label for="Telefonummer" class="col-sm-3 col-form-label">
+                Telefonnummer
+            </label>
+            <div class="col-sm-6">
+                <InputNumber id="email" class="form-control" placeholder="Telefonnummer"
+                             @bind-Value="bruger.Telefonnummer" />
+                <ValidationMessage For="@(() => bruger.Telefonnummer)" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="Addresse" class="col-sm-3 col-form-label">
-            Addresse
-        </label>
-        <div class="col-sm-6">
-            <InputText id="confirmEmail" class="form-control"
-                       @bind-Value="bruger.Adresse" />
-            <ValidationMessage For="@(() => bruger.Adresse)" />
+        <div class="form-group row">
+            <label for="Addresse" class="col-sm-3 col-form-label">
+                Addresse
+            </label>
+            <div class="col-sm-6">
+                <InputText id="confirmEmail" class="form-control"
+                           @bind-Value="bruger.Adresse" />
+                <ValidationMessage For="@(() => bruger.Adresse)" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="Email" class="col-sm-3 col-form-label">
-            Email
-        </label>
-        <div class="col-sm-6">
-            <InputText id="confirmEmail" class="form-control"
-                       @bind-Value="bruger.Email" />
-            <ValidationMessage For="@(() => bruger.Email)" />
+        <div class="form-group row">
+            <label for="Email" class="col-sm-3 col-form-label">
+                Email
+            </label>
+            <div class="col-sm-6">
+                <InputText id="confirmEmail" class="form-control"
+                           @bind-Value="bruger.Email" />
+                <ValidationMessage For="@(() => bruger.Email)" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="Fødselsdagsdato" class="col-sm-3 col-form-label">
-            Fødselsdagsdato
-        </label>
-        <div class="col-sm-6">
-            <InputDate @bind-Value="bruger.Fødselsdag" class="form-control" />
+        <div class="form-group row">
+            <label for="Fødselsdagsdato" class="col-sm-3 col-form-label">
+                Fødselsdagsdato
+            </label>
+            <div class="col-sm-6">
+                <InputDate @bind-Value="bruger.Fødselsdag" class="form-control" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="Password" class="col-sm-3 col-form-label">
-            Password
-        </label>
-        <div class="col-sm-6">
-            <InputText @bind-Value="bruger.Password" class="form-control" />
+        <div class="form-group row">
+            <label for="Password" class="col-sm-3 col-form-label">
+                Password
+            </label>
+            <div class="col-sm-6">
+                <InputText @bind-Value="bruger.Password" class="form-control" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="isKoordinator" class="col-sm-3 col-form-label">Er koordinator:</label>
-        <div class="col-sm-6">
-            <label class="form-control locked">@bruger.IsKoordinator</label>
+        <div class="form-group row">
+            <label for="isKoordinator" class="col-sm-3 col-form-label">Er koordinator:</label>
+            <div class="col-sm-6">
+                <label class="form-control locked">@bruger.IsKoordinator</label>
+            </div>
         </div>
-    </div>
-    <button class="btn btn-primary" type="submit">Gem</button>
+        <button class="btn btn-primary" type="submit">Gem</button>
+        <div>
+        @if (showMessage)
+        {
+            <div class="alert alert-success">
+                Dine oplysninger er gemt.
+            </div>
+        }
+        </div>
 
-</EditForm>
+    </EditForm>
 </div>
 <div class="col">
     <div>
@@ -208,6 +216,8 @@
     private Bruger[]? brugerlist = new Bruger[0];
     private List<int> brugervagtersomid = new List<int>();
 
+    private bool showMessage = false;
+
     private string loading = "none";
 
 
@@ -241,6 +251,7 @@
     {
         bruger.ID = UrlId;
         await UpdateBruger();
+        showMessage = true;
 
     }
 
