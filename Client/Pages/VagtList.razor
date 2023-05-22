@@ -6,7 +6,7 @@
 @using System.Web
 @inject NavigationManager NavigationManager
 @inject HttpClient Http;
-
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 <h5>Opret ny vagt</h5>
 
 <PageTitle>Registrering</PageTitle>
@@ -254,12 +254,7 @@
     private EditContext aEditContext;
 
 
-    public void GetUrlID()
-    {
-        var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
-        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
-        UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
-    }
+    
 
     protected override void OnInitialized()
     {
@@ -271,10 +266,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        GetUrlID();
+        UrlId = await sessionStorage.GetItemAsync<int>("userId");
         bruger = await bService.GetBruger(UrlId);
         vagtlist = (await mService.getAll()).ToArray();
-
     }
 
 
