@@ -8,11 +8,14 @@
 @inject NavigationManager NavigationManager
 @inject HttpClient Http;
 
-<h5>Opret ny vagt</h5>
-
 <PageTitle>Registrering</PageTitle>
 
-<button type="button" class="btn btn-primary" @onclick="ToggleEditForm">Tilføj vagt</button>
+<button type="button" class="btn btn-primary" @onclick="ToggleEditForm">Rediger oplysninger eller tilføj vagt</button>
+
+<div class="logout-button-container">
+    <button class="logout-button" @onclick="Logout">Log ud</button>
+</div>
+
 
 @if (showEditForm)
 {
@@ -365,6 +368,12 @@
     private void ToggleEditForm()
     {
         showEditForm = !showEditForm;
+    }
+
+    //logud knap
+    private void Logout()
+    {
+        NavigationManager.NavigateTo("/login");
     }
     public async Task Refresh()
     {
