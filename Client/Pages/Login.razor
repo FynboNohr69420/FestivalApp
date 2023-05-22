@@ -38,14 +38,13 @@
                 <i @onclick="TogglePasswordVisibility" class="material-icons hover-effect">visibility</i>
             </div>
         </div>
-
-        <div>
-            <button type="submit" class="btn btn-login">Submit</button>
-        </div>
         <div class="div-margin">
+            <button type="submit" class="btn btn-login">Submit</button>
             <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Bliv frivillig her</button>
         </div>
+        <p style="display: @showerror; color: red">Hov, der er sket en fejl. Har du skrevet din email og password rigtigt?</p>
         <hr>
+
     </EditForm>
 
     <h5 style="margin-left: 20px;"> Træd ind i en forrygende verden af musikalsk ekstase og uforlignelig feststemning! </h5>
@@ -70,10 +69,10 @@
 
 @if (showEditForm)
 {
-    <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Allerede oprettet?</button>
     <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidRegister">
         <DataAnnotationsValidator />
         <ValidationSummary />
+    <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Allerede oprettet?</button>
         <h1>Bliv medlem</h1>
         <div class="col-md-12 mb-3">
             <label for="Navn">Navn</label>

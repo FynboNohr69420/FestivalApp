@@ -33,7 +33,7 @@
                     </label>
                     <div class="col-sm-6">
                         <InputText id="Fornavn" class="form-control" placeholder="@bruger.Fornavn"
-                               @bind-Value="bruger.Fornavn" />
+                                   @bind-Value="bruger.Fornavn" />
                         <ValidationMessage For="@(() => bruger.Fornavn)" />
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                     </label>
                     <div class="col-sm-6">
                         <InputText id="lastName" class="form-control" placeholder="@(() => bruger.Efternavn)"
-                               @bind-Value="bruger.Efternavn" />
+                                   @bind-Value="bruger.Efternavn" />
                         <ValidationMessage For="@(() => bruger.Efternavn)" />
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                     </label>
                     <div class="col-sm-6">
                         <InputNumber id="email" class="form-control" placeholder="Telefonnummer"
-                                 @bind-Value="bruger.Telefonnummer" />
+                                     @bind-Value="bruger.Telefonnummer" />
                         <ValidationMessage For="@(() => bruger.Telefonnummer)" />
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                     </label>
                     <div class="col-sm-6">
                         <InputText id="confirmEmail" class="form-control"
-                               @bind-Value="bruger.Adresse" />
+                                   @bind-Value="bruger.Adresse" />
                         <ValidationMessage For="@(() => bruger.Adresse)" />
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                     </label>
                     <div class="col-sm-6">
                         <InputText id="confirmEmail" class="form-control"
-                               @bind-Value="bruger.Email" />
+                                   @bind-Value="bruger.Email" />
                         <ValidationMessage For="@(() => bruger.Email)" />
                     </div>
                 </div>
@@ -116,69 +116,69 @@
                 <div class="row">
                     <div class="col">
                         <EditForm Model="@aEditContext" OnValidSubmit="HandleValidSubmitVagt">
-                <DataAnnotationsValidator />
-                <h3>Opret Ny Vagt</h3>
-                <hr />
-                <ValidationSummary />
-                <div class="form-group row">
-                    <label for="Navn" class="col-sm-3 col-form-label">
-                        Navn
-                    </label>
-                    <div class="col-sm-6">
-                        <InputText id="Navn" class="form-control" placeholder="@vagt.Navn"
-                                           @bind-Value="vagt.Navn" />
+                            <DataAnnotationsValidator />
+                            <h3>Opret Ny Vagt</h3>
+                            <hr />
+                            <ValidationSummary />
+                            <div class="form-group row">
+                                <label for="Navn" class="col-sm-3 col-form-label">
+                                    Navn
+                                </label>
+                                <div class="col-sm-6">
+                                    <InputText id="Navn" class="form-control" placeholder="@vagt.Navn"
+                                               @bind-Value="vagt.Navn" />
                                     <ValidationMessage For="@(() => vagt.Navn)" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="Start" class="col-sm-3 col-form-label">
-                        Start
-                    </label>
-                    <div class="col-sm-6">
-                        <input type="datetime" id="Start" @bind="vagt.Start" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group row">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="Start" class="col-sm-3 col-form-label">
+                                    Start
+                                </label>
+                                <div class="col-sm-6">
+                                    <input type="datetime" id="Start" @bind="vagt.Start" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label for="Slut" class="col-sm-3 col-form-label">
                                     Slut
                                 </label>
                                 <div class="col-sm-6">
                                     <input type="datetime" id="Slut" @bind="vagt.Slut" class="form-control" />
                                 </div>
-                </div>
-                <div class="form-group row">
-                    <label for="Kategori" class="col-sm-3 col-form-label">
-                        Kategori
-                    </label>
-                    <div class="col-sm-6">
+                            </div>
+                            <div class="form-group row">
+                                <label for="Kategori" class="col-sm-3 col-form-label">
+                                    Kategori
+                                </label>
+                                <div class="col-sm-6">
                                     <InputSelect id="Kategori" @bind-Value="vagt.Kategori" class="form-control">
                                         @foreach (var kat in kategorilist)
                                         {
                                             <option value="@kat.ID">@kat.Navn</option>
                                         }
                                     </InputSelect>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="Antal" class="col-sm-3 col-form-label">
-                        Antal
-                    </label>
-                    <div class="col-sm-6">
-                        <InputNumber @bind-Value="vagt.Antal" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="Beskrivelse" class="col-sm-3 col-form-label">
-                        Beskrivelse
-                    </label>
-                    <div class="col-sm-6">
-                        <InputText @bind-Value="vagt.Beskrivelse" class="form-control" />
-                    </div>
-                </div>
-                <button class="btn btn-primary" type="submit">Opret vagt</button>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="Antal" class="col-sm-3 col-form-label">
+                                    Antal
+                                </label>
+                                <div class="col-sm-6">
+                                    <InputNumber @bind-Value="vagt.Antal" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="Beskrivelse" class="col-sm-3 col-form-label">
+                                    Beskrivelse
+                                </label>
+                                <div class="col-sm-6">
+                                    <InputText @bind-Value="vagt.Beskrivelse" class="form-control" />
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Opret vagt</button>
                         </EditForm>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -242,7 +242,7 @@
                             <a href="@($"/redigervagt?id={vagt.ID}")"> <button class="btn btn-primary">Rediger vagt</button></a>
                         </td>
                         <td>
-                            <button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID); HandleClick(); }">Slet Vagt</button>
+                            @*<button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID); HandleClick(); }">Slet Vagt</button>*@
                         </td>
                     </tr>
                 }
@@ -260,7 +260,7 @@
     private int UrlId = 1; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
     private Kategori[]? kategorilist = new Kategori[0];
-    
+
 
     [Inject]
     private IVagtService mService { get; set; }

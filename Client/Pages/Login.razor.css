@@ -16,8 +16,8 @@ form {
     border: none;
     cursor: pointer;
     width: 15%;
-    margin-left: 20px;
-    margin-top: 15px;
+    margin: 20px;
+    margin-left: 30%;
 }
 
 
@@ -31,7 +31,7 @@ button:hover {
     background-color: steelblue;
     color: white;
     padding: 5px 8px;
-    margin-left: 20px;
+    margin: 0px;
     width: 15%;
 }
 
@@ -110,7 +110,7 @@ i.material-icons.hover-effect {
     }
 
 .div-margin {
-    margin-bottom: 0px;
+    margin: 10px;
 }
 
 .icon {
