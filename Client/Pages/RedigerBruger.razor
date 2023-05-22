@@ -5,6 +5,8 @@
 @inject IJSRuntime JSRuntime // Injecter 'IJSRuntime' for at muliggøre interaktion med JavaScript på klienten .
 @inject NavigationManager NavigationManager
 @inject HttpClient http
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
 
 <div class="row">
     <div class="col"></div>
@@ -238,11 +240,12 @@
     protected override async Task OnInitializedAsync()
     {
         loading = "contents";
-        GetUrlID();
+        UrlId = await sessionStorage.GetItemAsync<int>("userId");
         bruger = await mService.GetBruger(UrlId);
         vagtlist = (await vService.getAvailable(UrlId)).ToArray();
         myvagtlist = (await vService.getAllMine(UrlId)).ToArray();
         loading = "none";
+
     }
 
     public async Task HandleValidSubmit()

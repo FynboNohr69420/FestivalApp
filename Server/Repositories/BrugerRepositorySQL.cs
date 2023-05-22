@@ -112,7 +112,7 @@ namespace Server.Repositories
         public void Add(Bruger bruger)
         {
 
-
+            int? resID = null;
 
             using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -122,7 +122,7 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "INSERT INTO \"Bruger\" (\"Fornavn\", \"Efternavn\", \"Telefonnummer\", \"Adresse\", \"Email\", \"Fødselsdag\", \"Password\", \"isKoordinator\") VALUES (@Fornavn, @Efternavn, @Telefonnummer, @Adresse, @Email, @Fødselsdag, @Password, @isKoordinator)";
+                command.CommandText = "INSERT INTO \"Bruger\" (\"Fornavn\", \"Efternavn\", \"Telefonnummer\", \"Adresse\", \"Email\", \"Fødselsdag\", \"Password\", \"isKoordinator\") VALUES (@Fornavn, @Efternavn, @Telefonnummer, @Adresse, @Email, @Fødselsdag, @Password, @isKoordinator) RETURNING \"ID\"";
                 command.Parameters.AddWithValue("@Fornavn", bruger.Fornavn);
                 command.Parameters.AddWithValue("@Efternavn", bruger.Efternavn);
                 command.Parameters.AddWithValue("@Telefonnummer", bruger.Telefonnummer);
@@ -130,10 +130,25 @@ namespace Server.Repositories
                 command.Parameters.AddWithValue("@Email", bruger.Email);
                 command.Parameters.AddWithValue("@Fødselsdag", datoString);
                 command.Parameters.AddWithValue("@Password", bruger.Password);
-                command.Parameters.AddWithValue("@isKoordinator", bruger.IsKoordinator);
+                command.Parameters.AddWithValue("@isKoordinator", false);
+                resID = (Int32)command.ExecuteScalar();
+                connection.Close();
+            }
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+
+                command.CommandText = "INSERT INTO \"Bruger_rolle\" (\"Bruger_id\", \"Rolle_id\") VALUES (@ID, 0)";
+                command.Parameters.AddWithValue("@ID", resID);
                 command.ExecuteNonQuery();
                 connection.Close();
             }
+
+
+
+
         }
 
 
@@ -160,7 +175,7 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "UPDATE \"Bruger\" SET \"Fornavn\"=@Fornavn, \"Efternavn\"=@Efternavn, \"Telefonnummer\"=@Telefonnummer, \"Adresse\"=@Adresse, \"Email\"=@Email, \"Password\"=@Password, \"isKoordinator\"=@isKoordinator, \"Fødselsdag\"=@Fødselsdag WHERE \"ID\" = @ID";
+                command.CommandText = "UPDATE \"Bruger\" SET \"Fornavn\"=@Fornavn, \"Efternavn\"=@Efternavn, \"Telefonnummer\"=@Telefonnummer, \"Adresse\"=@Adresse, \"Email\"=@Email, \"Password\"=@Password, \"isKoordinator\"=@isKoordinator, \"Fødselsdag\"=@Fødselsdag WHERE \"ID\" = @ID"; 
                 command.Parameters.AddWithValue("@Fornavn", bruger.Fornavn);
                 command.Parameters.AddWithValue("@Efternavn", bruger.Efternavn);
                 command.Parameters.AddWithValue("@Telefonnummer", bruger.Telefonnummer);
