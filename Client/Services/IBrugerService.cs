@@ -15,6 +15,7 @@ namespace Client.Services
 
         Task UpdateBruger(Bruger bruger);
 
+        public void DeleteBruger(int id);
 
     }
 }
