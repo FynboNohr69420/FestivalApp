@@ -13,6 +13,97 @@
 
 @if (showEditForm)
 {
+    <EditForm Model="@aEditContext" OnValidSubmit="HandleUpdateSubmit">
+        <DataAnnotationsValidator />
+        <h3>Rediger information</h3>
+        <hr />
+        <ValidationSummary />
+        <div class="form-group row">
+            <label for="firstName" class="col-sm-3 col-form-label">
+                Fornavn
+            </label>
+            <div class="col-sm-6">
+                <InputText id="Fornavn" class="form-control" placeholder="@bruger.Fornavn"
+                           @bind-Value="bruger.Fornavn" />
+                <ValidationMessage For="@(() => bruger.Fornavn)" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Efternavn" class="col-sm-3 col-form-label">
+                Efternavn
+            </label>
+            <div class="col-sm-6">
+                <InputText id="lastName" class="form-control" placeholder="@(() => bruger.Efternavn)"
+                           @bind-Value="bruger.Efternavn" />
+                <ValidationMessage For="@(() => bruger.Efternavn)" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Telefonummer" class="col-sm-3 col-form-label">
+                Telefonnummer
+            </label>
+            <div class="col-sm-6">
+                <InputNumber id="email" class="form-control" placeholder="Telefonnummer"
+                             @bind-Value="bruger.Telefonnummer" />
+                <ValidationMessage For="@(() => bruger.Telefonnummer)" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Addresse" class="col-sm-3 col-form-label">
+                Addresse
+            </label>
+            <div class="col-sm-6">
+                <InputText id="confirmEmail" class="form-control"
+                           @bind-Value="bruger.Adresse" />
+                <ValidationMessage For="@(() => bruger.Adresse)" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Email" class="col-sm-3 col-form-label">
+                Email
+            </label>
+            <div class="col-sm-6">
+                <InputText id="confirmEmail" class="form-control"
+                           @bind-Value="bruger.Email" />
+                <ValidationMessage For="@(() => bruger.Email)" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Fødselsdagsdato" class="col-sm-3 col-form-label">
+                Fødselsdagsdato
+            </label>
+            <div class="col-sm-6">
+                <InputDate @bind-Value="bruger.Fødselsdag" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Password" class="col-sm-3 col-form-label">
+                Password
+            </label>
+            <div class="col-sm-6">
+                <InputText @bind-Value="bruger.Password" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="isKoordinator" class="col-sm-3 col-form-label">Er koordinator:</label>
+            <div class="col-sm-6">
+                <label class="form-control locked">@bruger.IsKoordinator</label>
+            </div>
+        </div>
+    </EditForm>
+
+
+    <button class="btn btn-primary" type="submit">Gem</button>
+    <div>
+        @if (showMessage)
+        {
+            <div class="alert alert-success">
+                Dine oplysninger er gemt.
+            </div>
+        }
+    </div>
+
+
     <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -41,10 +132,12 @@
             <InputText id="Beskrivelse" @bind-Value="vagt.Beskrivelse" class="form-control" />
         </div>
         <div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Opret</button>
         </div>
     </EditForm>
+
 }
+
 
 
 <h5>Vagt liste</h5>
@@ -114,6 +207,10 @@
 @code {
     private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
     private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+    private Bruger bruger = new Bruger();
+    private Bruger[]? brugerlist = new Bruger[0];
+    private bool showMessage = false;
+
 
     private bool showEditForm = false;
 
@@ -124,7 +221,7 @@
 
     [Inject]
     private IVagtService mService { get; set; }
-
+    private IBrugerService lService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -168,10 +265,6 @@
     }
 
 
-    private void FilterAndSort()
-    {
-        // Opdatering af komponenten er automatisk, da den afhænger af filteredAndSortedPersons
-    }
 
     private EditContext aEditContext;
 
@@ -187,6 +280,14 @@
         await AddVagt();
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
+        showMessage = true;
+    }
+
+    public async Task HandleUpdateSubmit()
+    {
+        await UpdateBruger();
+        showMessage = true;
+
     }
 
     public async Task AddVagt()
@@ -200,5 +301,10 @@
     {
         mService.DeleteVagt(ID);
         Console.WriteLine("klient: deleted" + ID);
+    }
+
+    public async Task UpdateBruger()
+    {
+        await lService.UpdateBruger(bruger);
     }
 }

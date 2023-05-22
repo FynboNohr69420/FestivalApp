@@ -167,8 +167,6 @@
                 <option value="ascending">Point Ascending</option>
                 <option value="descending">Point Descending</option>
             </select>
-            <button @onclick="FilterAndSort">Submit</button>
-
         </div>
 
         <div class="row">
@@ -295,11 +293,6 @@
     private void ToggleSortOrder()
     {
         sortOrder = sortOrder == "ascending" ? "descending" : "ascending";
-    }
-
-    private void FilterAndSort()
-    {
-        // Opdatering af komponenten er automatisk, da den afhænger af filteredAndSortedPersons
     }
 
     private async Task TagVagt(Vagt vagt, int bruger)
