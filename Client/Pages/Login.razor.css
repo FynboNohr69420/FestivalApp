@@ -3,34 +3,24 @@ form {
     border: 3px solid #f1f1f1;
 }
 
-/* Full-width inputs */
-input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
 
 /* Set a style for all buttons */
 .btn-login {
     background-color: #04AA6D;
     color: white;
-    padding: 14px 20px;
+    padding: 7px 10x;
     margin: 8px 0;
     border: none;
     cursor: pointer;
     width: 100%;
 }
 
-    /* Add a hover effect for buttons */
-    button:hover {
-        opacity: 0.8;
-    }
+/* Add a hover effect for buttons */
+button:hover {
+    opacity: 0.8;
+}
 
-/* Extra style for the cancel button (red) */
-
+/* Extra style for the cancel button (blue) */
 .btn-blue {
     background-color: steelblue;
     color: white;
@@ -59,8 +49,6 @@ img.avatar {
     padding: 16px;
 }
 
-
-
 .popup {
     display: block;
     position: fixed;
@@ -81,6 +69,7 @@ a:hover {
 
 .form-group {
     position: relative;
+    margin-bottom: 10px;
 }
 
 .input-container {
@@ -100,12 +89,12 @@ a:hover {
 }
 
     .hover-effect:hover {
-        color: green; /* Erstat med den ønskede farve */
-        cursor: pointer; /* Erstat med den ønskede musemarkør */
+        color: green;
+        cursor: pointer;
     }
 
 .div-margin {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .icon {
@@ -116,11 +105,6 @@ a:hover {
     color: #999;
     padding: 0 10px;
 }
-
-.div-margin {
-    margin-bottom: 20px;
-}
-
 
 .festival {
     height: 250px;

@@ -13,17 +13,34 @@
         <label for="Navn">Navn</label>
         <InputText id="Navn" @bind-Value="vagt.Navn" class="form-control" />
     </div>
-    <div class="col-md-12 mb-3">
-        <label for="Telefonnummer">Start dato</label>
-        <InputDate id="StartDato" @bind-Value="vagt.Start" class="form-control" />
+    <div class="col-md-6 mb-3">
+        <label for="Fødselsdag">Antal Point</label>
+        <InputNumber id="Point" @bind-Value="vagt.Point" class="form-control" />
     </div>
-    <div class="col-md-12 mb-3">
-        <label for="Adresse">Slut dato</label>
-        <InputDate id="SlutDato" @bind-Value="vagt.Slut" class="form-control" />
+    <div class="form-group row">
+        <label for="Start" class="col-sm-3 col-form-label">
+            Start
+        </label>
+        <div class="col-sm-6">
+            <input type="datetime" id="Start" @bind="vagt.Start" class="form-control" />
+        </div>
     </div>
-    <div class="col-md-12 mb-3">
-        <label for="Email">Kategori</label>
-        <InputNumber id="Kategori" @bind-Value="vagt.Kategori" class="form-control" />
+    <div class="form-group row">
+        <label for="Slut" class="col-sm-3 col-form-label">
+            Slut
+        </label>
+        <div class="col-sm-6">
+            <input type="datetime" id="Slut" @bind="vagt.Slut" class="form-control" />
+        </div>
+    </div>
+    <div class="col-md-12-mb-3">
+        <label for="kategori">Kategori</label>
+        <InputSelect id="Kategori" @bind-Value="vagt.Kategori" class="form-control">
+            @foreach (var kat in kategorilist)
+            {
+                <option value="@kat.ID">@kat.Navn</option>
+            }
+        </InputSelect>
     </div>
     <div class="col-md-6 mb-3">
         <label for="Fødselsdag">Antal pladser</label>
@@ -44,6 +61,8 @@
 
     private Vagt vagt = new Vagt();
     private Vagt[]? vagtlist = new Vagt[0];
+    private Kategori[]? kategorilist = new Kategori[0];
+
 
     private EditContext aEditContext;
 
@@ -55,8 +74,13 @@
         aEditContext = new EditContext(vagt);
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
-
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        kategorilist = (await mService.getAllKategori()).ToArray();
+    }
+
 
     public async Task HandleValidSubmit()
     {

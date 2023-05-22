@@ -1,9 +1,11 @@
-﻿@page "/login"
+﻿@layout LoginLayout
+@page "/login"
 @using Client.Services;
 @using Common.Model;
 @inject NavigationManager NavigationManager
-
 @inject HttpClient Http;
+
+
 
 <PageTitle>Registrering</PageTitle>
 
@@ -21,7 +23,7 @@
             <label for="Email" style="font-weight:bold">Email</label>
             <div class="input-container">
                 <span class="icon"><i class="material-icons">mail</i></span>
-                <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control" />
+                <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control form-control-sm" />
             </div>
         </div>
 
@@ -29,7 +31,7 @@
         <label for="Password" style="font-weight:bold">Password</label>
         <div class="form-group">
             <div class="input-container">
-                <InputText type="@passwordType" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
+                <InputText type="@passwordType" id="Password" @bind-Value="brugerForm.Password" class="form-control form-control-sm" />
                 <span class="icon"><i class="material-icons">lock</i></span>
                 <i @onclick="TogglePasswordVisibility" class="material-icons">visibility</i>
                 <i @onclick="TogglePasswordVisibility" class="material-icons hover-effect">visibility</i>
