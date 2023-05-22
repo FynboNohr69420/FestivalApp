@@ -210,7 +210,7 @@
     private Bruger bruger = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
     private bool showMessage = false;
-
+    private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
     private bool showEditForm = false;
 
@@ -225,10 +225,19 @@
 
     protected override async Task OnInitializedAsync()
     {
+        GetUrlID();
         vagtlist = (await mService.getAll()).ToArray();
+        bruger = await lService.GetBruger(UrlId);
 
     }
 
+    NavigationManager NavigationManager;
+    public void GetUrlID()
+    {
+        var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
+        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
+        UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
+    }
 
     private string searchKeyword = "";
     private string selectedSortOption = "point";
@@ -270,7 +279,10 @@
 
     protected override void OnInitialized()
     {
+
+        bruger.ID = UrlId;
         aEditContext = new EditContext(vagt);
+        aEditContext = new EditContext(bruger);
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
     }
@@ -285,6 +297,7 @@
 
     public async Task HandleUpdateSubmit()
     {
+        bruger.ID = UrlId;
         await UpdateBruger();
         showMessage = true;
 

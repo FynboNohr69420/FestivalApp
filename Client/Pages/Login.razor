@@ -231,11 +231,11 @@
         {
             if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == true)
             {
-                NavigationManager.NavigateTo($"/redigerbruger?id={bruger.ID}"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
+                NavigationManager.NavigateTo($"/vagtliste?id={bruger.ID}\""); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
             else if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == false)
             {
-                NavigationManager.NavigateTo("brugerlist"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
+                NavigationManager.NavigateTo($"/redigerbruger?id={bruger.ID}\""); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
             else
             {
