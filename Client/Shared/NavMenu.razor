@@ -37,7 +37,7 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="redigerbruger">
+            <NavLink class="nav-link" href="@NoAccessFrivillig(role)">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Min Side - Frivillige
             </NavLink>
         </div>
@@ -71,7 +71,6 @@
         else
         {
             return "stop";
-
         }
     }
 
@@ -96,6 +95,18 @@
         else
         {
             return "stop";
+        }
+    }
+
+    private string NoAccessFrivillig(bool role)
+    {
+        if (role)
+        {
+            return "vagtliste";
+        }
+        else
+        {
+            return "redigerbruger";
         }
     }
 }
