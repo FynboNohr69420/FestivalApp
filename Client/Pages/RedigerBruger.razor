@@ -171,33 +171,93 @@
     </div>
 </div>
 <br />
+<div class="row">
+    <div class="col">
+        <h3>Tilgængelige vagter</h3>
 
+        <div>
+            <input type="text" @bind="@searchKeyword" placeholder="Search by name" />
+            <label>Sort Order:</label>
+            <select @bind="@sortOrder">
+                <option value="ascending">Point Ascending</option>
+                <option value="descending">Point Descending</option>
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-10">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Navn</th>
+                            <th>Point</th>
+                            <th>Start</th>
+                            <th>Slut</th>
+                            <th>Beskrivelse</th>
+                            <th>Max Pladser</th>
+                            <th>Pladser Tilbage: </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var vagt in filteredVagtlist)
+                        {
+                            if (!brugervagtersomid.Contains(vagt.ID))
+                            {
+                                <tr>
+                                    <td>@vagt.Navn</td>
+                                    <td>@vagt.Point</td>
+                                    <td>@vagt.Start</td>
+                                    <td>@vagt.Slut</td>
+                                    <td>@vagt.Beskrivelse</td>
+                                    <td>@vagt.Antal</td>
+                                    <td>@vagt.Pladser_Tilbage</td>
+                                    <td>
+                                        <button class="btn btn-success" @onclick="() => TagVagt(vagt, UrlId)">Tag Vagt</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     private Bruger bruger = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
     private List<int> brugervagtersomid = new List<int>();
-    private Vagt[]? myvagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
-    private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
-
 
     private bool showMessage = false;
 
     private string loading = "none";
 
 
+    private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
+
 
     private EditContext aEditContext;
 
     [Inject]
     private IBrugerService mService { get; set; }
+
     [Inject]
     private IVagtService vService { get; set; }
 
     protected override void OnInitialized()
     {
-
         aEditContext = new EditContext(bruger);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = "contents";
+        UrlId = await sessionStorage.GetItemAsync<int>("userId");
+        bruger = await mService.GetBruger(UrlId);
+        vagtlist = (await vService.getAvailable(UrlId)).ToArray();
+        myvagtlist = (await vService.getAllMine(UrlId)).ToArray();
+        loading = "none";
 
     }
 
@@ -214,6 +274,48 @@
         await mService.UpdateBruger(bruger);
     }
 
+    public async Task UpdateLists()
+    {
+        vagtlist = (await vService.getAll()).ToArray();
+        myvagtlist = (await vService.getAllMine(UrlId)).ToArray();
+    }
+
+    public void GetUrlID()
+    {
+        var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
+        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
+        UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
+    }
+
+    // Vagt-relateret kode
+
+    private string searchKeyword = "";
+    private string sortOrder = "ascending";
+
+    private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
+    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+    private Vagt[]? myvagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+
+    private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? SortPoint(vagtlist) : SortPoint(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
+
+
+    private IEnumerable<Vagt> SortPoint(IEnumerable<Vagt> point)
+    {
+        return sortOrder == "ascending"
+            ? point.OrderBy(p => p.Point)
+            : point.OrderByDescending(p => p.Point);
+    }
+
+    private void ToggleSortOrder()
+    {
+        sortOrder = sortOrder == "ascending" ? "descending" : "ascending";
+    }
+
+    private async Task TagVagt(Vagt vagt, int bruger)
+    {
+        vService.TagVagt(vagt, bruger);
+        await Refresh();
+    }
 
     private async Task AfmeldVagt(Vagt vagt, int bruger)
     {
@@ -221,18 +323,17 @@
         await Refresh();
     }
 
-    private void Logout()
-    {
-        NavigationManager.NavigateTo("/");
-    }
-
     public async Task Refresh()
     {
         await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
+    }
+
+    private void Logout()
+    {
+        NavigationManager.NavigateTo("/");
     }
 
     int vagtCounter = 0;
 
     int pointSum = 0;
 }
-
