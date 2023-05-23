@@ -39,10 +39,12 @@
     <ProjectReference Include="..\Shared\Common.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="Pages\Adgang.razor" />
     <Content Remove="wwwroot\billeder\" />
     <Content Remove="wwwroot\billeder\gg.jpeg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Pages\Adgang.razor" />
     <None Include="wwwroot\billeder\gg.jpg" />
   </ItemGroup>
 </Project>

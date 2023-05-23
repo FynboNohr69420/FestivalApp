@@ -364,16 +364,11 @@
     //logud knap
     private void Logout()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("", forceLoad: true);
+        sessionStorage.RemoveItemAsync("IsKoordinator");
     }
     public async Task Refresh()
     {
         await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
-    }
-
-
-    private void HandleClick()
-    {
-        NavigationManager.NavigateTo("vagtliste", forceLoad: true);
     }
 }
