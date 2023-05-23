@@ -39,6 +39,8 @@
 @code {
     private int userId { get; set; }
 
+    private bool role { get; set; }
+
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
@@ -46,5 +48,21 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+     protected override async Task OnInitializedAsync()
+    {
+        role = await sessionStorage.GetItemAsync<bool>("IsKoordinator");
+    }
+    private string NoAccess(bool role)
+    {
+        if (role)
+        {
+            return "vagtliste";
+        }
+        else
+        {
+            return "login";
+        }
     }
 }
