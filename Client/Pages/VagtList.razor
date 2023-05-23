@@ -243,7 +243,7 @@
                             <a href="@($"/redigervagt?id={vagt.ID}")"> <button class="btn btn-primary">Rediger vagt</button></a>
                         </td>
                         <td>
-                            @*<button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID); HandleClick(); }">Slet Vagt</button>*@
+                            <button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID); }">Slet Vagt</button>
                         </td>
                     </tr>
                 }
@@ -339,6 +339,7 @@
         await mService.AddVagt(vagt);
         Console.WriteLine("klient: add " + vagt.Navn); // Udskriver informationer om den nye booking i konsollen
         vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
+
     }
 
     public async void DeleteVagt(int ID)
@@ -365,7 +366,6 @@
     private void Logout()
     {
         NavigationManager.NavigateTo("", forceLoad: true);
-        sessionStorage.RemoveItemAsync("IsKoordinator");
     }
     public async Task Refresh()
     {
