@@ -16,6 +16,7 @@ namespace Client
 
             builder.Services.AddBlazoredSessionStorage();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            
 
             builder.Services.AddHttpClient<IBrugerService, BrugerService>(Client =>
             {

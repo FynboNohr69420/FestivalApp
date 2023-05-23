@@ -136,7 +136,7 @@
     private Bruger brugerForm = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
     private string billede = "visibility.png";
-    
+
 
 
     private bool showPassword = false;
@@ -249,6 +249,6 @@
 
         await sessionStorage.SetItemAsync("userId", bruger.ID);
 
-
+        await sessionStorage.SetItemAsync("IsKoordinator", bruger.IsKoordinator);
     }
 }

@@ -145,10 +145,6 @@ namespace Server.Repositories
                 command.ExecuteNonQuery();
                 connection.Close();
             }
-
-
-
-
         }
 
 
