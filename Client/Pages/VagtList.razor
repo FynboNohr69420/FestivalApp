@@ -243,7 +243,7 @@
                             <a href="@($"/redigervagt?id={vagt.ID}")"> <button class="btn btn-primary">Rediger vagt</button></a>
                         </td>
                         <td>
-                            @*<button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID); HandleClick(); }">Slet Vagt</button>*@
+                            <button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID); }">Slet Vagt</button>
                         </td>
                     </tr>
                 }
@@ -258,7 +258,7 @@
     private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
     private Bruger bruger = new Bruger();
     private bool showMessage = false;
-    private int UrlId = 1; // Deklarerer en variabel til at holde på ID'en fra URL'en
+    private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
     private Kategori[]? kategorilist = new Kategori[0];
 
@@ -339,6 +339,7 @@
         await mService.AddVagt(vagt);
         Console.WriteLine("klient: add " + vagt.Navn); // Udskriver informationer om den nye booking i konsollen
         vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
+
     }
 
     public async void DeleteVagt(int ID)
@@ -364,16 +365,10 @@
     //logud knap
     private void Logout()
     {
-        NavigationManager.NavigateTo("/login");
+        NavigationManager.NavigateTo("", forceLoad: true);
     }
     public async Task Refresh()
     {
         await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
-    }
-
-
-    private void HandleClick()
-    {
-        NavigationManager.NavigateTo("vagtliste", forceLoad: true);
     }
 }

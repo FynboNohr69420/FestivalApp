@@ -1,5 +1,5 @@
 ﻿@layout LoginLayout
-@page "/login"
+@page "/"
 @using Client.Services;
 @using Common.Model;
 @inject NavigationManager NavigationManager
@@ -137,7 +137,7 @@
     private Bruger brugerForm = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
     private string billede = "visibility.png";
-    
+
 
 
     private bool showPassword = false;
@@ -236,11 +236,11 @@
         {
             if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == true)
             {
-                NavigationManager.NavigateTo($"/vagtliste"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
+                NavigationManager.NavigateTo($"/vagtliste", forceLoad: true); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
             else if (brugerForm.Password.ToString() == bruger.Password.ToString() && bruger.IsKoordinator == false)
             {
-                NavigationManager.NavigateTo($"/redigerbruger"); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
+                NavigationManager.NavigateTo($"/redigerbruger", forceLoad: true); // Navigerer til side hvis password passer med det der ligger i serveren og brugeren har koordinator-privillegier
             }
             else
             {
@@ -249,6 +249,7 @@
         }
 
         await sessionStorage.SetItemAsync("userId", bruger.ID);
+        await sessionStorage.SetItemAsync("IsKoordinator", bruger.IsKoordinator);
 
 
     }
