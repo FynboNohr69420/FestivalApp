@@ -14,10 +14,6 @@
 
 <button type="button" class="btn btn-primary" @onclick="ToggleEditForm">Rediger oplysninger eller tilføj vagt</button>
 
-<div class="logout-button-container">
-    <button class="logout-button" @onclick="Logout">Log ud</button>
-</div>
-
 
 @if (showEditForm)
 {
@@ -362,11 +358,7 @@
         showEditForm = !showEditForm;
     }
 
-    //logud knap
-    private void Logout()
-    {
-        NavigationManager.NavigateTo("", forceLoad: true);
-    }
+   
     public async Task Refresh()
     {
         await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"

@@ -39,9 +39,15 @@
                     </li>
                 }
             </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <button class="logout-button" @onclick="Logout">Log ud</button>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
+
 
 
 @code {
@@ -49,7 +55,7 @@
 
     private bool role { get; set; }
 
- 
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,5 +69,10 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void Logout()
+    {
+        NavigationManager.NavigateTo("", forceLoad: true);
     }
 }

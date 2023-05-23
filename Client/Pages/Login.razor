@@ -42,7 +42,7 @@
             <button type="submit" class="btn btn-login">Submit</button>
             <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Bliv frivillig her</button>
         </div>
-        <p style="display: @showerror; color: red">Hov, der er sket en fejl. Har du skrevet din email og password rigtigt?</p>
+        <p style="display: @showerror; color: red">"Forkert adgangskode eller e-mail. Prøv venligst igen."</p>
         <hr>
 
     </EditForm>
@@ -72,7 +72,7 @@
     <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidRegister">
         <DataAnnotationsValidator />
         <ValidationSummary />
-    <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Allerede oprettet?</button>
+        <button type="button" class="btn btn-blue" @onclick="ToggleEditForm">Allerede oprettet?</button>
         <h1>Bliv medlem</h1>
         <div class="col-md-12 mb-3">
             <label for="Navn">Navn</label>
@@ -109,6 +109,12 @@
             </p>
             <button type="submit" class="btn btn-primary">Registrer</button>
         </div>
+        <div>
+        @if (!string.IsNullOrEmpty(TakBesked))
+        {
+                <h2>@TakBesked</h2>
+        }
+        </div>
     </EditForm>
 
     @if (showPopup)
@@ -137,6 +143,8 @@
     private Bruger brugerForm = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
     private string billede = "visibility.png";
+    public string TakBesked { get; set; }
+
 
 
 
@@ -206,6 +214,7 @@
     {
         await Add();
         bruger.Fødselsdag = DateTime.Now;
+        TakBesked = "Tak for din tilmelding, du kan nu logge ind. Vi glæder os til at se dig på pladsen!";
     }
 
     public async Task<Bruger> getSpecific(string email)
@@ -223,6 +232,7 @@
     {
         await mService.Add(bruger);
         bruger = new();
+
 
     }
 
