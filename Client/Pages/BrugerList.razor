@@ -2,7 +2,7 @@
 @using Common.Model
 @using Client.Services
 @using System.Net.Http.Json;
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IJSRuntime JSRuntime // Injecter 'IJSRuntime' for at muliggøre interaktion med JavaScript på klienten .
 
 
 <PageTitle>Brugerlisten</PageTitle>
@@ -10,7 +10,6 @@
 <h1>Brugerlisten</h1>
 
 <input type="text" @bind="@searchKeyword" placeholder="Søg på navn" />
-
 
 <div class="row">
     <div class="col-md-12 mb-12">
@@ -39,10 +38,7 @@
                         <td>@bruger.Fødselsdag</td>
                         <td>@bruger.IsKoordinator</td>
                         <td>
-                            <a href="@($"/redigerbruger?id={userId}")"> <button class="btn btn-primary">Rediger bruger</button></a>
-                        </td>
-                        <td>
-                            <button class="btn btn-danger" @onclick="() => DeleteBruger(bruger.ID)">Slet Vagt</button>
+                            <button class="btn btn-danger" @onclick="() => ShowDeleteConfirmation(bruger.ID)">Slet Bruger</button>
                         </td>
                     </tr>
                 }
@@ -51,32 +47,69 @@
     </div>
 </div>
 
+@if (showDeleteConfirmation)
+{
+    <div class="modal" tabindex="-1" role="dialog" style="display: block; background-color: rgba(0, 0, 0, 0.5);">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bekræft sletning</h5>
+                    <button type="button" class="close" @onclick="CancelDeleteConfirmation">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Er du sikker på, at du vil slette denne bruger?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelDeleteConfirmation">Fortryd</button>
+                    <button type="button" class="btn btn-danger" @onclick="() => ConfirmDeleteBruger(brugerToDelete)">Slet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
-
-    private int userId { get; set; }
 
     private Bruger bruger = new Bruger(); // Opretter et tomt Booking objekt
     private Bruger[]? brugerlist = new Bruger[0]; // Opretter en tom liste af Booking objekter
     private string searchKeyword = "";
-
+    private bool showDeleteConfirmation = false;
+    private int brugerToDelete = 0;
 
     [Inject]
     private IBrugerService mService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        userId = await sessionStorage.GetItemAsync<int>("userId");
         brugerlist = (await mService.getAll()).ToArray();
     }
 
     private IEnumerable<Bruger> filteredBrugerList => string.IsNullOrWhiteSpace(searchKeyword) ? brugerlist : brugerlist.Where(v => v.Fornavn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
 
-    public void DeleteBruger(int ID)
+    public void ShowDeleteConfirmation(int brugerID)
     {
-        mService.DeleteBruger(ID);
-        Console.WriteLine("klient: deleted" + ID);
+        brugerToDelete = brugerID;
+        showDeleteConfirmation = true;
     }
 
-}
+    public void CancelDeleteConfirmation()
+    {
+        showDeleteConfirmation = false;
+    }
 
+    public async Task ConfirmDeleteBruger(int brugerID)
+    {
+        mService.DeleteBruger(brugerID);
+        Console.WriteLine("klient: deleted" + brugerID);
+        showDeleteConfirmation = false;
+        await OnInitializedAsync(); // Opdater listen efter sletning
+        await Refresh();
+    }
+
+    public async Task Refresh()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
+    }
+}

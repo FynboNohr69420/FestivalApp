@@ -150,6 +150,17 @@ namespace Server.Repositories
 
         public void DeleteBruger(int Id)
         {
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+
+                command.CommandText = "DELETE FROM \"Bruger_rolle\" WHERE \"Bruger_id\" =@ID";
+                command.Parameters.AddWithValue("@ID", Id);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
