@@ -106,11 +106,6 @@
             </div>
             <button class="btn btn-primary" type="submit">Gem</button>
             <div>
-                Antal taget vagter: @vagtCounter
-                <br />
-                Samlet antal point: @pointSum
-            </div>
-            <div>
                 @if (showMessage)
                 {
                     <div class="alert alert-success">
@@ -165,6 +160,11 @@
                             }
                         </tbody>
                     </table>
+                    <div>
+                        Antal taget vagter: @vagtCounter
+                        <br />
+                        Samlet antal point: @pointSum
+                    </div>
                 </div>
             </div>
         </div>
