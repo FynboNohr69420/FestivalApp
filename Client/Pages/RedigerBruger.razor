@@ -177,6 +177,7 @@
     private Bruger bruger = new Bruger();
     private Bruger[]? brugerlist = new Bruger[0];
     private List<int> brugervagtersomid = new List<int>();
+    private Vagt[]? myvagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
     private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
 
@@ -190,6 +191,8 @@
 
     [Inject]
     private IBrugerService mService { get; set; }
+    [Inject]
+    private IVagtService vService { get; set; }
 
 
     public async Task HandleValidSubmit()
@@ -206,10 +209,20 @@
     }
 
 
+    private async Task AfmeldVagt(Vagt vagt, int bruger)
+    {
+        vService.AfmeldVagt(vagt, bruger);
+        await Refresh();
+    }
 
     private void Logout()
     {
         NavigationManager.NavigateTo("/");
+    }
+
+    public async Task Refresh()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
     }
 
     int vagtCounter = 0;

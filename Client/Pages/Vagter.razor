@@ -61,6 +61,63 @@
 </div>
 
 @code {
+    private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
+    private List<int> brugervagtersomid = new List<int>();
+
+
+    [Inject]
+    private IVagtService vService { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        UrlId = await sessionStorage.GetItemAsync<int>("userId");
+        vagtlist = (await vService.getAvailable(UrlId)).ToArray();
+        myvagtlist = (await vService.getAllMine(UrlId)).ToArray();
+    }
+
+    public async Task UpdateLists()
+    {
+        vagtlist = (await vService.getAll()).ToArray();
+        myvagtlist = (await vService.getAllMine(UrlId)).ToArray();
+    }
+
+
+
+    // Vagt-relateret kode
+
+    private string searchKeyword = "";
+    private string sortOrder = "ascending";
+
+    private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
+    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+    private Vagt[]? myvagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+
+    private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? SortPoint(vagtlist) : SortPoint(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
+
+
+    private IEnumerable<Vagt> SortPoint(IEnumerable<Vagt> point)
+    {
+        return sortOrder == "ascending"
+            ? point.OrderBy(p => p.Point)
+            : point.OrderByDescending(p => p.Point);
+    }
+
+    private void ToggleSortOrder()
+    {
+        sortOrder = sortOrder == "ascending" ? "descending" : "ascending";
+    }
+
+    private async Task TagVagt(Vagt vagt, int bruger)
+    {
+        vService.TagVagt(vagt, bruger);
+        await Refresh();
+    }
+
+    public async Task Refresh()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
+    }
 
 }
 
