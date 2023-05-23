@@ -140,7 +140,7 @@ namespace Server.Repositories
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "INSERT INTO \"Bruger_rolle\" (\"Bruger_id\", \"Rolle_id\") VALUES (@ID, 0)";
+                command.CommandText = "INSERT INTO \"Bruger_rolle\" (\"Bruger_id\", \"Rolle_id\") VALUES (@ID, 2)";
                 command.Parameters.AddWithValue("@ID", resID);
                 command.ExecuteNonQuery();
                 connection.Close();
