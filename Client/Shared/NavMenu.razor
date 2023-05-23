@@ -22,15 +22,10 @@
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="@NoAccessVagt(role)">
-                <span class="oi oi-plus" aria-hidden="true"></span> Lav vagter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
             <NavLink class="nav-link" href="@NoAccessBruger(role)">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Brugerlisten
             </NavLink>
-        </div
+        </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="@NoAccess(role)">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Min Side - Koordinator
@@ -79,18 +74,6 @@
         if (role)
         {
             return "brugerlist";
-        }
-        else
-        {
-            return "stop";
-        }
-    }
-
-     private string NoAccessVagt(bool role)
-    {
-        if (role)
-        {
-            return "addvagt";
         }
         else
         {
