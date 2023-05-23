@@ -138,5 +138,49 @@ i.material-icons.hover-effect {
     margin-right: 0;
 }
 
+.col {
+    transition: transform .2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-shadow: 2px 2px #000000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.col:hover {
+    background-color: white;
+    transform: scale(.99);
+}
+
+.index-container {
+    min-height: calc(100vh - 56px);
+    overflow: hidden;
+    z-index: 1;
+}
+.col1 {
+    background-image: url(/billeder/festival_crowd.jpg);
+    background-size: cover;
+}
+
+.col2 {
+    background-image: url(/billeder/frivillig.jpg);
+    background-size: cover;
+}
+
+.col3 {
+    background-image: url(/billeder/concert.jpg);
+    background-size: cover;
+}
+
+.loginpop {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    min-height: calc(100vh - 56px);
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+}
+
 
 
