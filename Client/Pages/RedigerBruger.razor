@@ -194,6 +194,12 @@
     [Inject]
     private IVagtService vService { get; set; }
 
+    protected override void OnInitialized()
+    {
+
+        aEditContext = new EditContext(bruger);
+
+    }
 
     public async Task HandleValidSubmit()
     {
