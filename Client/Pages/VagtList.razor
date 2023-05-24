@@ -250,25 +250,31 @@
 
 
 @code {
-    private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
-    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
-    private Bruger bruger = new Bruger();
-    private bool showMessage = false;
+    private Vagt vagt = new Vagt(); // Opretter et tomt vagt objekt
+    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af vagt objekter
+    private Bruger bruger = new Bruger(); //Opretter et tomt bruger objekt
+    private bool showMessage = false; //Som default er showMessage false
     private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
-    private Kategori[]? kategorilist = new Kategori[0];
+    private Kategori[]? kategorilist = new Kategori[0]; //Opretter et tomt 
 
 
     [Inject]
     private IVagtService mService { get; set; }
     [Inject]
     private IBrugerService bService { get; set; }
+    //Vha af inject kan vi tilgå og bruge både IVagtService og IBrugerService
 
     private string searchKeyword = "";
     private string selectedSortOption = "point";
     private string Sortering = "ascending";
+    //Her definerer vi de forskellige variabler, så vi kan bruge dem senere. Så de har en default værdi. 
+
 
     private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? Sorter(vagtlist) : Sorter(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
+    //Den her metode tjekker om strengen er null or white space, hvis den er det,
+    //så returnerer den en vagtlist ellers returnerer den listen, hvor vagt.Navn indeholder searchKeyword hvor den bruger stringcomparison, som angiver at den skal være caseinsensitiv. 
+
 
     private IEnumerable<Vagt> Sorter(IEnumerable<Vagt> Sorter)
     {
