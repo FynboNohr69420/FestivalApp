@@ -12,11 +12,7 @@
 
 <PageTitle>Registrering</PageTitle>
 
-<button type="button" class="btn btn-primary" @onclick="ToggleEditForm">Rediger oplysninger eller tilføj vagt</button>
-
-<div class="logout-button-container">
-    <button class="logout-button" @onclick="Logout">Log ud</button>
-</div>
+<button type="button" class="btn btn-success" @onclick="ToggleEditForm">Tryk for at rediger oplysninger eller tilføj vagt</button>
 
 
 @if (showEditForm)
@@ -176,7 +172,7 @@
                                     <InputText @bind-Value="vagt.Beskrivelse" class="form-control" />
                                 </div>
                             </div>
-                            <button class="btn btn-primary" type="submit">Opret vagt</button>
+                            <button class="btn btn-success" type="submit">Opret vagt</button>
                         </EditForm>
                     </div>
 
@@ -189,7 +185,7 @@
 
 
 <br />
-<h5>Vagt liste</h5>
+<h5>Vagtliste</h5>
 
 
 <div>
@@ -243,7 +239,7 @@
                             <a href="@($"/redigervagt?id={vagt.ID}")"> <button class="btn btn-primary">Rediger vagt</button></a>
                         </td>
                         <td>
-                            @*<button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID); HandleClick(); }">Slet Vagt</button>*@
+                            <button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID); }">Slet Vagt</button>
                         </td>
                     </tr>
                 }
@@ -254,26 +250,32 @@
 
 
 @code {
-    private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
-    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
-    private Bruger bruger = new Bruger();
-    private bool showMessage = false;
-    private int UrlId = 1; // Deklarerer en variabel til at holde på ID'en fra URL'en
+    private Vagt vagt = new Vagt(); // Opretter et tomt vagt objekt
+    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af vagt objekter
+    private Bruger bruger = new Bruger(); //Opretter et tomt bruger objekt
+    private bool showMessage = false; //Som default er showMessage false
+    private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
-    private Kategori[]? kategorilist = new Kategori[0];
+    private Kategori[]? kategorilist = new Kategori[0]; //Opretter et tomt 
 
 
     [Inject]
     private IVagtService mService { get; set; }
     [Inject]
     private IBrugerService bService { get; set; }
+    //Vha af inject kan vi tilgå og bruge både IVagtService og IBrugerService
 
     private string searchKeyword = "";
     private string selectedSortOption = "point";
     private string Sortering = "ascending";
+    //Her definerer vi de forskellige variabler, så vi kan bruge dem senere. Så de har en default værdi. 
+
 
     private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? Sorter(vagtlist) : Sorter(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
+    //Den her metode tjekker om strengen er null or white space, hvis den er det,
+    //så returnerer den en vagtlist ellers returnerer den listen, hvor vagt.Navn indeholder searchKeyword hvor den bruger stringcomparison, som angiver at den skal være caseinsensitiv. 
 
+    //sorter
     private IEnumerable<Vagt> Sorter(IEnumerable<Vagt> Sorter)
     {
         if (selectedSortOption == "point")
@@ -339,6 +341,7 @@
         await mService.AddVagt(vagt);
         Console.WriteLine("klient: add " + vagt.Navn); // Udskriver informationer om den nye booking i konsollen
         vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
+
     }
 
     public async void DeleteVagt(int ID)
@@ -361,19 +364,9 @@
         showEditForm = !showEditForm;
     }
 
-    //logud knap
-    private void Logout()
-    {
-        NavigationManager.NavigateTo("/");
-    }
+
     public async Task Refresh()
     {
         await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
-    }
-
-
-    private void HandleClick()
-    {
-        NavigationManager.NavigateTo("vagtliste", forceLoad: true);
     }
 }

@@ -1,24 +1,6 @@
 ﻿body {
 }
 
-.logout-button-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: -40px; /* Tilføj ønsket margin øverst */
-}
-
-.logout-button {
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-    .logout-button:hover {
-        background-color: #c82333;
-    }
 
 
 
