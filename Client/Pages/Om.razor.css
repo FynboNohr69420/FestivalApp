@@ -1,0 +1,28 @@
+﻿.headerimage {
+    min-height: calc(100vh - 94px);
+    background-image: url(/billeder/header.jpeg);
+    background-size: cover;
+    background-position: center;
+}
+
+.infoline > .infobox {
+    background-color: red;
+    min-height: 40vh;
+    text-align: center;
+    padding-top: 1em;
+    margin-left: 2.5%;
+    max-width: 30%;
+    margin-top: calc(30vh - 94px);
+    background-color: rgba(255,255,255,0.5);
+}
+
+.infobox:hover {
+    transform: scale(1.1);
+    background-color: rgba(255,255,255,0.9);
+}
+
+button {
+    color: white;
+    font-weight: bold;
+    letter-spacing: 2px;
+}

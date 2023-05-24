@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Pages\Om.razor.css" />
     <None Remove="Services\" />
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +42,9 @@
   <ItemGroup>
     <Content Remove="wwwroot\billeder\" />
     <Content Remove="wwwroot\billeder\gg.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Pages\Om.razor.css" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\billeder\gg.jpg" />

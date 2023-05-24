@@ -1,29 +1,4 @@
-﻿.page {
-    background-color: #FCFFF7;
-    min-height: 95vh;
-}
-
-.header {
-    height: 5vh;
-    width: 100%;
-    background-color: #BA274A;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-}
-
-    .header h3 {
-        font-weight: bold;
-        font-size: 20px;
-        color: #FCFFF7;
-        vertical-align: middle;
-        margin-left: 10px;
-        position: relative;
-        top: auto;
-    }
-
-.logo {
-    object-fit: contain;
-    vertical-align: middle;
-    height: 4vh;
+﻿.bodycontainer {
+    overflow-x: hidden;
+    background-color: #CCDBDC;
 }
