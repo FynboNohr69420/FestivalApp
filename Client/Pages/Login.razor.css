@@ -197,6 +197,11 @@ i.material-icons.hover-effect {
     top: calc(11vh - 56px);
 }
 
+.headercontainer {
+    width: 100%;
+    text-align: center;
+}
+
 .greeting {
     width: 85%;
     margin: 5px auto;

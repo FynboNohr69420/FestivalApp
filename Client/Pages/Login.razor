@@ -53,7 +53,9 @@
     <div class="loginpop" style="display: @tilmelddisplay">
         <div class="registerbox">
             <a @onclick="ToggleDispPop">Tilbage</a>
+            <div class="headercontainer">
             <h5>Opret din konto</h5>
+            </div>
             <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidRegister">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
