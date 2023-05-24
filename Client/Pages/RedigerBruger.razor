@@ -3,9 +3,9 @@
 @using System.Web
 @using Client.Services
 @inject IJSRuntime JSRuntime // Injecter 'IJSRuntime' for at muliggøre interaktion med JavaScript på klienten .
-@inject NavigationManager NavigationManager
+@inject NavigationManager NavigationManager // Injecter for at kunne redirecte til andre api'er.
 @inject HttpClient http
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage // Injecter 'sessionStorage' for at kunne lagre brugerens id fra deres session. 
 
 
 <div class="row">
@@ -152,7 +152,6 @@
                                 vagtCounter++;
                                 pointSum += vagt.Point;
                                 brugervagtersomid.Add(vagt.ID);
-
                             }
                         </tbody>
                     </table>
@@ -170,93 +169,67 @@
 
 
 @code {
-    private Bruger bruger = new Bruger();
-    private Bruger[]? brugerlist = new Bruger[0];
-    private List<int> brugervagtersomid = new List<int>();
+    private Bruger bruger = new Bruger(); // Opretter et nyt bruger objekt
+    private Bruger[]? brugerlist = new Bruger[0]; // Opretter en tom liste af bruger objekter
+    private List<int> brugervagtersomid = new List<int>(); // Opretter en tom liste af vagter hvor de er tildelt et ID
 
-    private bool showMessage = false;
+    private bool showMessage = false; //Viser en besked ved if-sætning for gemte oplysninger 
 
-    private string loading = "none";
+    private string loading = "none"; //Viser loading på siden 
 
 
     private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
 
-    private EditContext aEditContext;
+    private EditContext aEditContext; // Opretter Editcontext som en variable 
 
     [Inject]
-    private IBrugerService mService { get; set; }
+    private IBrugerService mService { get; set; } // Injecter vores IBrugerSerice interface, således vi kan tilgå CRUD for brugere
 
     [Inject]
-    private IVagtService vService { get; set; }
+    private IVagtService vService { get; set; } // Injecter vores IVagtSerice interface, således vi kan tilgå CRUD for vagter
 
-    protected override void OnInitialized()
+    protected override void OnInitialized() // Ved opstart af page
     {
-        aEditContext = new EditContext(bruger);
+        aEditContext = new EditContext(bruger); // Kan bruge attibutterne fra 'bruger' klassen 
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync() // Async tasks der bliver kaldt når siden startes op 
     {
-        loading = "contents";
-        UrlId = await sessionStorage.GetItemAsync<int>("userId");
-        bruger = await mService.GetBruger(UrlId);
-        vagtlist = (await vService.getAvailable(UrlId)).ToArray();
-        myvagtlist = (await vService.getAllMine(UrlId)).ToArray();
-        loading = "none";
-
+        loading = "contents"; // Tekst til loading når data for dine vagter hentes
+        UrlId = await sessionStorage.GetItemAsync<int>("userId"); // Sætter brugerens id fra sessionStorage til at være variablen 'UrlId'
+        bruger = await mService.GetBruger(UrlId); // Henter en bruger ved at refererer til vores service klasse og funktionen 'GetBruger'
+        vagtlist = (await vService.getAvailable(UrlId)).ToArray(); // Henter alle tilgængelige vagter vha dit bruger id, og sætter dem ind i et array da vores varible er et array
+        myvagtlist = (await vService.getAllMine(UrlId)).ToArray(); // Henter alle vagter for den specifikke bruger vha bruger id, og sætter dem i et array da vores varible er et array
+        loading = "none"; // Teksten forsvinder når dine vagter er hentet 
     }
 
-    public async Task HandleValidSubmit()
+    public async Task HandleValidSubmit() // Bliver kaldt når du redigerer
     {
-        bruger.ID = UrlId;
-        await UpdateBruger();
-        showMessage = true;
+        bruger.ID = UrlId; // ID'et for den specifikke bruger 
+        await mService.UpdateBruger(bruger); // Kalder funktionen UpdateBruger fra vores service klasse
+        showMessage = true; // Viser en besked når du har trykket gem på dine oplysninger 
 
     }
-
-    public async Task UpdateBruger()
-    {
-        await mService.UpdateBruger(bruger);
-    }
-
-
     // Vagt-relateret kode
-
-    private string searchKeyword = "";
-    private string sortOrder = "ascending";
 
     private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
     private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
     private Vagt[]? myvagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
-
-    private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? SortPoint(vagtlist) : SortPoint(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
-
-
-    private IEnumerable<Vagt> SortPoint(IEnumerable<Vagt> point)
-    {
-        return sortOrder == "ascending"
-            ? point.OrderBy(p => p.Point)
-            : point.OrderByDescending(p => p.Point);
-    }
-
-    private void ToggleSortOrder()
-    {
-        sortOrder = sortOrder == "ascending" ? "descending" : "ascending";
-    }
 
     private async Task AfmeldVagt(Vagt vagt, int bruger)
     {
         vService.AfmeldVagt(vagt, bruger);
         await Refresh();
     }
-
+    // Når du tager en vagt, bliver 'TagVagt' funktionen kaldt i service klassen, og derefter kalder vi Refresh funktionen
     public async Task Refresh()
     {
         await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
     }
 
   
-    int vagtCounter = 0;
+    int vagtCounter = 0; // Variable, som bliver brugt til at vvise hvor mange vagter en bruger har taget
 
-    int pointSum = 0;
+    int pointSum = 0; // Variable som viser hvor mange samlede point en bruger har. 
 }

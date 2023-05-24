@@ -113,16 +113,18 @@
 
 
     // Vagt-relateret kode
-
-    private string searchKeyword = "";
-    private string sortOrder = "ascending";
+    private string searchKeyword = ""; //Opretter variablen searchKeyword til at være en tom string
+    private string sortOrder = "ascending"; // Opretter variablen sortOrder til at være stringen ascending
 
     private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
     private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
     private Vagt[]? myvagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
 
     private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? SortPoint(vagtlist) : SortPoint(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
-
+    // Hvis din søgning indeholder ingenting eller mellemrum, så bliver hele vagtlisten vist.
+    // Hvis din søgning indeholder et ord, sorteres vagtlisten således, at alle vagter, som indeholder det ord bliver vist
+    // OrdinalIgnoreCase gør den ikke 'Case sensitiv'
+    // SortPoint gør det muligt at sortere efter point 
 
     private IEnumerable<Vagt> SortPoint(IEnumerable<Vagt> point)
     {
@@ -130,17 +132,21 @@
             ? point.OrderBy(p => p.Point)
             : point.OrderByDescending(p => p.Point);
     }
+    // Returnere en liste over vagter hvor den sortere efter vagter, med laveste point først
+    // OrderByDescending ændre listen til at være med højest point først
 
     private void ToggleSortOrder()
     {
         sortOrder = sortOrder == "ascending" ? "descending" : "ascending";
     }
+    // Ændre sortingOrder alt efter om brugeren ændre til at være, faldende = ascending eller stigende = descending 
 
     private async Task TagVagt(Vagt vagt, int bruger)
     {
         vService.TagVagt(vagt, bruger);
         await Refresh();
     }
+    // Når du tager en vagt, bliver 'TagVagt' funktionen kaldt i service klassen, og derefter kalder vi Refresh funktionen
 
     public async Task Refresh()
     {
