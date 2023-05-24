@@ -52,5 +52,7 @@ namespace Client.Services
             http.DeleteFromJsonAsync<Vagt>($"https://localhost:7004/api/brugere/{ID}");
             Console.WriteLine("Klient: deleted" +  ID);
         }
+
+
     }
 }
