@@ -56,7 +56,7 @@
             <div class="headercontainer">
             <h5>Opret din konto</h5>
             </div>
-            <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidRegister">
+            <EditForm EditContext="@bEditContext" class="row p-3" OnValidSubmit="@HandleValidRegister">
                 <DataAnnotationsValidator />
                 <div class="col-md-12 mb-3">
                     <label for="Navn">Navn</label>
@@ -186,15 +186,6 @@
 
     void OmOsDispPop()
     {
-        //if (omosdisplay == "none")
-        //{
-        //    omosdisplay = "inline";
-        //}
-        //else
-        //{
-        //    omosdisplay = "none";
-        //}
-
         NavigationManager.NavigateTo($"/om", forceLoad: true);
     }
 
@@ -222,6 +213,7 @@
 
 
     private EditContext aEditContext;
+    private EditContext bEditContext;
 
     [Inject]
     private IBrugerService mService { get; set; }
@@ -229,6 +221,7 @@
     protected override void OnInitialized()
     {
         aEditContext = new EditContext(bruger);
+        bEditContext = new EditContext(bruger);
         bruger.Fødselsdag = DateTime.Now;
     }
 
