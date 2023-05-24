@@ -38,6 +38,7 @@
                     <tbody>
                         @foreach (var vagt in filteredVagtlist)
                         {
+                            
                             if (!brugervagtersomid.Contains(vagt.ID))
                             {
                                 <tr>
@@ -86,10 +87,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        
+
         UrlId = await sessionStorage.GetItemAsync<int>("userId");
         vagtlist = (await vService.getAvailable(UrlId)).ToArray();
         myvagtlist = (await vService.getAllMine(UrlId)).ToArray();
+        OpdaterBrugerVagter();
     }
 
     public async Task HandleValidSubmit()
@@ -152,4 +154,13 @@
     {
         await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
     }
+
+    public void OpdaterBrugerVagter()
+    {
+        foreach (var v in myvagtlist)
+        {
+            brugervagtersomid.Add(v.ID);
+        }
+    }
+    // Opdaterer en liste med alle ID'er på vagter som bruger allerede er tilmeldt. Denne liste kan bruges til at sortere allerede tagede vagter fra i den samlede liste.
 }
