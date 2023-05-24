@@ -318,6 +318,8 @@
         UrlId = await sessionStorage.GetItemAsync<int>("userId");
         bruger = await bService.GetBruger(UrlId);
         vagtlist = (await mService.getAll()).ToArray();
+        kategorilist = (await mService.getAllKategori()).ToArray();
+
     }
 
 
