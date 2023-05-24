@@ -17,11 +17,104 @@
 <body>
     
     <div class="loginpop" style="display: @logdisplay">
-        <a @onclick="ToggleLogPop">Back</a>
+        <div class="loginbox">
+            <a @onclick="ToggleLogPop">Tilbage</a>
+            <h1>Log på Calendarica</h1>
+            <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="col-md-12 mb-3">
+                    <label for="Email" style="font-weight:bold">Email</label>
+                    <div class="input-container">
+                        <span class="icon"><i class="material-icons">mail</i></span>
+                        <InputText id="Email" @bind-Value="brugerForm.Email" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                <label for="Password" style="font-weight:bold">Password</label>
+                <div class="form-group">
+                    <div class="input-container">
+                        <InputText type="@passwordType" id="Password" @bind-Value="brugerForm.Password" class="form-control" />
+                        <span class="icon"><i class="material-icons">lock</i></span>
+                        <i @onclick="TogglePasswordVisibility" class="material-icons hover-effect">visibility</i>
+                    </div>
+                </div>
+                <br />
+                <div>
+                    <button type="submit" class="btn btn-login">Login</button>
+                </div>
+                </div>
+                <p style="display: @showerror; color: red">Hov, der er sket en fejl. Har du skrevet din email og password rigtigt?</p>
+
+            </EditForm>
+        </div>
     </div>
 
     <div class="loginpop" style="display: @tilmelddisplay">
-        <a @onclick="ToggleDispPop">Back</a>
+        <div class="registerbox">
+            <a @onclick="ToggleDispPop">Tilbage</a>
+            <h1>Opret din konto</h1>
+            <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidRegister">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="col-md-12 mb-3">
+                    <label for="Navn">Navn</label>
+                    <InputText id="Navn" @bind-Value="bruger.Fornavn" class="form-control" required />
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="Navn">Efternavn</label>
+                    <InputText id="Navn" @bind-Value="bruger.Efternavn" class="form-control" required />
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="Telefonnummer">Telefonnummer</label>
+                    <InputNumber id="Telefonnummer" @bind-Value="bruger.Telefonnummer" class="form-control" required />
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="Adresse">Adresse</label>
+                    <InputText id="Adresse" @bind-Value="bruger.Adresse" class="form-control" required />
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="Email">Email</label>
+                    <InputText id="Email" @bind-Value="bruger.Email" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="Fødselsdag">Fødselsdag</label>
+                    <InputDate id="Fødselsdag" @bind-Value="bruger.Fødselsdag" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="Password">Password</label>
+                    <InputText id="Password" @bind-Value="bruger.Password" class="form-control" required />
+                </div>
+                <div>
+                    <p>
+                        <a @onclick="TogglePopUp" style="color:#027C50">Læs vores betingelser her</a>.
+                        <input type="checkbox" checked="checked" name="Accepterer" style="margin-bottom:15px"> Jeg accepterer betingelserne
+                    </p>
+                    <button type="submit" class="btn btn-primary">Registrer</button>
+                </div>
+                <div>
+                    @if (!string.IsNullOrEmpty(TakBesked))
+                    {
+                        <p class="greeting">@TakBesked</p>
+                    }
+                </div>
+            </EditForm>
+        </div>
+    </div>
+
+    <div class="popup" style="display: @showPopup">
+        <h2>Betingelser</h2>
+        <p>Her er vores betingelser:</p>
+        <ol>
+            <li>Du skal være mindst 18 år gammel for at være frivillig på festivalen.</li>
+            <li>Du skal være til rådighed i mindst 24 timer som frivillig under festivalen.</li>
+            <li>Du skal overholde alle instruktioner og anvisninger fra festivalens personale.</li>
+            <li>Du skal behandle festivalgæster, kunstnere og andre frivillige med respekt og venlighed.</li>
+            <li>Du skal være ansvarlig for dit eget velbefindende og sikkerhed under festivalen.</li>
+            <li>Du skal respektere festivalens regler og politikker, herunder reglerne for alkohol- og narkotikabrug.</li>
+            <li>Du accepterer, at festivalens arrangører ikke kan holdes ansvarlige for eventuelle skader eller tab, der opstår under din frivillige tjeneste.</li>
+        </ol>
+        <button class="btn btn-danger" @onclick="TogglePopUp">Luk</button>
     </div>
 
     <div class="loginpop" style="display: @omosdisplay">
@@ -55,13 +148,15 @@
     private bool showPassword = false;
     private string passwordType = "password";
 
+    public string TakBesked { get; set; }
+
     private void TogglePasswordVisibility()
     {
         showPassword = !showPassword;
         passwordType = showPassword ? "text" : "password";
     }
 
-    bool showPopup = false;
+    string showPopup = "none";
 
 
     void ToggleLogPop()
@@ -89,25 +184,28 @@
 
     void OmOsDispPop()
     {
-        if (omosdisplay == "none")
+        //if (omosdisplay == "none")
+        //{
+        //    omosdisplay = "inline";
+        //}
+        //else
+        //{
+        //    omosdisplay = "none";
+        //}
+
+        NavigationManager.NavigateTo($"/om", forceLoad: true);
+    }
+
+    void TogglePopUp()
+    {
+        if (showPopup == "none")
         {
-            omosdisplay = "inline";
+            showPopup = "inline";
         }
         else
         {
-            omosdisplay = "none";
+            showPopup = "none";
         }
-    }
-
-
-    void ShowPopup()
-    {
-        showPopup = true;
-    }
-
-    void HidePopup()
-    {
-        showPopup = false;
     }
 
     bool showEditForm = false;
@@ -155,6 +253,7 @@
     {
         await Add();
         bruger.Fødselsdag = DateTime.Now;
+        TakBesked = "Tak for din tilmelding, du kan nu logge ind. Vi glæder os til at se dig på pladsen!";
     }
 
     public async Task<Bruger> getSpecific(string email)
