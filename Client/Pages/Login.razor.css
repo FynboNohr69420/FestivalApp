@@ -173,7 +173,7 @@ i.material-icons.hover-effect {
     width: 40vw;
     margin: auto auto;
     padding: 10px;
-    height: 35vh;
+    min-height: 35vh;
     position: absolute;
     background-color: rgba(255,255,255,1);
     color: black;
@@ -187,7 +187,7 @@ i.material-icons.hover-effect {
     width: 40vw;
     margin: auto auto;
     padding: 10px;
-    height: 74vh;
+    min-height: 74vh;
     position: absolute;
     background-color: rgba(255,255,255,1);
     color: black;
