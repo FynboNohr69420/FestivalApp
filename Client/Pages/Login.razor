@@ -184,11 +184,6 @@
         }
     }
 
-    void OmOsDispPop()
-    {
-        NavigationManager.NavigateTo($"/om", forceLoad: true);
-    }
-
     void TogglePopUp()
     {
         if (showPopup == "none")
@@ -199,6 +194,11 @@
         {
             showPopup = "none";
         }
+    }
+
+    void OmOsDispPop()
+    {
+        NavigationManager.NavigateTo($"/om", forceLoad: true);
     }
 
     bool showEditForm = false;
