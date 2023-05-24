@@ -13,9 +13,4 @@
     margin-bottom: 10px !important;
 }
 
-.logout-button-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 0px; /* Tilføj ønsket margin øverst */
-}
 

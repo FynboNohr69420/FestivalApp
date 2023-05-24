@@ -1,3 +1,6 @@
 ﻿body {
 }
 
+.col-sm-3.col-form-label {
+    margin-bottom: 10px !important;
+}
