@@ -17,3 +17,15 @@
     .logout-button:hover {
         background-color: #c82333;
     }
+
+.oi-heart {
+    color: darksalmon !important;
+}
+
+.oi-person {
+    color: #50c878 !important;
+}
+
+.oi-clipboard {
+    color: #00b7eb !important;
+}
