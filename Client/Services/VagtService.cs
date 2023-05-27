@@ -63,7 +63,11 @@ namespace Client.Services
             await http.PutAsJsonAsync<Vagt>("https://localhost:7004/api/vagter", vagt);
             return vagt;
             vagt = new();
+        }
 
+        public async Task ToggleVagtLock(bool currentlockstatus, Vagt vagt)
+        {
+            await http.PutAsJsonAsync<Vagt>($"https://localhost:7004/api/vagter/lock/{currentlockstatus}", vagt); // Sender en POST request med booking som JSON payload til API'en
         }
 
         public void DeleteVagt(int ID)

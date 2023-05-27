@@ -15,6 +15,7 @@ namespace Client.Services
         public void DeleteVagt(int id);
         public void TagVagt(Vagt vagt, int bruger);
         public void AfmeldVagt(Vagt vagt, int bruger);
+        Task ToggleVagtLock(bool currentlockstatus, Vagt vagt);
         Task<IEnumerable<Vagt>> getAllMine(int b_id);
 
     }

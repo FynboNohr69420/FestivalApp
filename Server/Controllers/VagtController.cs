@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Server.Repositories;
 using Common.Model;
+using static System.Net.WebRequestMethods;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -102,6 +103,13 @@ namespace Server.Controllers
             Console.WriteLine("Updated" + vagt.ID);
 
             myRepo.UpdateVagt(vagt);
+        }
+
+        [HttpPut]
+        [Route("lock/{currentlockstatus}")]
+        public async Task ToggleLockStatus(Vagt vagt, bool currentlockstatus)
+        {
+            await myRepo.ToggleLockStatus(vagt, currentlockstatus);
         }
     }
 }

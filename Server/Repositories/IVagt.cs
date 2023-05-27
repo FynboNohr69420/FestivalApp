@@ -15,6 +15,8 @@ namespace Server.Repositories
         public void TagVagt(Vagt vagt, int bruger);
         public void AfmeldVagt(Vagt vagt, int bruger);
 
+        public Task ToggleLockStatus(Vagt vagt, bool currentlockstatus);
+
         Vagt[] getAllMine(int b_id);
     }
 }

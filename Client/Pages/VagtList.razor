@@ -222,6 +222,7 @@
                     <th>Antal pladser</th>
                     <th class="border-white"></th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -239,15 +240,23 @@
                             <a href="@($"/redigervagt?id={vagt.ID}")"> <button class="btn btn-primary">Rediger vagt</button></a>
                         </td>
                         <td>
-                            <button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID); }">Slet Vagt</button>
+                        @if(vagt.isLocked == false) {
+                                <button class="btn btn-warning" @onclick="() => { ToggleVagtLock(vagt, vagt.isLocked);}">Lås Vagt</button>
+                        } else
+                        {
+                                <button class="btn btn-success" @onclick="() => { ToggleVagtLock(vagt, vagt.isLocked);}">Åben Vagt</button>
+                        }
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID);}">Slet Vagt</button>
                         </td>
                     </tr>
+                    Console.WriteLine(vagt.Navn + " " + vagt.isLocked);
                 }
             </tbody>
         </table>
     </div>
 </div>
-
 
 @code {
     private Vagt vagt = new Vagt(); // Opretter et tomt vagt objekt
@@ -350,6 +359,12 @@
     {
         mService.DeleteVagt(ID);
         Console.WriteLine("klient: deleted" + ID);
+        await Refresh();
+    }
+
+    public async Task ToggleVagtLock(Vagt vagt, bool currentlockstatus)
+    {
+        await mService.ToggleVagtLock(currentlockstatus, vagt);
         await Refresh();
     }
 

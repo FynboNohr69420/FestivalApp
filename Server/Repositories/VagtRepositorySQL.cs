@@ -41,6 +41,7 @@ namespace Server.Repositories
                         var Beskrivelse = reader.GetString(5);
                         var KategoriID = reader.GetInt32(6);
                         var Antal_Pladser = reader.GetInt32(7);
+                        var isLocked = reader.GetBoolean(8);
                         var Pladser_Tilbage = reader.GetInt32(10);
 
                         Vagt b = new Vagt
@@ -53,6 +54,7 @@ namespace Server.Repositories
                             Slut = Slut,
                             Antal = Antal_Pladser,
                             Beskrivelse = Beskrivelse,
+                            isLocked = isLocked,
                             Pladser_Tilbage = Pladser_Tilbage
                         };
                         result.Add(b);
@@ -329,6 +331,8 @@ namespace Server.Repositories
             }
         }
 
+
+
         public Vagt GetVagt(int VagtID)
         {
             var result = new Vagt();
@@ -368,7 +372,29 @@ namespace Server.Repositories
                 connection.Close();
             }
             return result;
-        } 
+        }
+
+        public async Task ToggleLockStatus(Vagt vagt, bool currentlockstatus)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+
+                if (currentlockstatus == true)
+                {
+                    command.CommandText = "UPDATE \"Vagt\" SET \"isLocked\" = false WHERE \"ID\" =" + vagt.ID;
+                }
+                else
+                {
+                    command.CommandText = "UPDATE \"Vagt\" SET \"isLocked\" = true WHERE \"ID\" =" + vagt.ID;
+                }
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
     }
 
 }
