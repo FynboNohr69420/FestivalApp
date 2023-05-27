@@ -14,6 +14,7 @@
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Blazored.SessionStorage" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.5" PrivateAssets="all" />
@@ -32,9 +33,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Pages\Om.razor.css" />
     <None Remove="Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\billeder\" />
+    <Content Remove="wwwroot\billeder\gg.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Pages\Om.razor.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\billeder\gg.jpg" />
   </ItemGroup>
 </Project>

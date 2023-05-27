@@ -1,35 +1,38 @@
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
 /* Bordered form */
 form {
     border: 3px solid #f1f1f1;
 }
 
-/* Full-width inputs */
-input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-/* Set a style for all buttons */
-button {
+.btn-login {
     background-color: #04AA6D;
     color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
+    padding: 5px 8px;
     border: none;
     cursor: pointer;
-    width: 100%;
+    width: 15%;
+    margin-top: 20px;
+    margin-left: 42.5%;
 }
 
-    /* Add a hover effect for buttons */
-    button:hover {
-        opacity: 0.8;
-    }
 
-/* Extra style for the cancel button (red) */
+/* Add a hover effect for buttons */
+button:hover {
+    opacity: 0.8;
+}
+
+/* Extra style for the cancel button (blue) */
+.btn-blue {
+    background-color: steelblue;
+    color: white;
+    padding: 5px 8px;
+    margin: 0px;
+    width: 15%;
+}
 
 
 .regibtn {
@@ -55,18 +58,169 @@ img.avatar {
     padding: 16px;
 }
 
-/* The "Forgot password" text */
-span.psw {
-    float: right;
-    padding-top: 16px;
+a:hover {
+    text-decoration: underline !important;
+    cursor: pointer;
 }
 
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-    span.psw {
-        display: block;
-        float: none;
+.form-group {
+    position: relative;
+    height: 20px; /* Juster højden efter behov */
+    margin-bottom: 5px; /* Juster margenen efter behov */
+    margin: 0px 0;
+}
+.input-container {
+    position: relative;
+    margin-left: 20px;
+}
+    .input-container i {
+        position: absolute;
+        top: 50%;
+        right: 35px;
+        transform: translateY(-50%);
     }
 
-  
+i.material-icons.hover-effect {
+    margin-left: 0px;
 }
+
+
+.hover-effect {
+    transition: color 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+    .hover-effect:hover {
+        color: green;
+        cursor: pointer;
+    }
+
+.div-margin {
+    margin: 10px;
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #999;
+    padding: 0 10px;
+}
+
+.festival {
+    height: 200px;
+    width: 40%;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 0;
+}
+
+.festival2 {
+    height: 200px;
+    width: 40%;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 0;
+}
+
+.col {
+    transition: transform .5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-shadow: 2px 2px #000000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.col:hover {
+    background-color: white;
+    transform: scale(0.99);
+}
+
+.index-container {
+    min-height: calc(100vh - 56px);
+    overflow: hidden;
+    z-index: 1;
+}
+.col1 {
+    background-image: url(/billeder/festival_crowd.jpg);
+    background-size: cover;
+}
+
+.col2 {
+    background-image: url(/billeder/frivillig.jpg);
+    background-size: cover;
+}
+
+.col3 {
+    background-image: url(/billeder/concert.jpg);
+    background-size: cover;
+}
+
+.loginpop {
+    position: absolute;
+    justify-content: center;
+    z-index: 2;
+    width: 100%;
+    min-height: calc(100vh - 56px);
+    background-color: rgba(211,211,211,0.5);
+    color: white;
+    font-weight: bold;
+}
+
+.loginbox {
+    width: 40vw;
+    margin: auto auto;
+    padding: 10px;
+    min-height: 35vh;
+    position: absolute;
+    background-color: rgba(255,255,255,1);
+    color: black;
+    z-index: 10;
+    left: 30vw;
+    top: calc(32.5vh - 56px);
+    border-radius: 30px;
+}
+
+.registerbox {
+    width: 40vw;
+    margin: auto auto;
+    padding: 10px;
+    min-height: 74vh;
+    position: absolute;
+    background-color: rgba(255,255,255,1);
+    color: black;
+    z-index: 5;
+    left: 30vw;
+    border-radius: 30px;
+    top: calc(11vh - 56px);
+}
+
+.headercontainer {
+    width: 100%;
+    text-align: center;
+}
+
+.greeting {
+    width: 85%;
+    margin: 5px auto;
+    color: green;
+}
+
+.popup {
+    display: block;
+    position: fixed;
+    top: calc((100vh - 625px)/2);
+    background-color: rgba(255,255,255,1);
+    right: 4%;
+    width: 400px;
+    height: 610px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 5;
+}
+
+
+

@@ -15,19 +15,22 @@ namespace Server.Controllers
     public class BrugerController : ControllerBase
     {
 
-        private IBruger myRepo;
+        private IBruger myRepo; // En reference til IBruger interfacet 
 
         public BrugerController(IBruger myRepo)
         {
             this.myRepo = myRepo;
         }
 
+        // Http GET Metode til at hente alle brugere 
         [HttpGet]
         public IEnumerable<Bruger> getAll()
         {
             Console.WriteLine("get ");
             return myRepo.getAll();
         }
+
+        // Http GET Metode til at hente en specifik bruger baseret på email 
         [HttpGet]
         [Route("{email}")]
         public Bruger getSpecific(string email)
@@ -57,18 +60,19 @@ namespace Server.Controllers
         }
 
         [HttpGet] // Angiver, at denne metode skal køre, når en HTTP GET-anmodning modtages.
-        [Route("bruger/{brugerID}")] // Angiver, at denne metode skal matche en rute med en enkelt parametre "shelterId"
-        public Bruger GetBruger(int brugerID) // Henter et enkelt Shelter-objekt fra vores repository baseret på den angivne shelterId.
+        [Route("bruger/{brugerID}")] // Angiver, at denne metode skal matche en rute med en enkelt parametre "brugerID"
+        public Bruger GetBruger(int brugerID) // Henter et enkelt Bruger-objekt fra vores repository baseret på den angivne brugerID.
         {
             Console.WriteLine("Bruger found OK");
             return myRepo.GetBruger(brugerID);
         }
 
-        [HttpPost]
+        // En metode, der håndterer HTTP POST requests til /api/Booking/update
+        [HttpPost] 
         [Route("update")]
         public void UpdateBruger(Bruger bruger)
         {
-            Console.WriteLine("Updated" + bruger.ID);
+            Console.WriteLine("Updated" + bruger.ID); // Hvis succesfuld printer "updated" og brugerens ID i konsollen 
 
             myRepo.UpdateBruger(bruger);
         }

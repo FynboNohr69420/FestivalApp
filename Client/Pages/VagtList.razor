@@ -1,77 +1,228 @@
 ﻿@page "/vagtliste"
 @using Common.Model
 @using Client.Services
-@using System.Net.Http.Json;
-@using Client.Pages;
+@using System.Net.Http.Json
+@using Client.Pages
+@using System.Web
+@inject IJSRuntime JSRuntime // Injecter 'IJSRuntime' for at muliggøre interaktion med JavaScript på klienten .
+@inject NavigationManager NavigationManager
 @inject HttpClient Http;
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
-<h1> Opret Ny Vagt </h1>
 
 <PageTitle>Registrering</PageTitle>
 
-<EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="col-md-12 mb-3">
-        <label for="Navn">Navn</label>
-        <InputText id="Navn" @bind-Value="vagt.Navn" class="form-control" />
-    </div>
-    <div class="col-md-12 mb-3">
-        <label for="Telefonnummer">Start dato</label>
-        <InputDate id="StartDato" @bind-Value="vagt.Start" class="form-control" />
-    </div>
-    <div class="col-md-12 mb-3">
-        <label for="Adresse">Slut dato</label>
-        <InputDate id="SlutDato" @bind-Value="vagt.Slut" class="form-control" />
-    </div>
-    <div class="col-md-12 mb-3">
-        <label for="Email">Kategori</label>
-        <InputNumber id="Kategori" @bind-Value="vagt.Kategori" class="form-control" />
-    </div>
-    <div class="col-md-6 mb-3">
-        <label for="Fødselsdag">Antal pladser</label>
-        <InputNumber id="Antal" @bind-Value="vagt.Antal" class="form-control" />
-    </div>
-    <div class="col-md-6 mb-3">
-        <label for="Password">Beskrivelse</label>
-        <InputText id="Beskrivelse" @bind-Value="vagt.Beskrivelse" class="form-control" />
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
+<button type="button" class="btn btn-success" @onclick="ToggleEditForm">Tryk for at rediger oplysninger eller tilføj vagt</button>
 
-</EditForm>
 
-<PageTitle>Vagt listen</PageTitle>
+@if (showEditForm)
+{
+    <div class="row">
+        <div class="col-sm-6">
+            <EditForm Model="@aEditContext" OnValidSubmit="HandleUpdateSubmitBruger">
+                <DataAnnotationsValidator />
+                <h3>Rediger information</h3>
+                <hr />
+                <ValidationSummary />
+                <div class="form-group row">
+                    <label for="firstName" class="col-sm-3 col-form-label">
+                        Fornavn
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText id="Fornavn" class="form-control" placeholder="@bruger.Fornavn"
+                                   @bind-Value="bruger.Fornavn" />
+                        <ValidationMessage For="@(() => bruger.Fornavn)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Efternavn" class="col-sm-3 col-form-label">
+                        Efternavn
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText id="lastName" class="form-control" placeholder="@(() => bruger.Efternavn)"
+                                   @bind-Value="bruger.Efternavn" />
+                        <ValidationMessage For="@(() => bruger.Efternavn)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Telefonummer" class="col-sm-3 col-form-label">
+                        Telefonnummer
+                    </label>
+                    <div class="col-sm-6">
+                        <InputNumber id="email" class="form-control" placeholder="Telefonnummer"
+                                     @bind-Value="bruger.Telefonnummer" />
+                        <ValidationMessage For="@(() => bruger.Telefonnummer)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Addresse" class="col-sm-3 col-form-label">
+                        Addresse
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText id="confirmEmail" class="form-control"
+                                   @bind-Value="bruger.Adresse" />
+                        <ValidationMessage For="@(() => bruger.Adresse)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Email" class="col-sm-3 col-form-label">
+                        Email
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText id="confirmEmail" class="form-control"
+                                   @bind-Value="bruger.Email" />
+                        <ValidationMessage For="@(() => bruger.Email)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Fødselsdagsdato" class="col-sm-3 col-form-label">
+                        Fødselsdagsdato
+                    </label>
+                    <div class="col-sm-6">
+                        <InputDate @bind-Value="bruger.Fødselsdag" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Password" class="col-sm-3 col-form-label">
+                        Password
+                    </label>
+                    <div class="col-sm-6">
+                        <InputText @bind-Value="bruger.Password" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="isKoordinator" class="col-sm-3 col-form-label">Er koordinator:</label>
+                    <div class="col-sm-6">
+                        <label class="form-control locked">@bruger.IsKoordinator</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Gem</button>
+                <div>
+                    @if (showMessage)
+                    {
+                        <div class="alert alert-success">
+                            Dine oplysninger er gemt.
+                        </div>
+                    }
+                </div>
 
-<h1>Vagt listen</h1>
+            </EditForm>
+        </div>
+        <div class="col">
+            <div>
+                <div class="row">
+                    <div class="col">
+                        <EditForm Model="@aEditContext" OnValidSubmit="HandleValidSubmitVagt">
+                            <DataAnnotationsValidator />
+                            <h3>Opret Ny Vagt</h3>
+                            <hr />
+                            <ValidationSummary />
+                            <div class="form-group row">
+                                <label for="Navn" class="col-sm-3 col-form-label">
+                                    Navn
+                                </label>
+                                <div class="col-sm-6">
+                                    <InputText id="Navn" class="form-control" placeholder="@vagt.Navn"
+                                               @bind-Value="vagt.Navn" />
+                                    <ValidationMessage For="@(() => vagt.Navn)" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="Start" class="col-sm-3 col-form-label">
+                                    Start
+                                </label>
+                                <div class="col-sm-6">
+                                    <input type="datetime" id="Start" @bind="vagt.Start" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="Slut" class="col-sm-3 col-form-label">
+                                    Slut
+                                </label>
+                                <div class="col-sm-6">
+                                    <input type="datetime" id="Slut" @bind="vagt.Slut" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="Kategori" class="col-sm-3 col-form-label">
+                                    Kategori
+                                </label>
+                                <div class="col-sm-6">
+                                    <InputSelect id="Kategori" @bind-Value="vagt.Kategori" class="form-control">
+                                        @foreach (var kat in kategorilist)
+                                        {
+                                            <option value="@kat.ID">@kat.Navn</option>
+                                        }
+                                    </InputSelect>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="Antal" class="col-sm-3 col-form-label">
+                                    Antal
+                                </label>
+                                <div class="col-sm-6">
+                                    <InputNumber @bind-Value="vagt.Antal" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="Beskrivelse" class="col-sm-3 col-form-label">
+                                    Beskrivelse
+                                </label>
+                                <div class="col-sm-6">
+                                    <InputText @bind-Value="vagt.Beskrivelse" class="form-control" />
+                                </div>
+                            </div>
+                            <button class="btn btn-success" type="submit">Opret vagt</button>
+                        </EditForm>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+}
+
+
+<br />
+<h5>Vagtliste</h5>
 
 
 <div>
-    <input type="text" @bind="@searchKeyword" placeholder="Search by name" />
-    <label>Sorter point:</label>
-    <select @bind="@sortOrder">
-        <option value="ascending">Laveste point</option>
-        <option value="descending">Højeste point</option>
+    <label>Sortering af:</label>
+    <select @bind="@selectedSortOption">
+        <option value="point">Point</option>
+        <option value="startDate">Start dato</option>
+        <option value="antal">Antal</option>
     </select>
-    <button @onclick="FilterAndSort" hidden>Submit</button>
-
 </div>
+
+<div>
+    <label>Sorter efter:</label>
+    <select @bind="@Sortering">
+        <option value="ascending">Stigende</option>
+        <option value="descending">Faldende</option>
+    </select>
+</div>
+<input type="text" @bind="@searchKeyword" placeholder="Søg på vagt" />
 
 
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12 mb-10">
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>Navn</th>
                     <th>Point</th>
-                    <th>Telefonnummer</th>
-                    <th>Addresse</th>
-                    <th>Email</th>
-                    <th>Fødselsdagsdato</th>
-                    <th>koordinator: </th>
+                    <th>Start dato</th>
+                    <th>Slut dato</th>
+                    <th>Beskrivelse</th>
+                    <th>KategoriID</th>
+                    <th>Antal pladser</th>
+                    <th class="border-white"></th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -89,65 +240,111 @@
                             <a href="@($"/redigervagt?id={vagt.ID}")"> <button class="btn btn-primary">Rediger vagt</button></a>
                         </td>
                         <td>
-                            <button class="btn btn-danger" @onclick="() => DeleteVagt(vagt.ID)">Slet Vagt</button>
+                        @if(vagt.isLocked == false) {
+                                <button class="btn btn-warning" @onclick="() => { ToggleVagtLock(vagt, vagt.isLocked);}">Lås Vagt</button>
+                        } else
+                        {
+                                <button class="btn btn-success" @onclick="() => { ToggleVagtLock(vagt, vagt.isLocked);}">Åben Vagt</button>
+                        }
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" @onclick="() => { DeleteVagt(vagt.ID);}">Slet Vagt</button>
                         </td>
                     </tr>
+                    Console.WriteLine(vagt.Navn + " " + vagt.isLocked);
                 }
             </tbody>
         </table>
     </div>
 </div>
 
-
 @code {
-    private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
-    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+    private Vagt vagt = new Vagt(); // Opretter et tomt vagt objekt
+    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af vagt objekter
+    private Bruger bruger = new Bruger(); //Opretter et tomt bruger objekt
+    private bool showMessage = false; //Som default er showMessage false
+    private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
+
+    private Kategori[]? kategorilist = new Kategori[0]; //Opretter et tomt 
+
 
     [Inject]
     private IVagtService mService { get; set; }
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        vagtlist = (await mService.getAll()).ToArray();
-
-    }
-
+    [Inject]
+    private IBrugerService bService { get; set; }
+    //Vha af inject kan vi tilgå og bruge både IVagtService og IBrugerService
 
     private string searchKeyword = "";
-    private string sortOrder = "ascending";
+    private string selectedSortOption = "point";
+    private string Sortering = "ascending";
+    //Her definerer vi de forskellige variabler, så vi kan bruge dem senere. Så de har en default værdi. 
 
-    private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? SortPoint(vagtlist) : SortPoint(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
 
+    private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? Sorter(vagtlist) : Sorter(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
+    //Den her metode tjekker om strengen er null or white space, hvis den er det,
+    //så returnerer den en vagtlist ellers returnerer den listen, hvor vagt.Navn indeholder searchKeyword hvor den bruger stringcomparison, som angiver at den skal være caseinsensitiv. 
 
-    private IEnumerable<Vagt> SortPoint(IEnumerable<Vagt> point)
+    //sorter
+    private IEnumerable<Vagt> Sorter(IEnumerable<Vagt> Sorter)
     {
-        return sortOrder == "ascending"
-            ? point.OrderBy(p => p.Point)
-            : point.OrderByDescending(p => p.Point);
+        if (selectedSortOption == "point")
+        {
+            if (Sortering == "ascending")
+                Sorter = Sorter.OrderBy(p => p.Point);
+            else
+                Sorter = Sorter.OrderByDescending(p => p.Point);
+        }
+        else if (selectedSortOption == "startDate")
+        {
+            if (Sortering == "ascending")
+                Sorter = Sorter.OrderBy(p => p.Start);
+            else
+                Sorter = Sorter.OrderByDescending(p => p.Start);
+        }
+        else if (selectedSortOption == "antal")
+        {
+            if (Sortering == "ascending")
+                Sorter = Sorter.OrderBy(p => p.Antal);
+            else
+                Sorter = Sorter.OrderByDescending(p => p.Antal);
+        }
+
+        return Sorter;
     }
-
-
-
-    private void FilterAndSort()
-    {
-        // Opdatering af komponenten er automatisk, da den afhænger af filteredAndSortedPersons
-    }
-
     private EditContext aEditContext;
 
-    protected override void OnInitialized()
+
+    protected override void OnInitialized() //Når siden starter kører de her. 
     {
+        aEditContext = new EditContext(bruger);
         aEditContext = new EditContext(vagt);
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
     }
 
-    public async Task HandleValidSubmit()
+    protected override async Task OnInitializedAsync()
+    {
+        UrlId = await sessionStorage.GetItemAsync<int>("userId");
+        bruger = await bService.GetBruger(UrlId);
+        vagtlist = (await mService.getAll()).ToArray();
+        kategorilist = (await mService.getAllKategori()).ToArray();
+
+    }
+
+
+    public async Task HandleValidSubmitVagt()
     {
         await AddVagt();
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
+        await Refresh();
+    }
+
+    public async Task HandleUpdateSubmitBruger()
+    {
+        bruger.ID = UrlId;
+        await UpdateBruger();
+        showMessage = true;
     }
 
     public async Task AddVagt()
@@ -155,11 +352,38 @@
         await mService.AddVagt(vagt);
         Console.WriteLine("klient: add " + vagt.Navn); // Udskriver informationer om den nye booking i konsollen
         vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
+
     }
 
-    public void DeleteVagt(int ID)
+    public async void DeleteVagt(int ID)
     {
         mService.DeleteVagt(ID);
         Console.WriteLine("klient: deleted" + ID);
+        await Refresh();
+    }
+
+    public async Task ToggleVagtLock(Vagt vagt, bool currentlockstatus)
+    {
+        await mService.ToggleVagtLock(currentlockstatus, vagt);
+        await Refresh();
+    }
+
+    public async Task UpdateBruger()
+    {
+        await bService.UpdateBruger(bruger);
+    }
+
+
+    private bool showEditForm = false;
+
+    private void ToggleEditForm()
+    {
+        showEditForm = !showEditForm;
+    }
+
+
+    public async Task Refresh()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
     }
 }

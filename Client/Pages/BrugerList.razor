@@ -2,15 +2,17 @@
 @using Common.Model
 @using Client.Services
 @using System.Net.Http.Json;
+@inject IJSRuntime JSRuntime // Injecter 'IJSRuntime' for at muliggøre interaktion med JavaScript på klienten .
 
-<PageTitle>Bruger listen</PageTitle>
 
-<h1>Bruger listen</h1>
-<input type="text" @bind="@searchKeyword" placeholder="Søg på navn" />
+<PageTitle>Brugerlisten</PageTitle>
 
+<h1>Brugerlisten</h1>
+
+<input type="text" @bind="@searchKeyword" placeholder="Søg på fornavn" />
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12 mb-12">
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -20,11 +22,12 @@
                     <th>Addresse</th>
                     <th>Email</th>
                     <th>Fødselsdagsdato</th>
-                    <th>koordinator: </th>
+                    <th>Koordinator</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var bruger in filteredBrugerList)
+                @foreach (var bruger in filteredBrugerList.OrderBy(b => b.Fornavn))
                 {
                     <tr>
                         <td>@bruger.Fornavn</td>
@@ -35,7 +38,7 @@
                         <td>@bruger.Fødselsdag</td>
                         <td>@bruger.IsKoordinator</td>
                         <td>
-                            <a href="@($"/redigerbruger?id={bruger.ID}")"> <button class="btn btn-primary">Rediger bruger</button></a>
+                            <button class="btn btn-danger" @onclick="() => ShowDeleteConfirmation(bruger.ID)">Slet Bruger</button>
                         </td>
                     </tr>
                 }
@@ -44,25 +47,90 @@
     </div>
 </div>
 
+@if (showDeleteConfirmation)
+{
+    <div class="modal" tabindex="-1" role="dialog" style="display: block; background-color: rgba(0, 0, 0, 0.5);">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bekræft sletning</h5>
+                    <button type="button" class="close" @onclick="CancelDeleteConfirmation">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Er du sikker på, at du vil slette denne bruger?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelDeleteConfirmation">Fortryd</button>
+                    <button type="button" class="btn btn-danger" @onclick="() => ConfirmDeleteBruger(brugerToDelete)">Slet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
 
-    private Bruger bruger = new Bruger(); // Opretter et tomt Booking objekt
-    private Bruger[]? brugerlist = new Bruger[0]; // Opretter en tom liste af Booking objekter
-    private string searchKeyword = "";
+    private Bruger bruger = new Bruger();
+    // Denne linje opretter en ny instans af Bruger-klassen og gemmer den i den private variabel bruger.
 
+    private Bruger[]? brugerlist = new Bruger[0];
+    // Denne linje opretter en privat variabel brugerlist som en array af Bruger-objekter med en initial størrelse på 0.
+    // Bruger ? betyder, at variablen kan være null, da arrayet er tomt i øjeblikket.
+
+    private string searchKeyword = "";
+    // Denne linje opretter en privat variabel searchKeyword af typen string og initialiserer den med en tom værdi.
+
+    private bool showDeleteConfirmation = false;
+    // Denne variabel bruges til at styre visningen af sletbekræftelsesdialogen.
+
+    private int brugerToDelete = 0;
+    //Denne linje opretter en privat heltalsvariabel brugerToDelete og initialiserer den til 0.
+    //Denne variabel bruges til at gemme id'et for den bruger, der skal slettes.
 
     [Inject]
     private IBrugerService mService { get; set; }
+    //Vha af inject kan du tilgå og bruge metoderne inde i IBrugerService klassen
 
+    //Async betyder at koden stopper midlertidigt og venter på, at metoden indeni bliver hentet inden. 
     protected override async Task OnInitializedAsync()
     {
+        // Opdaterer brugerlisten ved at hente brugerdata fra mService og konvertere dem til et array
         brugerlist = (await mService.getAll()).ToArray();
+        // await betyder at man ikke kommer videre, før await stykket er færdig.
     }
 
-    private IEnumerable<Bruger> filteredBrugerList => string.IsNullOrWhiteSpace(searchKeyword) ? brugerlist : brugerlist.Where(v => v.Fornavn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
+    private IEnumerable<Bruger> filteredBrugerList =>
+    // Returnerer enten hele brugerlisten eller en filtreret liste baseret på søgeordet
+    string.IsNullOrWhiteSpace(searchKeyword) ? brugerlist : brugerlist.Where(v => v.Fornavn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
 
 
+    //Viser delete confirmation, hvor den gemmer brugerID i brugerToDelete, og dermed bliver showDeleteConfirmation = true;
+    public void ShowDeleteConfirmation(int brugerID)
+    {
+        brugerToDelete = brugerID;
+        showDeleteConfirmation = true;
+    }
 
+    //Hvis den bliver annulleret, bliver showDeleteConfirmation = False
+    public void CancelDeleteConfirmation()
+    {
+        showDeleteConfirmation = false;
+    }
+
+    //Hvis den bliver confirmed, så sletter den id'et igennem mService og henter listen igen og refresher. 
+    public async Task ConfirmDeleteBruger(int brugerID)
+    {
+        mService.DeleteBruger(brugerID);
+        showDeleteConfirmation = false;
+        await OnInitializedAsync();
+        await Refresh();
+    }
+
+    //En metode, som reloader. 
+    public async Task Refresh()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
+    }
 }
-

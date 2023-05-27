@@ -1,0 +1,167 @@
+﻿@page "/sevagter"
+@using Common.Model
+@using System.Web
+@using Client.Services
+@inject IJSRuntime JSRuntime // Injecter 'IJSRuntime' for at muliggøre interaktion med JavaScript på klienten .
+@inject NavigationManager NavigationManager
+@inject HttpClient http
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+
+<div class="row">
+    <div class="col">
+        <h3>Tilgængelige vagter</h3>
+
+        <div>
+            <input type="text" @bind="@searchKeyword" placeholder="Søg efter vagt" />
+            <label>Sort Order:</label>
+            <select @bind="@sortOrder">
+                <option value="ascending">Point Stigende</option>
+                <option value="descending">Point Faldende</option>
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-10">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Navn</th>
+                            <th>Point</th>
+                            <th>Start</th>
+                            <th>Slut</th>
+                            <th>Beskrivelse</th>
+                            <th>Max Pladser</th>
+                            <th>Pladser Tilbage: </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var vagt in filteredVagtlist)
+                        {
+                            
+                            if (!brugervagtersomid.Contains(vagt.ID))
+                            {
+                                <tr>
+                                    <td>@vagt.Navn</td>
+                                    <td>@vagt.Point</td>
+                                    <td>@vagt.Start</td>
+                                    <td>@vagt.Slut</td>
+                                    <td>@vagt.Beskrivelse</td>
+                                    <td>@vagt.Antal</td>
+                                    <td>@vagt.Pladser_Tilbage</td>
+                                    <td>
+                                        <button class="btn btn-success" @onclick="() => TagVagt(vagt, UrlId)">Tag Vagt</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+@code {
+    private Bruger bruger = new Bruger();
+    private Bruger[]? brugerlist = new Bruger[0];
+    private List<int> brugervagtersomid = new List<int>();
+
+    private bool showMessage = false;
+    private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
+
+
+    private EditContext aEditContext;
+
+    [Inject]
+    private IBrugerService mService { get; set; }
+
+    [Inject]
+    private IVagtService vService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        aEditContext = new EditContext(bruger);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        UrlId = await sessionStorage.GetItemAsync<int>("userId");
+        vagtlist = (await vService.getAvailable(UrlId)).ToArray();
+        myvagtlist = (await vService.getAllMine(UrlId)).ToArray();
+        OpdaterBrugerVagter();
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        bruger.ID = UrlId;
+        await UpdateBruger();
+        showMessage = true;
+
+    }
+
+    public async Task UpdateBruger()
+    {
+        await mService.UpdateBruger(bruger);
+    }
+
+    public async Task UpdateLists()
+    {
+        vagtlist = (await vService.getAll()).ToArray();
+        myvagtlist = (await vService.getAllMine(UrlId)).ToArray();
+    }
+
+
+    // Vagt-relateret kode
+    private string searchKeyword = ""; //Opretter variablen searchKeyword til at være en tom string
+    private string sortOrder = "ascending"; // Opretter variablen sortOrder til at være stringen ascending
+
+    private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
+    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+    private Vagt[]? myvagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+
+    private IEnumerable<Vagt> filteredVagtlist => string.IsNullOrWhiteSpace(searchKeyword) ? SortPoint(vagtlist) : SortPoint(vagtlist).Where(v => v.Navn.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase));
+    // Hvis din søgning indeholder ingenting eller mellemrum, så bliver hele vagtlisten vist.
+    // Hvis din søgning indeholder et ord, sorteres vagtlisten således, at alle vagter, som indeholder det ord bliver vist
+    // OrdinalIgnoreCase gør den ikke 'Case sensitiv'
+    // SortPoint gør det muligt at sortere efter point 
+
+    private IEnumerable<Vagt> SortPoint(IEnumerable<Vagt> point)
+    {
+        return sortOrder == "ascending"
+            ? point.OrderBy(p => p.Point)
+            : point.OrderByDescending(p => p.Point);
+    }
+    // Returnere en liste over vagter hvor den sortere efter vagter, med laveste point først
+    // OrderByDescending ændre listen til at være med højest point først
+
+    private void ToggleSortOrder()
+    {
+        sortOrder = sortOrder == "ascending" ? "descending" : "ascending";
+    }
+    // Ændre sortingOrder alt efter om brugeren ændre til at være, faldende = ascending eller stigende = descending 
+
+    private async Task TagVagt(Vagt vagt, int bruger)
+    {
+        vService.TagVagt(vagt, bruger);
+        await Refresh();
+    }
+    // Når du tager en vagt, bliver 'TagVagt' funktionen kaldt i service klassen, og derefter kalder vi Refresh funktionen
+
+    public async Task Refresh()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
+    }
+
+    public void OpdaterBrugerVagter()
+    {
+        foreach (var v in myvagtlist)
+        {
+            brugervagtersomid.Add(v.ID);
+        }
+    }
+    // Opdaterer en liste med alle ID'er på vagter som bruger allerede er tilmeldt. Denne liste kan bruges til at sortere allerede tagede vagter fra i den samlede liste.
+}

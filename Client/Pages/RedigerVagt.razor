@@ -28,7 +28,6 @@
         <div class="col-sm-10">
             <InputText id="vagt navn" class="form-control" placeholder="Navn"
                        @bind-Value="vagt.Navn" />
-            <ValidationMessage For="@(() => vagt.Navn)" />
         </div>
     </div>
     <div class="form-group row">
@@ -37,18 +36,16 @@
         </label>
         <div class="col-sm-10">
             <InputNumber id="point" class="form-control" placeholder="Point"
-                       @bind-Value="vagt.Point" />
-            <ValidationMessage For="@(() => vagt.Point)" />
+                         @bind-Value="vagt.Point" />
         </div>
     </div>
     <div class="form-group row">
         <label for="start" class="col-sm-2 col-form-label">
-            Start 
+            Start
         </label>
         <div class="col-sm-10">
-            <InputDate id="email" class="form-control" placeholder="starttidspunkt"
-                         @bind-Value="vagt.Start" />
-            <ValidationMessage For="@(() => vagt.Start)" />
+            <input type="datetime" id="vagt" class="form-control" placeholder="starttidspunkt"
+                   @bind="vagt.Start" />
         </div>
     </div>
     <div class="form-group row">
@@ -56,9 +53,8 @@
             Slut
         </label>
         <div class="col-sm-10">
-            <InputDate id="slut" class="form-control"
-                       @bind-Value="vagt.Slut" />
-            <ValidationMessage For="@(() => vagt.Slut)" />
+            <input type="datetime" id="slut" class="form-control"
+                   @bind="vagt.Slut" />
         </div>
     </div>
     <div class="form-group row">
@@ -68,31 +64,36 @@
         <div class="col-sm-10">
             <InputText id="confirmBeskrivelse" class="form-control"
                        @bind-Value="vagt.Beskrivelse" />
-            <ValidationMessage For="@(() => vagt.Beskrivelse)" />
         </div>
     </div>
     <div class="form-group row">
-        <label for="kategori" class="col-sm-2 col-form-label">
+        <label for="Kategori" class="col-sm-2 col-form-label">
             Kategori
         </label>
         <div class="col-sm-10">
-            <InputNumber @bind-Value="vagt.Kategori" class="form-control" />
+            <InputSelect id="Kategori" @bind-Value="vagt.Kategori" class="form-control">
+                @foreach (var kat in kategorilist)
+                {
+                    <option value="@kat.ID">@kat.Navn</option>
+                }
+            </InputSelect>
         </div>
     </div>
     <div class="form-group row">
         <label for="Password" class="col-sm-2 col-form-label">
-            Antal Pladser 
+            Antal Pladser
         </label>
         <div class="col-sm-10">
             <InputNumber @bind-Value="vagt.Antal" class="form-control" />
         </div>
     </div>
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-primary" type="submit">Gem</button>
 </EditForm>
 
 @code {
     private Vagt vagt = new Vagt();
     private Vagt[]? vagtlist = new Vagt[0];
+    private Kategori[]? kategorilist = new Kategori[0]; //Opretter et tomt 
 
     //private string? UrlId; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
@@ -116,6 +117,7 @@
     {
         GetUrlID();
         vagt = await mService.GetVagt(UrlId);
+        kategorilist = (await mService.getAllKategori()).ToArray();
     }
 
     public async Task HandleValidSubmit()
@@ -136,6 +138,6 @@
 
     public async Task UpdateVagt()
     {
-       await mService.UpdateVagt(vagt);
+        await mService.UpdateVagt(vagt);
     }
 }

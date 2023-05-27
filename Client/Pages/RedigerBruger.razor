@@ -1,136 +1,236 @@
 ﻿@page "/redigerbruger"
-@using Common.Model;
-@using Client.Services;
-@inject NavigationManager NavigationManager
-@inject HttpClient http;
+@using Common.Model
+@using System.Web
+@using Client.Services
+@inject IJSRuntime JSRuntime // Injecter 'IJSRuntime' for at muliggøre interaktion med JavaScript på klienten .
+@inject NavigationManager NavigationManager // Injecter for at kunne redirecte til andre api'er.
+@inject HttpClient http
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage // Injecter 'sessionStorage' for at kunne lagre brugerens id fra deres session. 
+
+
+<div class="row">
+    <div class="col"></div>
+    <div class="col" style="display:@loading;">
+        <h1 style="margin-right: .5em;">Henter data</h1>
+
+        <img src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif" style="width: 35px;height: 35px" />
+    </div>
+    <div class="col"></div>
+</div>
 
 
 
-<EditForm Model="@aEditContext" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <h3>Rediger information</h3>
-    <hr />
-    <ValidationSummary />
-    <div class="form-group row">
-        <label for="firstName" class="col-sm-2 col-form-label">
-            Fornavn
-        </label>
-        <div class="col-sm-10">
-            <InputText id="Fornavn" class="form-control" placeholder="@bruger.Fornavn"
-                       @bind-Value="bruger.Fornavn" />
-            <ValidationMessage For="@(() => bruger.Fornavn)" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="Efternavn" class="col-sm-2 col-form-label">
-            Efternavn
-        </label>
-        <div class="col-sm-10">
-            <InputText id="lastName" class="form-control" placeholder="@(() => bruger.Efternavn)"
-                       @bind-Value="bruger.Efternavn" />
-            <ValidationMessage For="@(() => bruger.Efternavn)" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="Telefonummer" class="col-sm-2 col-form-label">
-            Telefonnummer
-        </label>
-        <div class="col-sm-10">
-            <InputNumber id="email" class="form-control" placeholder="Telefonnummer"
-                         @bind-Value="bruger.Telefonnummer" />
-            <ValidationMessage For="@(() => bruger.Telefonnummer)" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="Addresse" class="col-sm-2 col-form-label">
-            Addresse
-        </label>
-        <div class="col-sm-10">
-            <InputText id="confirmEmail" class="form-control"
-                       @bind-Value="bruger.Adresse" />
-            <ValidationMessage For="@(() => bruger.Adresse)" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="Email" class="col-sm-2 col-form-label">
-            Email
-        </label>
-        <div class="col-sm-10">
-            <InputText id="confirmEmail" class="form-control"
-                       @bind-Value="bruger.Email" />
-            <ValidationMessage For="@(() => bruger.Email)" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="Fødselsdagsdato" class="col-sm-2 col-form-label">
-            Fødselsdagsdato
-        </label>
-        <div class="col-sm-10">
-            <InputDate @bind-Value="bruger.Fødselsdag" class="form-control" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="Password" class="col-sm-2 col-form-label">
-            Password
-        </label>
-        <div class="col-sm-10">
-            <InputText @bind-Value="bruger.Password" class="form-control" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="isKoordinator" class="col-sm-2 col-form-label">
-            Er koordinator:
-        </label>
-        <div class="col-sm-10">
-                <label class="form-control ">@bruger.IsKoordinator</label>
-        </div>
-    </div>
-    <button class="btn btn-primary" type="submit">Gem</button>
+<div class="row">
+    <div class="col-sm-4">
 
-</EditForm>
+
+        <EditForm Model="@aEditContext" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <h3>Rediger information</h3>
+            <hr />
+            <ValidationSummary />
+            <div class="form-group row">
+                <label for="firstName" class="col-sm-3 col-form-label">
+                    Fornavn
+                </label>
+                <div class="col-sm-6">
+                    <InputText id="Fornavn" class="form-control" placeholder="@bruger.Fornavn"
+                               @bind-Value="bruger.Fornavn" />
+                    <ValidationMessage For="@(() => bruger.Fornavn)" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Efternavn" class="col-sm-3 col-form-label">
+                    Efternavn
+                </label>
+                <div class="col-sm-6">
+                    <InputText id="lastName" class="form-control" placeholder="@(() => bruger.Efternavn)"
+                               @bind-Value="bruger.Efternavn" />
+                    <ValidationMessage For="@(() => bruger.Efternavn)" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Telefonummer" class="col-sm-3 col-form-label">
+                    Telefonnummer
+                </label>
+                <div class="col-sm-6">
+                    <InputNumber id="email" class="form-control" placeholder="Telefonnummer"
+                                 @bind-Value="bruger.Telefonnummer" />
+                    <ValidationMessage For="@(() => bruger.Telefonnummer)" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Addresse" class="col-sm-3 col-form-label">
+                    Addresse
+                </label>
+                <div class="col-sm-6">
+                    <InputText id="confirmEmail" class="form-control"
+                               @bind-Value="bruger.Adresse" />
+                    <ValidationMessage For="@(() => bruger.Adresse)" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Email" class="col-sm-3 col-form-label">
+                    Email
+                </label>
+                <div class="col-sm-6">
+                    <InputText id="confirmEmail" class="form-control"
+                               @bind-Value="bruger.Email" />
+                    <ValidationMessage For="@(() => bruger.Email)" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Fødselsdagsdato" class="col-sm-3 col-form-label">
+                    Fødselsdagsdato
+                </label>
+                <div class="col-sm-6">
+                    <InputDate @bind-Value="bruger.Fødselsdag" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Password" class="col-sm-3 col-form-label">
+                    Password
+                </label>
+                <div class="col-sm-6">
+                    <InputText @bind-Value="bruger.Password" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="isKoordinator" class="col-sm-3 col-form-label">Er koordinator:</label>
+                <div class="col-sm-6">
+                    <label class="form-control locked">@bruger.IsKoordinator</label>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Gem</button>
+            <div>
+                @if (showMessage)
+                {
+                    <div class="alert alert-success">
+                        Dine oplysninger er gemt.
+                    </div>
+                }
+            </div>
+
+        </EditForm>
+    </div>
+    <div class="col">
+        <div>
+            <h3>Mine Vagter </h3>
+            <hr />
+            <div class="row">
+                <div class="col">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Navn</th>
+                                <th>Point</th>
+                                <th>Start</th>
+                                <th>Slut</th>
+                                <th>Beskrivelse</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var vagt in myvagtlist)
+                            {
+                                <tr>
+                                    <td>@vagt.Navn</td>
+                                    <td>@vagt.Point</td>
+                                    <td>@vagt.Start</td>
+                                    <td>@vagt.Slut</td>
+                                    <td>@vagt.Beskrivelse</td>
+                                    <td>
+                                        @if (vagt.isLocked == true)
+                                        {
+                                            <button class="btn btn-secondary">Vagten er låst</button>
+                                        }
+                                        else if (vagt.isLocked == false)
+                                        {
+                                            <button class="btn btn-danger" @onclick="() => AfmeldVagt(vagt, UrlId)">Afmeld Vagt</button>
+                                        }
+                                    </td>
+                                </tr>
+                                vagtCounter++;
+                                pointSum += vagt.Point;
+                                brugervagtersomid.Add(vagt.ID);
+                            }
+                        </tbody>
+                    </table>
+                    <div>
+                        Antal taget vagter: @vagtCounter
+                        <br />
+                        Samlet antal point: @pointSum
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
 
 @code {
-    private Bruger bruger = new Bruger();
-    private Bruger[]? brugerlist = new Bruger[0];
+    private Bruger bruger = new Bruger(); // Opretter et nyt bruger objekt
+    private Bruger[]? brugerlist = new Bruger[0]; // Opretter en tom liste af bruger objekter
+    private List<int> brugervagtersomid = new List<int>(); // Opretter en tom liste af vagter hvor de er tildelt et ID
+
+    private bool showMessage = false; //Viser en besked ved if-sætning for gemte oplysninger 
+
+    private string loading = "none"; //Viser loading på siden 
+
 
     private int UrlId = 0; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
 
-    private EditContext aEditContext;
+    private EditContext aEditContext; // Opretter Editcontext som en variable 
 
     [Inject]
-    private IBrugerService mService { get; set; }
+    private IBrugerService mService { get; set; } // Injecter vores IBrugerSerice interface, således vi kan tilgå CRUD for brugere
 
-    protected override void OnInitialized()
+    [Inject]
+    private IVagtService vService { get; set; } // Injecter vores IVagtSerice interface, således vi kan tilgå CRUD for vagter
+
+    protected override void OnInitialized() // Ved opstart af page
     {
-        aEditContext = new EditContext(bruger);
-        
-
+        aEditContext = new EditContext(bruger); // Kan bruge attibutterne fra 'bruger' klassen 
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync() // Async tasks der bliver kaldt når siden startes op 
     {
-        GetUrlID();
-        bruger = await mService.GetBruger(UrlId);
+        loading = "contents"; // Tekst til loading når data for dine vagter hentes
+        UrlId = await sessionStorage.GetItemAsync<int>("userId"); // Sætter brugerens id fra sessionStorage til at være variablen 'UrlId'
+        bruger = await mService.GetBruger(UrlId); // Henter en bruger ved at refererer til vores service klasse og funktionen 'GetBruger'
+        vagtlist = (await vService.getAvailable(UrlId)).ToArray(); // Henter alle tilgængelige vagter vha dit bruger id, og sætter dem ind i et array da vores varible er et array
+        myvagtlist = (await vService.getAllMine(UrlId)).ToArray(); // Henter alle vagter for den specifikke bruger vha bruger id, og sætter dem i et array da vores varible er et array
+        loading = "none"; // Teksten forsvinder når dine vagter er hentet 
     }
 
-    public async Task HandleValidSubmit()
+    public async Task HandleValidSubmit() // Bliver kaldt når du redigerer
     {
-        bruger.ID = UrlId;
-        await UpdateBruger();
-        
+        bruger.ID = UrlId; // ID'et for den specifikke bruger 
+        await mService.UpdateBruger(bruger); // Kalder funktionen UpdateBruger fra vores service klasse
+        showMessage = true; // Viser en besked når du har trykket gem på dine oplysninger 
+
+    }
+    // Vagt-relateret kode
+
+    private Vagt vagt = new Vagt(); // Opretter et tomt Booking objekt
+    private Vagt[]? vagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+    private Vagt[]? myvagtlist = new Vagt[0]; // Opretter en tom liste af booking objekter
+
+    private async Task AfmeldVagt(Vagt vagt, int bruger)
+    {
+        vService.AfmeldVagt(vagt, bruger);
+        await Refresh();
+    }
+    // Når du tager en vagt, bliver 'TagVagt' funktionen kaldt i service klassen, og derefter kalder vi Refresh funktionen
+    public async Task Refresh()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "window.location.reload();"); // Genindlæs siden ved at kalde JavaScript-funktionen "window.location.reload();"
     }
 
-    public async Task UpdateBruger()
-    {
-        await mService.UpdateBruger(bruger);
-    }
+  
+    int vagtCounter = 0; // Variable, som bliver brugt til at vvise hvor mange vagter en bruger har taget
 
-    public void GetUrlID()
-    {
-        var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
-        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query); // Bruger HttpUtility klassen til at parse query stringen i URL'en
-        UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
-    }
+    int pointSum = 0; // Variable som viser hvor mange samlede point en bruger har. 
 }
-

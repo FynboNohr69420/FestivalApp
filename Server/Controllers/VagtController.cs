@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Server.Repositories;
 using Common.Model;
+using static System.Net.WebRequestMethods;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,6 +29,30 @@ namespace Server.Controllers
             return myRepo.getAll();
         }
 
+        [HttpGet]
+        [Route("kategorier")]
+        public IEnumerable<Kategori> GetAllKategori(int b_id)
+        {
+            Console.WriteLine("get ");
+            return myRepo.getAllKategori();
+        }
+
+        [HttpGet]
+        [Route("avail/{brugerid}")]
+        public IEnumerable<Vagt> GetAvailable(int brugerid)
+        {
+            Console.WriteLine("get ");
+            return myRepo.getAvailable(brugerid);
+        }
+
+        [HttpGet]
+        [Route("spec/{b_id}")]
+        public IEnumerable<Vagt> GetAllMine(int b_id)
+        {
+            Console.WriteLine("get ");
+            return myRepo.getAllMine(b_id);
+        }
+
 
         // En metode, der håndterer HTTP POST requests til /api/Booking
         [HttpPost]
@@ -38,6 +63,19 @@ namespace Server.Controllers
             Console.WriteLine("post " + vagt.ID);
             // Tilføjer bookingen til databasen gennem vores repository
             myRepo.AddVagt(vagt);
+        }
+
+        [HttpPost]
+        [Route("tag/{bruger}")]
+        public void TagVagt(Vagt vagt, int bruger)
+        {
+            myRepo.TagVagt(vagt, bruger);
+        }
+        [HttpPut]
+        [Route("afmeld/{bruger}")]
+        public void AfmeldVagt(Vagt vagt, int bruger)
+        {
+            myRepo.AfmeldVagt(vagt, bruger);
         }
 
         // En metode, der håndterer HTTP DELETE requests til /api/Booking/{Id}
@@ -65,6 +103,13 @@ namespace Server.Controllers
             Console.WriteLine("Updated" + vagt.ID);
 
             myRepo.UpdateVagt(vagt);
+        }
+
+        [HttpPut]
+        [Route("lock/{currentlockstatus}")]
+        public async Task ToggleLockStatus(Vagt vagt, bool currentlockstatus)
+        {
+            await myRepo.ToggleLockStatus(vagt, currentlockstatus);
         }
     }
 }

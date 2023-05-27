@@ -1,0 +1,47 @@
+﻿@layout LoginLayout
+@inject NavigationManager NavigationManager
+@page "/om"
+
+<main>
+    <div class="row">
+        <div class="col headerimage">
+            
+            <div class="row infoline">
+                <div class="col infobox">
+                    <h4>Kultur</h4>
+                    <p>RythmRage er en årlig musikfestival, der tiltrækker musikelskere fra hele verden. Festivalen fejrer musikkens kraft med en eklektisk blanding af genrer som rock, pop, elektronisk musik og hiphop. Deltagerne kan udforske forskellige musikalske stilarter på flere scener. Festivalen skaber en festlig atmosfære, hvor folk med en fælles passion for musik kommer sammen. Energien og entusiasmen er høj, og deltagerne ifører sig farverige og ekspressive tøjstilar.</p>
+                    <p>RythmRage byder udover musikken på kulinariske oplevelser fra forskellige madboder. Der er også imponerende kunstinstallationer og interaktive oplevelser, der skaber en visuel æstetik og kreativ stemning. Festivalen fremmer inklusion og mangfoldighed for at skabe en atmosfære, hvor alle føler sig velkomne. RythmRage er en ikonisk begivenhed og et destination for musikelskere, der ønsker fantastisk musik, kreativitet og en uforglemmelig festlig atmosfære.</p>
+                </div>
+
+                <div class="col infobox">
+                    <h4>Værdier</h4>
+                    <p>På RythmRage er inklusion og mangfoldighed centrale værdier. Festivalen ønsker at skabe en atmosfære, hvor alle føler sig velkomne uanset baggrund eller musiksmag. Der lægges også vægt på bæredygtighed og miljøbevidsthed ved at implementere grønne initiativer som affaldssortering og genbrug.</p>
+                    <p>Kreativitet og fællesskab er vigtige værdier på RythmRage. Festivalen tilbyder kunstinstallationer og workshops for at fremme kunstnerisk udfoldelse. Der skabes et fællesskab, hvor musikelskere kan forbinde og dele glæden ved musik, mad og interaktion.</p>
+                    <p>Disse værdier er grundlæggende for RythmRage og bidrager til festivalens unikke atmosfære og oplevelse for alle deltagere.</p>
+                    
+                </div>
+
+                <div class="col infobox">
+                    <h4>Oplevelser</h4>
+                    <p>RythmRage er mere end bare musik - det er en helhedsoplevelse, der vækker alle dine sanser. Stemningen på festivalen er ubeskrivelig med pulserende energi og glade festivaldeltagere, der ifører sig farverige og ekspressive tøjstilar. Du vil danse, møde nye venner og skabe minder, der varer ved.</p>
+                    <p>Udover musikken byder RythmRage på spændende oplevelser som madboder med kulinariske lækkerier fra forskellige køkkener. Du kan smage dig igennem street food og lokale specialiteter eller prøve internationale retter. Mens du nyder din mad, kan du beundre imponerende kunstinstallationer, der skaber et visuelt festfyrværkeri på festivalpladsen. Der er også interaktive workshops og kunstprojekter, hvor du kan udfolde din kreativitet og være en del af fælles kunstværker.</p>
+                </div>
+                
+
+            </div>
+            
+        </div>
+        <button class="btn btn-info" @onclick="Redirect">Tilbage</button>
+    </div>
+    
+    
+
+
+</main>
+@code {
+    void Redirect()
+    {
+        NavigationManager.NavigateTo($"/", forceLoad: true);
+    }
+
+}

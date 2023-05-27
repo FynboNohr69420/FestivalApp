@@ -4,7 +4,9 @@
 
 @inject HttpClient Http;
 
-<PageTitle>Registrering</PageTitle>
+<PageTitle>Registrering</PageTitle> 
+
+<!-- Koden indeholder inputfelter til forskellige egenskaber af vagt-objektet -->
 
 <EditForm EditContext="@aEditContext" class="row p-3" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
@@ -13,24 +15,55 @@
         <label for="Navn">Navn</label>
         <InputText id="Navn" @bind-Value="vagt.Navn" class="form-control" />
     </div>
+    <div class="col-md-6 mb-3">
+        <label for="Fødselsdag">Antal Point</label>
+        <InputNumber id="Point" @bind-Value="vagt.Point" class="form-control" />
+    </div>
+    <div class="form-group row">
+        <label for="Start" class="col-sm-3 col-form-label">
+            Start
+        </label>
+        <div class="col-sm-6">
+            <input type="datetime" id="Start" @bind="vagt.Start" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Slut" class="col-sm-3 col-form-label">
+            Slut
+        </label>
+        <div class="col-sm-6">
+            <input type="datetime" id="Slut" @bind="vagt.Slut" class="form-control" />
+        </div>
+    </div>
+    <div class="col-md-12-mb-3">
+        <label for="kategori">Kategori</label>
+        <InputSelect id="Kategori" @bind-Value="vagt.Kategori" class="form-control"> 
+            @foreach (var kat in kategorilist)
+            {
+                <option value="@kat.ID">@kat.Navn</option>
+            }
+            
+        </InputSelect>
+        </div>
     <div class="col-md-12 mb-3">
-        <label for="Telefonnummer">Start dato</label>
+        <label for="StartDato">Start dato</label>
         <InputDate id="StartDato" @bind-Value="vagt.Start" class="form-control" />
     </div>
     <div class="col-md-12 mb-3">
-        <label for="Adresse">Slut dato</label>
+        <label for="Slutdato">Slut dato</label>
         <InputDate id="SlutDato" @bind-Value="vagt.Slut" class="form-control" />
     </div>
     <div class="col-md-12 mb-3">
-        <label for="Email">Kategori</label>
+        <label for="Kategori">Kategori</label>
         <InputNumber id="Kategori" @bind-Value="vagt.Kategori" class="form-control" />
+
     </div>
     <div class="col-md-6 mb-3">
-        <label for="Fødselsdag">Antal pladser</label>
+        <label for="Antal_Pladser">Antal pladser</label>
         <InputNumber id="Antal" @bind-Value="vagt.Antal" class="form-control" />
     </div>
     <div class="col-md-6 mb-3">
-        <label for="Password">Beskrivelse</label>
+        <label for="Beskrivelse">Beskrivelse</label>
         <InputText id="Beskrivelse" @bind-Value="vagt.Beskrivelse" class="form-control" />
     </div>
     <div>
@@ -42,38 +75,44 @@
 
 @code {
 
-    private Vagt vagt = new Vagt();
-    private Vagt[]? vagtlist = new Vagt[0];
+    private Vagt vagt = new Vagt(); // Oprettter ny vagt objekt 
+    private Vagt[]? vagtlist = new Vagt[0]; // Oprettelse af et tomt array af vagt-objekter
+    private Kategori[]? kategorilist = new Kategori[0]; // Oprettelse af et tomt array af kategori-objekter
 
-    private EditContext aEditContext;
+
+    private EditContext aEditContext; // Oprettelse af en EditContext-variabel
 
     [Inject]
-    private IVagtService mService { get; set; }
+    private IVagtService mService { get; set; } // Injecter IVagtService 
 
     protected override void OnInitialized()
     {
-        aEditContext = new EditContext(vagt);
-        vagt.Start = DateTime.Now;
-        vagt.Slut = DateTime.Now;
+        aEditContext = new EditContext(vagt); // Oprettelse af en ny EditContext og tilknytning til vagt-objektet
+        vagt.Start = DateTime.Now; // Indstilling af vagtens start-egenskab til den aktuelle dato og tid
+        vagt.Slut = DateTime.Now; // Indstilling af vagtens slut-egenskab til den aktuelle dato og tid
+    }
+
+    protected override async Task OnInitializedAsync() // En asynkron livscyklusmetode, der bliver kaldt, når siden bliver initialiseret.
+    {
+        kategorilist = (await mService.getAllKategori()).ToArray(); // Hentning af kategorilisten fra IVagtService og konveterer den til et array
+    }
 
 
+    public async Task HandleValidSubmit() // En eventhandlermetode, der bliver kaldt, når en formular bliver indsendt og er gyldig.
+    {
+        await AddVagt(); 
+        vagt.Start = DateTime.Now; 
+        vagt.Slut = DateTime.Now; 
 
     }
 
-    public async Task HandleValidSubmit()
+    public async Task AddVagt() // Asynkron metode til tilføjelse af vagt 
     {
-        await AddVagt();
-        vagt.Start = DateTime.Now;
-        vagt.Slut = DateTime.Now;
-
-    }
-
-    public async Task AddVagt()
-    {
-        await mService.AddVagt(vagt);
+        await mService.AddVagt(vagt); // Kalder på IVagtService 
         Console.WriteLine("klient: add " + vagt.Navn); // Udskriver informationer om den nye booking i konsollen
         vagt = new(); // Opretter et nyt tomt Booking objekt for at rydde formen
     }
+
 
 
 }

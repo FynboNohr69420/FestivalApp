@@ -12,6 +12,7 @@ namespace Common.Model
         public string Efternavn { get; set; }
         public int Telefonnummer { get; set; }
         public string Adresse { get; set; }
+        [EmailAddress(ErrorMessage = "Denne mail er ikke gyldig")]
         public string Email { get; set; }
         [Required]
         public DateTime Fødselsdag { get; set; }
