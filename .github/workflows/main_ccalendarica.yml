@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'CCalendarica'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_893827215F1249BFBB02FA5A2A0F3B01 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5B88431AA17F4D8A997E70F9CD811579 }}
           package: .
