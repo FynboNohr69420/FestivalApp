@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Server.Repositories;
 using Common.Model;
+using static System.Net.WebRequestMethods;
 
 namespace Server.Controllers
 {
@@ -26,7 +27,7 @@ namespace Server.Controllers
         [HttpGet]
         public IEnumerable<Bruger> getAll()
         {
-            Console.WriteLine("get ");
+            Console.WriteLine("get");
             return myRepo.getAll();
         }
 
