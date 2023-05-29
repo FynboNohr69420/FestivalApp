@@ -137,6 +137,12 @@
 </body>
 
 @code {
+
+    // Injicerer Ibrugerservice under navnet mServise så vi kan bruge dennes metoder
+    [Inject]
+    private IBrugerService mService { get; set; }
+
+    // Diverse variabler deklareres til senere brug
     public string showerror = "none";
     private Bruger bruger = new Bruger();
     private Bruger brugerForm = new Bruger();
@@ -152,6 +158,10 @@
 
     public string TakBesked { get; set; }
 
+    private EditContext aEditContext;
+    private EditContext bEditContext;
+
+    // Ændrer visningen i password-feltet når man logger ind. Som default er det skjult, men man kan vælge at få det vist
     private void TogglePasswordVisibility()
     {
         showPassword = !showPassword;
@@ -160,7 +170,7 @@
 
     string showPopup = "none";
 
-
+    // Åbner eller lukker login pop-up'en
     void ToggleLogPop()
     {
         if (logdisplay == "none")
@@ -172,6 +182,7 @@
         }
     }
 
+    // Åbner eller lukker registrerings pop-up'en (point for verdens værste variabel-navn)
     void ToggleDispPop()
     {
         if (tilmelddisplay == "none")
@@ -184,6 +195,7 @@
         }
     }
 
+    // Åbner eller lukker betingelser pop-up'en 
     void TogglePopUp()
     {
         if (showPopup == "none")
@@ -196,28 +208,13 @@
         }
     }
 
+    // Viderestiller til om os siden ved hjælp af navigation manager
     void OmOsDispPop()
     {
         NavigationManager.NavigateTo($"/om", forceLoad: true);
     }
 
-    bool showEditForm = false;
-    bool visFormular = true;
-
-
-    private void ToggleEditForm()
-    {
-        visFormular = !visFormular;
-        showEditForm = !showEditForm;
-    }
-
-
-    private EditContext aEditContext;
-    private EditContext bEditContext;
-
-    [Inject]
-    private IBrugerService mService { get; set; }
-
+    // Definerer variabler ved sidens indlæsning
     protected override void OnInitialized()
     {
         aEditContext = new EditContext(bruger);
@@ -225,6 +222,7 @@
         bruger.Fødselsdag = DateTime.Now;
     }
 
+    // Hvis der ikke er indtastet en email vises en fejl. Ellers hentes den bruger fra databasen hvor mailen matcher, og det indtastede password sammenlignes med det der ligger i databasen
     public async Task HandleValidSubmit()
     {
         if (brugerForm.Email == " ")
@@ -244,6 +242,7 @@
 
     }
 
+    // Ved korrekt udfyldning af registreringsformularen tilføjes data i databasen og en besked vises så bruger ved at alt er OK
     public async Task HandleValidRegister()
     {
         await Add();
@@ -251,6 +250,7 @@
         TakBesked = "Tak for din tilmelding, du kan nu logge ind. Vi glæder os til at se dig på pladsen!";
     }
 
+    // Henter information om en specifik bruger ud fra emailen. (Det er denne der bruges som sammenligning når man logger ind)
     public async Task<Bruger> getSpecific(string email)
     {
 
@@ -261,7 +261,7 @@
     }
 
 
-
+    // Balder add metoden i brugerservice for at tilføje den nye bruger i databasen
     public async Task Add()
     {
         await mService.Add(bruger);
@@ -269,6 +269,7 @@
 
     }
 
+    // Login logikken. Tjekker om der er indtastet data, og om denne matcher den der er lagret i databasen. Dette gøres ved at sammenligne to bruger objekter. Ét der er hentet fra DB og ét med den indtastede information fra loginformen
     private async Task login()
     {
         if (bruger.Efternavn == null || bruger.Email == null || bruger.Password == null)
@@ -291,6 +292,7 @@
             }
         }
 
+        // Opdateret brugerinfo gemmes i sessionen for fremtidig brug
         await sessionStorage.SetItemAsync("userId", bruger.ID);
         await sessionStorage.SetItemAsync("IsKoordinator", bruger.IsKoordinator);
 

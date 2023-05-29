@@ -10,6 +10,7 @@ namespace Server.Repositories
 {
     public class VagtRepositorySQL : IVagt
     {
+        // Connection string til databasen. Pooling slåes fra for at sikre at Elephant ikke overvældes af simultane forbindelser. (Der er et limit på 10 simultane forbindelser i vores plan)
         private const string connectionString = "UserID=eehvkyxg;Password=DpGHcrCDBfK_RrcdKdwSNiUR3t_PWx-1;Host=balarama.db.elephantsql.com;Port=5432;Database=eehvkyxg;Pooling=false";
 
 
@@ -283,7 +284,7 @@ namespace Server.Repositories
             }
         }
 
-        public void DeleteVagt(int Id) //KFN: Opdater så bemanding fjernes først
+        public void DeleteVagt(int Id) 
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {

@@ -91,11 +91,11 @@
 </EditForm>
 
 @code {
+
+    // Diverse variabler deklareres til senere brug
     private Vagt vagt = new Vagt();
     private Vagt[]? vagtlist = new Vagt[0];
     private Kategori[]? kategorilist = new Kategori[0]; //Opretter et tomt 
-
-    //private string? UrlId; // Deklarerer en variabel til at holde på ID'en fra URL'en
 
     private EditContext aEditContext;
 
@@ -115,20 +115,22 @@
 
     protected override async Task OnInitializedAsync()
     {
-        GetUrlID();
+        GetUrlID(); // INTERNAL: Ret sikker på vi ikke bruger denne længere drenge, ligger den ikke i session storage?
         vagt = await mService.GetVagt(UrlId);
         kategorilist = (await mService.getAllKategori()).ToArray();
     }
 
+    // Når man indsender formularen udføres nedenstående. Pågældende vagt opdateres ud fra vagtens ID og datofelterne nulstilles til at vise dags dato
     public async Task HandleValidSubmit()
     {
-        vagt.ID = UrlId;
+        vagt.ID = UrlId; // INTERNAL: Er dette korrekt? - Er UrlId ikke brugerens ID?
         await UpdateVagt();
 
         vagt.Start = DateTime.Now;
         vagt.Slut = DateTime.Now;
     }
 
+    // INTERNAL: Igen, ret sikker på denne kan slettes helt. Kan @Marcus confirme?
     public void GetUrlID()
     {
         var uri = new Uri(NavigationManager.Uri); // Opretter et Uri objekt med URL'en fra NavigationManager
@@ -136,6 +138,7 @@
         UrlId = Int32.Parse(queryParameters.Get("id")); // Henter ID'en fra URL'en og gemmer den i UrlId variablen
     }
 
+    // Kalder metoden i vagt servicen der opdater en vagts stamdata
     public async Task UpdateVagt()
     {
         await mService.UpdateVagt(vagt);
