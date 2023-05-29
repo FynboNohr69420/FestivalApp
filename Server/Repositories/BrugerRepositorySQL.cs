@@ -41,7 +41,7 @@ namespace Server.Repositories
                         var Email = reader.GetString(5);
                         var Password = reader.GetString(6);
                         var Iskoordinator = reader.GetBoolean(7);
-                        var Fødselsdag = DateTime.Parse(reader.GetString(8).Replace(".", "/").Remove(10, 9)); // Fjerner tidspunkt og erstatter . med / så strengen kan konverteres til en dato
+                        var Fødselsdag = DateTime.Parse(reader.GetString(8).Replace(".", "/").Replace("-", "/").Remove(10, 9)); // Fjerner tidspunkt og erstatter . med / så strengen kan konverteres til en dato
 
                         Bruger b = new Bruger
                         {

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Server.Repositories;
 using Common.Model;
+using static System.Net.WebRequestMethods;
 
 namespace Server.Controllers
 {
     // Angiver at klassen er en API-controller
     [ApiController]
-    // Angiver baseruten for controllerens handlinger
     [Route("api/brugere")]
     public class BrugerController : ControllerBase
     {
